@@ -1,0 +1,21 @@
+{
+  "projectName": "fuel-saver",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "deno",
+  "includeExamples": true,
+  "tailwind": true,
+  "addOnOptions": {},
+  "envVarValues": {},
+  "git": true,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "solid",
+  "chosenAddOns": [
+    "biome",
+    "nitro",
+    "solid-ui",
+    "tanstack-query",
+    "t3env"
+  ]
+}

@@ -1,0 +1,193 @@
+name: Preview Deployment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  NODE_VERSION: "20"
+  PNPM_VERSION: "9"
+
+jobs:
+  build-preview:
+    name: Build Preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js and pnpm
+        uses: ./.github/actions/setup-node-pnpm
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          pnpm-version: ${{ env.PNPM_VERSION }}
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Setup Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        uses: ./.github/actions/build-packages
+
+      - name: Build apps
+        uses: ./.github/actions/build-apps
+
+      - name: Build multiplayer game
+        run: pnpm build:multiplayer
+
+      - name: Assemble Cloudflare build
+        run: pnpm copy:cloudflare
+
+      - name: Upload preview build
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-build
+          path: dist/cloudflare
+          retention-days: 1
+          compression-level: 6
+
+      - name: Upload multiplayer preview build
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-multiplayer-build
+          path: dist/multiplayer-game
+          retention-days: 1
+          compression-level: 6
+
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    needs: [build-preview]
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+      deployments: write
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download preview build
+        uses: actions/download-artifact@v4
+        with:
+          name: preview-build
+          path: .
+
+      - name: Deploy preview to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy . --project-name=word-search-wizard --branch=pr-${{ github.event.pull_request.number }}
+
+      - name: Get preview URL
+        id: preview-url
+        run: |
+          echo "url=https://pr-${{ github.event.pull_request.number }}.word-search-wizard.pages.dev" >> $GITHUB_OUTPUT
+
+  deploy-multiplayer-preview:
+    name: Deploy Multiplayer Preview
+    runs-on: ubuntu-latest
+    needs: [build-preview, deploy-preview]
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+      deployments: write
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download multiplayer preview build
+        uses: actions/download-artifact@v4
+        with:
+          name: preview-multiplayer-build
+          path: .
+
+      - name: Deploy multiplayer preview to Cloudflare Pages
+        id: deploy-multiplayer
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy . --project-name=word-search-wizard-multiplayer --branch=pr-${{ github.event.pull_request.number }}
+
+      - name: Get multiplayer preview URL
+        id: multiplayer-preview-url
+        run: |
+          echo "url=https://pr-${{ github.event.pull_request.number }}.word-search-wizard-multiplayer.pages.dev" >> $GITHUB_OUTPUT
+
+      - name: Comment PR with preview links
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const mainPreviewUrl = 'https://pr-${{ github.event.pull_request.number }}.word-search-wizard.pages.dev';
+            const multiplayerPreviewUrl = '${{ steps.multiplayer-preview-url.outputs.url }}';
+            const comment = `## 🚀 Preview Deployment
+
+            Your changes have been deployed to preview environments:
+
+            **Main App Preview:** ${mainPreviewUrl}
+            **Multiplayer Game Preview:** ${multiplayerPreviewUrl}
+
+            These previews will be automatically updated when you push new commits to this PR.`;
+
+            // Find existing comment
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.data.find(
+              comment => comment.user.type === 'Bot' && comment.body.includes('Preview Deployment')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }

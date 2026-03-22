@@ -1,0 +1,42 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "vic-fuel-saver",
+	"compatibility_date": "2025-09-02",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"main": "src/server.ts",
+	"triggers": {
+		"crons": [
+			"*/30 * * * *"
+		]
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "vic-fuel-saver-db",
+			"database_id": "396f02a9-ddb3-4b27-b8e4-1c1e7536dc82",
+			"migrations_dir": "drizzle"
+		}
+	],
+	"vars": {
+		"VIC_FUEL_CONSUMER_ID": "8c1d706652b353ddce462b7a3c733c73",
+		"LOGO_DEV_SECRET_KEY": "sk_cHLOUeViSIK6IBlb1xY1OA",
+		"VITE_LOGO_DEV_TOKEN": "pk_D2SenNN6RaSjFmo0q8cDvA"
+	},
+	"observability": {
+		"enabled": false,
+		"head_sampling_rate": 1,
+		"logs": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"persist": true,
+			"invocation_logs": true
+		},
+		"traces": {
+			"enabled": true,
+			"persist": true,
+			"head_sampling_rate": 1
+		}
+	}
+}

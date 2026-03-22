@@ -1,0 +1,20 @@
+name: "Build Packages"
+description: "Build packages in dependency order"
+runs:
+  using: "composite"
+  steps:
+    - name: Build base packages
+      run: |
+        pnpm --filter @wordsearchy/ui-components build
+      shell: bash
+
+    - name: Build puzzle-generator
+      run: |
+        pnpm --filter @wordsearchy/puzzle-generator build
+      shell: bash
+
+    - name: Build dependent packages
+      run: |
+        pnpm --filter @wordsearchy/block-editor build
+        pnpm --filter @wordsearchy/server build
+      shell: bash

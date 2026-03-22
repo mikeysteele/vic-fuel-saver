@@ -1,0 +1,27 @@
+name: "OpenTofu Init"
+description: "Initialize OpenTofu with R2 backend configuration"
+inputs:
+  working-directory:
+    description: "Working directory for OpenTofu commands"
+    required: false
+    default: "./terraform"
+  cloudflare-account-id:
+    description: "Cloudflare Account ID"
+    required: true
+  r2-access-key:
+    description: "R2 Access Key ID for backend"
+    required: true
+  r2-secret-key:
+    description: "R2 Secret Access Key for backend"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: OpenTofu Init
+      working-directory: ${{ inputs.working-directory }}
+      run: tofu init
+      env:
+        AWS_ACCESS_KEY_ID: ${{ inputs.r2-access-key }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.r2-secret-key }}
+        TF_VAR_cloudflare_account_id: ${{ inputs.cloudflare-account-id }}
+      shell: bash

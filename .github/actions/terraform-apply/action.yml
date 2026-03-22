@@ -1,0 +1,36 @@
+name: "OpenTofu Apply"
+description: "Run tofu apply"
+inputs:
+  working-directory:
+    description: "Working directory for OpenTofu commands"
+    required: false
+    default: "./terraform"
+  cloudflare-api-token:
+    description: "Cloudflare API token"
+    required: true
+  cloudflare-account-id:
+    description: "Cloudflare Account ID"
+    required: true
+  gemini-api-key:
+    description: "Gemini API key (optional)"
+    required: false
+  r2-access-key:
+    description: "R2 Access Key ID for backend"
+    required: true
+  r2-secret-key:
+    description: "R2 Secret Access Key for backend"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: OpenTofu Apply
+      working-directory: ${{ inputs.working-directory }}
+      run: tofu apply -auto-approve tfplan
+      env:
+        TF_VAR_cloudflare_api_token: ${{ inputs.cloudflare-api-token }}
+        TF_VAR_cloudflare_account_id: ${{ inputs.cloudflare-account-id }}
+        TF_VAR_gemini_api_key: ${{ inputs.gemini-api-key }}
+        AWS_ACCESS_KEY_ID: ${{ inputs.r2-access-key }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.r2-secret-key }}
+      shell: bash

@@ -1,0 +1,77 @@
+name: Terraform Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "terraform/**"
+      - ".github/workflows/terraform.yml"
+      - ".github/actions/terraform-*/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "terraform/**"
+      - ".github/workflows/terraform.yml"
+      - ".github/actions/terraform-*/**"
+  workflow_dispatch:
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  terraform:
+    name: OpenTofu Plan/Apply
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: ./.github/actions/terraform-setup
+
+      - name: OpenTofu Init
+        uses: ./.github/actions/terraform-init
+        with:
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          r2-access-key: ${{ secrets.R2_ACCESS_KEY }}
+          r2-secret-key: ${{ secrets.R2_SECRET_KEY }}
+
+      - name: OpenTofu Validate
+        uses: ./.github/actions/terraform-validate
+
+      - name: OpenTofu Plan
+        uses: ./.github/actions/terraform-plan
+        timeout-minutes: 10
+        with:
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
+          r2-access-key: ${{ secrets.R2_ACCESS_KEY }}
+          r2-secret-key: ${{ secrets.R2_SECRET_KEY }}
+
+      - name: OpenTofu Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: ./.github/actions/terraform-apply
+        with:
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
+          r2-access-key: ${{ secrets.R2_ACCESS_KEY }}
+          r2-secret-key: ${{ secrets.R2_SECRET_KEY }}
+
+      - name: Set Cloudflare Pages Secret (if not set by OpenTofu)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: ./.github/actions/set-cloudflare-secret
+        with:
+          secret-name: GEMINI_API_KEY
+          secret-value: ${{ secrets.GEMINI_API_KEY }}
+          project-name: word-search-wizard
+          account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}

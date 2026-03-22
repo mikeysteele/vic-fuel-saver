@@ -1,0 +1,29 @@
+{
+  "allowScripts": [
+    "npm:esbuild@0.27.3",
+    "npm:sharp@0.34.5",
+    "npm:workerd@1.20260317.1"
+  ],
+  "nodeModulesDir": "auto",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "deno.ns"],
+    "types": ["vite/client", "./src/global.d.ts"],
+
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "."
+  },
+  "imports": {
+    "~/": "./src/"
+  },
+  "lint": {
+    "exclude": ["./src/routeTree.gen.ts"]
+  }
+}

@@ -1,0 +1,39 @@
+import { render } from "@solidjs/testing-library";
+import { describe, it, expect, vi } from "vitest";
+import MapViewLayer from "./MapViewLayer.tsx";
+import type { FuelMetricsAggregate } from "../../types/fuel.ts";
+
+// Mock FuelMap because it depends on Leaflet which is hard to test in JSDOM
+vi.mock("../map/FuelMap.tsx", () => ({
+  default: () => <div data-testid="mock-fuel-map" />
+}));
+
+describe("MapViewLayer", () => {
+  const defaultProps = {
+    viewMode: () => "map" as const,
+    stations: [] as any[],
+    userLocation: null,
+    selectedFuelTypes: [] as string[],
+    brandMap: {} as Record<string, string>,
+    onViewportChange: vi.fn(),
+    stateMetrics: {} as Record<string, FuelMetricsAggregate>,
+    areaMetrics: {} as Record<string, FuelMetricsAggregate>,
+    mapFocus: null,
+    isDark: false,
+  };
+
+  it("renders map container when viewMode is 'map'", () => {
+    const { getByTestId, container } = render(() => <MapViewLayer {...defaultProps} />);
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).not.toHaveClass("hidden");
+    expect(getByTestId("mock-fuel-map")).toBeInTheDocument();
+  });
+
+  it("adds 'hidden' class when viewMode is 'list'", () => {
+    const { container } = render(() => (
+      <MapViewLayer {...defaultProps} viewMode={() => "list" as const} />
+    ));
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toHaveClass("hidden");
+  });
+});

@@ -1,0 +1,19 @@
+name: "OpenTofu Validate"
+description: "Format check and validate OpenTofu configuration"
+inputs:
+  working-directory:
+    description: "Working directory for OpenTofu commands"
+    required: false
+    default: "./terraform"
+runs:
+  using: "composite"
+  steps:
+    - name: OpenTofu Format Check
+      working-directory: ${{ inputs.working-directory }}
+      run: tofu fmt -check
+      shell: bash
+
+    - name: OpenTofu Validate
+      working-directory: ${{ inputs.working-directory }}
+      run: tofu validate
+      shell: bash
