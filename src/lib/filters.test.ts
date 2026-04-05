@@ -68,14 +68,14 @@ describe("filterAndSortStations", () => {
 
   it("sorts by primary fuel type price (cheapest first)", () => {
     const result = filterAndSortStations(allStations, [], ["U91"]);
-    expect(result[0].fuelStation.id).toBe(2); // Shell at 160 is cheapest
-    expect(result[1].fuelStation.id).toBe(1); // BP at 180 is more expensive
+    expect(result[0].fuelStation.id).toBe("2"); // Shell at 160 is cheapest
+    expect(result[1].fuelStation.id).toBe("1"); // BP at 180 is more expensive
   });
 
   it("combines brand and fuel type filters", () => {
     const result = filterAndSortStations(allStations, ["SHELL"], ["U91"]);
     expect(result).toHaveLength(1);
-    expect(result[0].fuelStation.id).toBe(2);
+    expect(result[0].fuelStation.id).toBe("2");
   });
 
   it("returns empty array when no stations match filters", () => {

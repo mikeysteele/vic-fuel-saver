@@ -1,6 +1,10 @@
-import { describe, it, expect } from "vitest";
+import { vi, describe, it, expect } from "vitest";
 import { render } from "@solidjs/testing-library";
 import { ThemeProvider, useTheme } from "./theme.tsx";
+
+vi.mock("../server/theme.ts", () => ({
+  setThemeCookie: vi.fn(),
+}));
 
 describe("ThemeProvider", () => {
   it("should provide initial theme", () => {

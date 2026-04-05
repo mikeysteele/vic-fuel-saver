@@ -14,8 +14,16 @@ export default defineConfig({
     include: ["src/**/*.test.{ts,tsx}"],
     coverage: {
       provider: "v8",
-      include: ["src/lib/**", "src/server/**"],
+      include: ["src/lib/**", "src/server/**", "src/components/**", "src/features/**"],
       reporter: ["text", "html"],
     },
+    alias: {
+      "cloudflare:workers": new URL("./src/test/mocks/cloudflare.ts", import.meta.url).pathname
+    },
+    server: {
+      deps: {
+        inline: [/@tanstack\/solid-router/]
+      }
+    }
   },
 });
