@@ -15,7 +15,7 @@ interface MapViewLayerProps {
   isDark: boolean;
 }
 
-function MapViewLayer(props: MapViewLayerProps) {
+const MapViewLayer = (props: MapViewLayerProps) => {
   return (
     <div
       class={props.viewMode() === "list"

@@ -7,7 +7,7 @@ interface AppOverlaysProps {
   refetch: () => void;
 }
 
-function AppOverlays(props: AppOverlaysProps) {
+const AppOverlays = (props: AppOverlaysProps) => {
   return (
     <>
       {/* Loading overlay */}

@@ -8,7 +8,7 @@
 	"main": "src/server.ts",
 	"triggers": {
 		"crons": [
-			"*/30 * * * *"
+			"0 */4 * * *"
 		]
 	},
 	"d1_databases": [

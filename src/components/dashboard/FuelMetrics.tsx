@@ -10,7 +10,7 @@ interface FuelMetricsProps {
   onFocusStation?: (stat: FuelMetricStat) => void;
 }
 
-function FuelMetrics(props: FuelMetricsProps) {
+const FuelMetrics = (props: FuelMetricsProps) => {
   const getMetrics = (fType: string) => {
     const stateData = () => props.stateMetrics?.[fType];
     const areaData = () => props.areaMetrics?.[fType];

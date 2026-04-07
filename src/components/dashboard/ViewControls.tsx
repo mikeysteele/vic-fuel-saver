@@ -12,9 +12,9 @@ interface ViewControlsProps {
   setViewMode: (mode: "map" | "list") => void;
 }
 
-function ViewControls(props: ViewControlsProps) {
+const ViewControls = (props: ViewControlsProps) => {
   return (
-    <div data-metrics={JSON.stringify(props.areaMetrics)} class="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-4xl z-20 pointer-events-auto flex flex-col gap-3 md:gap-4">
+    <div class="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-4xl z-20 pointer-events-auto flex flex-col gap-3 md:gap-4">
       <FuelMetrics
         selectedFuelTypes={props.selectedFuelTypes}
         stateMetrics={props.stateMetrics}

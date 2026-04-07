@@ -1,4 +1,4 @@
-import type { Component } from "solid-js";
+import { createSignal } from "solid-js";
 import type {
   FuelMetricsAggregate,
   FuelPrice,
@@ -7,6 +7,8 @@ import type {
 import PriceList from "./station/PriceList.tsx";
 import StationAddress from "./station/StationAddress.tsx";
 import StationHeader from "./station/StationHeader.tsx";
+import Modal from "./ui/Modal.tsx";
+import StationHistoryView from "./station/StationHistoryView.tsx";
 
 export interface FuelStationCardProps {
   station: FuelStation;
@@ -17,7 +19,9 @@ export interface FuelStationCardProps {
   areaMetrics?: Record<string, FuelMetricsAggregate>;
 }
 
-const FuelStationCard: Component<FuelStationCardProps> = (props) => {
+function FuelStationCard(props: FuelStationCardProps) {
+  const [showHistory, setShowHistory] = createSignal(false);
+  
   const displayedPrices = () => {
     if (props.selectedFuelTypes && props.selectedFuelTypes.length > 0) {
       return props.prices.filter((p) =>
@@ -52,6 +56,20 @@ const FuelStationCard: Component<FuelStationCardProps> = (props) => {
           areaMetrics={props.areaMetrics}
         />
       </div>
+      <div class="px-6 pb-6 pt-2">
+        <button
+          type="button"
+          onClick={() => setShowHistory(true)}
+          class="w-full py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl transition-colors flex items-center justify-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          View Price History
+        </button>
+      </div>
+
+      <Modal isOpen={showHistory()} onClose={() => setShowHistory(false)}>
+        <StationHistoryView stationId={props.station.id} stationName={props.station.name} />
+      </Modal>
     </div>
   );
 };

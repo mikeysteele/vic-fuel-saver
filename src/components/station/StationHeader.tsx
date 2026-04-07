@@ -1,4 +1,3 @@
-import type { Component } from "solid-js";
 import { createSignal, Show } from "solid-js";
 import { getBrandLogoUrl } from "~/lib/brandLogo.ts";
 import { iconBoxVariants } from "~/design-system/variants.ts";
@@ -8,7 +7,7 @@ interface StationHeaderProps {
   brandId: string;
 }
 
-const StationHeader: Component<StationHeaderProps> = (props) => {
+function StationHeader(props: StationHeaderProps) {
   const [imageError, setImageError] = createSignal(false);
   const logoUrl = () => getBrandLogoUrl(props.brandId, 128);
 

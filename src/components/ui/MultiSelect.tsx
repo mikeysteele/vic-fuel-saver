@@ -1,4 +1,4 @@
-import { createSignal, For, onCleanup, onMount, type Component, Show } from "solid-js";
+import { createSignal, For, onCleanup, onMount, Show } from "solid-js";
 import { Panel } from "../../design-system/components/Panel.tsx";
 import { SelectButton } from "../../design-system/components/SelectButton.tsx";
 import { withDocument } from "../../lib/safe-dom.ts";
@@ -12,7 +12,7 @@ export interface MultiSelectProps {
   labelMap?: Record<string, string>;
 }
 
-const MultiSelect: Component<MultiSelectProps> = (props) => {
+function MultiSelect(props: MultiSelectProps) {
   const [isOpen, setIsOpen] = createSignal(false);
   let containerRef: HTMLDivElement | undefined;
 

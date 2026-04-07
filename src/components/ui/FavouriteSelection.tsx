@@ -60,7 +60,7 @@ export interface FavouratableContainerProps {
  * A wrapper component that manages form element persistence in local storage.
  * It provides a context for the FavourableIcon to toggle favouriting.
  */
-export const Favouratable: Component<FavouratableContainerProps> = (props) => {
+export function Favouratable(props: FavouratableContainerProps) {
     const [value, setValue] = createSignal(props.initialValue ?? []);
     const [isFavourited, setIsFavourited] = createSignal(false);
 
@@ -112,7 +112,7 @@ export const Favouratable: Component<FavouratableContainerProps> = (props) => {
 /**
  * A toggleable star icon that connects to the nearest Favouratable context.
  */
-export const FavourableIcon: Component<{ class?: string }> = (props) => {
+export function FavourableIcon(props: { class?: string }) {
     const context = useFavouratable();
     if (!context) return null;
 
@@ -187,8 +187,9 @@ export function withFavouratable<P extends FavouratableComponentProps>(
 }
 
 /** @internal Internal consumer for the HOC to bridge context values back to props */
-// deno-lint-ignore no-explicit-any
-const FavouratableConsumer = (props: any) => {
+function FavouratableConsumer<P extends FavouratableComponentProps>(
+    props: P & { value?: unknown, BaseComponent: Component<P> }
+) {
     const context = useFavouratable()!;
 
     // Support both 'value' (standard) and 'selected' (MultiSelect) patterns
@@ -201,10 +202,10 @@ const FavouratableConsumer = (props: any) => {
                 ? { selected: context.value() || props.selected || [] }
                 : { value: (context.value() as string) || (props.value as string) || "" }
             )}
-            onChange={(val: string[]) => {
+            onChange={(val: unknown) => {
                 context.setValue(val);
                 props.onChange?.(val);
             }}
         />
     );
-};
+}

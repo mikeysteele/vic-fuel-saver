@@ -1,4 +1,4 @@
-import { type Component, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import FilterBar from "./FilterBar.tsx";
 
 interface FilterBarContainerProps {
@@ -20,7 +20,7 @@ interface FilterBarContainerProps {
  * Owns the geolocation side-effect and "Near Me" toggle logic.
  * FilterBar itself remains a purely presentation-based dumb component.
  */
-const FilterBarContainer: Component<FilterBarContainerProps> = (props) => {
+function FilterBarContainer(props: FilterBarContainerProps) {
   const [isExpanded, setIsExpanded] = createSignal(false);
 
   const handleNearMeClick = () => {
