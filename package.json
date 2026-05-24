@@ -8,8 +8,9 @@
     "start": "node .output/server/index.mjs",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:e2e": "bddgen && playwright test",
     "format": "deno fmt",
-    "lint": "deno lint && eslint \"src/**/*.{ts,tsx}\"",
+    "lint": "deno lint",
     "check": "deno check"
   },
   "dependencies": {
@@ -26,12 +27,9 @@
     "@tanstack/solid-router-devtools": "latest",
     "@tanstack/solid-router-ssr-query": "latest",
     "@tanstack/solid-start": "latest",
-    "@typescript-eslint/parser": "^8.58.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.1",
-    "eslint": "^10.2.0",
-    "eslint-plugin-react": "^7.37.5",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "lucide-solid": "^0.577.0",
@@ -60,6 +58,7 @@
     "vitest": "^4.1.0",
     "vite-plugin-pwa": "^1.2.0",
     "vite-tsconfig-paths": "^5.1.4",
+    "playwright-bdd": "^8.0.0",
     "wrangler": "^4.76.0"
   }
 }

@@ -11,3 +11,6 @@ dist-ssr
 .vinxi
 __unconfig*
 coverage
+.features-gen
+test-results
+playwright-report
