@@ -1,13 +1,13 @@
-import type { Component, JSX } from "solid-js";
+import type { JSX  } from "solid-js";
 import { type VariantProps } from "class-variance-authority";
-import { labelVariants } from "../variants.ts";
+import { labelVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface LabelProps
   extends JSX.LabelHTMLAttributes<HTMLLabelElement>,
     VariantProps<typeof labelVariants> {}
 
-export const Label: Component<LabelProps> = (props) => {
+export function Label(props: LabelProps) {
   const [local, others] = splitProps(props, [
     "intent",
     "size",

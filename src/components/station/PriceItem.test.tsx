@@ -1,7 +1,7 @@
 import { render, screen } from "@solidjs/testing-library";
 import { describe, expect, it } from "vitest";
-import type { FuelMetricsAggregate, FuelPrice } from "../../types/fuel.ts";
-import PriceItem from "./PriceItem.tsx";
+import type { FuelMetricsAggregate, FuelPrice } from "~/features/fuel/types.ts";
+import { PriceItem } from "./PriceItem.tsx";
 
 const availablePrice: FuelPrice = {
   fuelType: "U91",

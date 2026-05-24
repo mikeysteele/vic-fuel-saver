@@ -1,19 +1,19 @@
 import { createMemo, createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 
-import { computeAggregates } from "~/lib/aggregates.ts";
-import { createFuelData } from "~/primitives/createFuelData.ts";
-import { createFuelFilters } from "~/primitives/createFuelFilters.ts";
+import { computeAggregates } from "~/features/fuel/aggregates.ts";
+import { createFuelData } from "~/features/fuel/data.ts";
+import { createFuelFilters } from "~/features/fuel/filters.ts";
 import { useTheme } from '~/lib/theme.tsx';
-import type { FuelMetricStat, FuelPriceDetail as _FuelPriceDetail } from "~/types/fuel.ts";
+import type { FuelMetricStat, FuelPriceDetail as _FuelPriceDetail } from "~/features/fuel/types.ts";
 
-import FilterBarContainer from "~/components/FilterBarContainer.tsx";
-import Header from "~/components/layout/Header.tsx";
-import Attribution from "~/components/layout/Attribution.tsx";
-import AppOverlays from "~/components/dashboard/AppOverlays.tsx";
-import MapViewLayer from "~/components/dashboard/MapViewLayer.tsx";
-import ListViewLayer from "~/components/dashboard/ListViewLayer.tsx";
-import ViewControls from "~/components/dashboard/ViewControls.tsx";
+import { FilterBarContainer } from "~/components/dashboard/FilterBarContainer.tsx";
+import { Header } from "~/components/layout/Header.tsx";
+import { Attribution } from "~/components/layout/Attribution.tsx";
+import { AppOverlays } from "~/components/dashboard/AppOverlays.tsx";
+import { MapViewLayer } from "~/components/dashboard/MapViewLayer.tsx";
+import { ListViewLayer } from "~/components/dashboard/ListViewLayer.tsx";
+import { ViewControls } from "~/components/dashboard/ViewControls.tsx";
 import { DateNavigator } from "~/components/dashboard/DateNavigator.tsx";
 
 

@@ -1,4 +1,4 @@
-import type { FuelPrice, FuelPriceDetail } from "../types/fuel.ts";
+import type { FuelPrice, FuelPriceDetail } from "./types.ts";
 
 /**
  * Pure function: filter stations by brand + fuel type, sort by primary fuel price.

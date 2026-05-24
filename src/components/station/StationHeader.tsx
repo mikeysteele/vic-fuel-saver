@@ -1,13 +1,13 @@
 import { createSignal, Show } from "solid-js";
-import { getBrandLogoUrl } from "~/lib/brandLogo.ts";
-import { iconBoxVariants } from "~/design-system/variants.ts";
+import { getBrandLogoUrl } from "~/features/fuel/brandLogo.ts";
+import { iconBoxVariants } from "~/components/ui/variants.ts";
 
 interface StationHeaderProps {
   name: string;
   brandId: string;
 }
 
-function StationHeader(props: StationHeaderProps) {
+export function StationHeader(props: StationHeaderProps) {
   const [imageError, setImageError] = createSignal(false);
   const logoUrl = () => getBrandLogoUrl(props.brandId, 128);
 
@@ -53,4 +53,4 @@ function StationHeader(props: StationHeaderProps) {
   );
 };
 
-export default StationHeader;
+

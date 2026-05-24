@@ -1,4 +1,4 @@
-import { createContext, useContext, createSignal, type ParentComponent, type JSX } from "solid-js";
+import { createContext, useContext, createSignal, type ParentProps, type JSX } from "solid-js";
 import { setThemeCookie } from "../server/theme.ts";
 
 type ThemeContextType = {
@@ -8,7 +8,7 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType>();
 
-export const ThemeProvider: ParentComponent<{ initialTheme: "light" | "dark" }> = (props): JSX.Element => {
+export function ThemeProvider(props: ParentProps<{ initialTheme: "light" | "dark" }>): JSX.Element {
   const [theme, setTheme] = createSignal(props.initialTheme);
 
   const toggleTheme = async () => {

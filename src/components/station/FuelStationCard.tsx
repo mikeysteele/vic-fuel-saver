@@ -3,12 +3,12 @@ import type {
   FuelMetricsAggregate,
   FuelPrice,
   FuelStation,
-} from "../types/fuel.ts";
-import PriceList from "./station/PriceList.tsx";
-import StationAddress from "./station/StationAddress.tsx";
-import StationHeader from "./station/StationHeader.tsx";
-import Modal from "./ui/Modal.tsx";
-import StationHistoryView from "./station/StationHistoryView.tsx";
+} from "~/features/fuel/types.ts";
+import { PriceList } from "./PriceList.tsx";
+import { StationAddress } from "./StationAddress.tsx";
+import { StationHeader } from "./StationHeader.tsx";
+import { Modal } from "../ui/Modal.tsx";
+import { StationHistoryView } from "./StationHistoryView.tsx";
 
 export interface FuelStationCardProps {
   station: FuelStation;
@@ -19,9 +19,9 @@ export interface FuelStationCardProps {
   areaMetrics?: Record<string, FuelMetricsAggregate>;
 }
 
-function FuelStationCard(props: FuelStationCardProps) {
+export function FuelStationCard(props: FuelStationCardProps) {
   const [showHistory, setShowHistory] = createSignal(false);
-  
+
   const displayedPrices = () => {
     if (props.selectedFuelTypes && props.selectedFuelTypes.length > 0) {
       return props.prices.filter((p) =>
@@ -62,7 +62,7 @@ function FuelStationCard(props: FuelStationCardProps) {
           onClick={() => setShowHistory(true)}
           class="w-full py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl transition-colors flex items-center justify-center gap-2"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18" /><path d="m19 9-5 5-4-4-3 3" /></svg>
           View Price History
         </button>
       </div>
@@ -74,4 +74,4 @@ function FuelStationCard(props: FuelStationCardProps) {
   );
 };
 
-export default FuelStationCard;
+

@@ -1,8 +1,8 @@
 import { onMount, createSignal } from "solid-js";
 import { TrendingUp } from "lucide-solid";
-import type { FuelMetricsAggregate, FuelPrice, FuelStation } from "~/types/fuel.ts";
-import Modal from "~/components/ui/Modal.tsx";
-import StationHistoryView from "~/components/station/StationHistoryView.tsx";
+import type { FuelMetricsAggregate, FuelPrice, FuelStation } from "~/features/fuel/types.ts";
+import { Modal } from "~/components/ui/Modal.tsx";
+import { StationHistoryView } from "~/components/station/StationHistoryView.tsx";
 import { FuelMapPopupHeader } from "./FuelMapPopupHeader.tsx";
 import { FuelMapPopupPriceList } from "./FuelMapPopupPriceList.tsx";
 
@@ -15,7 +15,7 @@ export interface FuelMapPopupProps {
   areaMetrics?: Record<string, FuelMetricsAggregate>;
 }
 
-function FuelMapPopup(props: FuelMapPopupProps) {
+export function FuelMapPopup(props: FuelMapPopupProps) {
   const [showHistory, setShowHistory] = createSignal(false);
   let popupRef!: HTMLDivElement;
 
@@ -56,4 +56,4 @@ function FuelMapPopup(props: FuelMapPopupProps) {
   );
 }
 
-export default FuelMapPopup;
+

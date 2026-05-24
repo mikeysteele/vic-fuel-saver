@@ -1,6 +1,6 @@
 import { createMemo, createSignal } from "solid-js";
-import { filterAndSortStations } from "~/lib/filters.ts";
-import type { FuelApiResponse } from "~/types/fuel.ts";
+import { filterAndSortStations } from "./filter-utils.ts";
+import type { FuelApiResponse } from "./types.ts";
 
 export interface UserLocation {
   latitude: number;

@@ -1,17 +1,17 @@
 import { render, screen } from "@solidjs/testing-library";
 import { describe, it, expect, vi } from "vitest";
-import ListViewLayer from "./ListViewLayer.tsx";
-import type { FuelMetricsAggregate } from "../../types/fuel.ts";
+import { ListViewLayer } from "./ListViewLayer.tsx";
+import type { FuelMetricsAggregate } from "~/features/fuel/types.ts";
 
 // Mock FuelStationCard because it's already tested separately
-vi.mock("../FuelStationCard.tsx", () => ({
-  default: (props: { station: { name: string } }) => <div data-testid="mock-station-card">{props.station.name}</div>
+vi.mock("../station/FuelStationCard.tsx", () => ({
+  FuelStationCard: (props: { station: { name: string } }) => <div data-testid="mock-station-card">{props.station.name}</div>
 }));
 
 describe("ListViewLayer", () => {
   const mockStation = {
     fuelStation: {
-      id: 1,
+      id: "1",
       name: "Station 1",
       address: "Addr 1",
       suburb: "S1",

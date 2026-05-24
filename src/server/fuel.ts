@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { env } from "cloudflare:workers";
-import type { FuelApiResponse, FuelBrandsResponse } from "../types/fuel.ts";
+import type { FuelApiResponse, FuelBrandsResponse } from "../features/fuel/types.ts";
 import { getCache } from "./cache.ts";
 import { vicFuelApiClient } from "./vic-fuel-api.ts";
 import { FuelRepository } from "./db/fuel_repository.ts";

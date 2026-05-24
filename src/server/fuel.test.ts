@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { FuelApiResponse, FuelBrandsResponse } from "../types/fuel.ts";
+import type { FuelApiResponse, FuelBrandsResponse } from "../features/fuel/types.ts";
 
 // We test the core fetch-and-cache pattern by extracting it as a standalone helper.
 // The createServerFn wrapper is TanStack-specific and not unit-testable in isolation.
@@ -72,7 +72,7 @@ describe("Fuel server: fetch + cache integration", () => {
       fuelPriceDetails: [
         {
           fuelStation: {
-            id: 999,
+            id: "999",
             brandId: "BP",
             name: "Stale Station",
             address: "1 Old St",

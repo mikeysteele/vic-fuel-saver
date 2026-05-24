@@ -1,13 +1,13 @@
 import { Show } from "solid-js";
-import { getBrandLogoUrl } from "~/lib/brandLogo.ts";
-import type { FuelStation } from "~/types/fuel.ts";
+import { getBrandLogoUrl } from "~/features/fuel/brandLogo.ts";
+import type { FuelStation } from "~/features/fuel/types.ts";
 
 export interface FuelMapPopupHeaderProps {
   station: FuelStation;
   brandMap: Record<string, string>;
 }
 
-export const FuelMapPopupHeader = (props: FuelMapPopupHeaderProps) => {
+export function FuelMapPopupHeader(props: FuelMapPopupHeaderProps) {
   const brandName = () => props.brandMap[props.station.brandId] || "Fuel";
   const logoUrl = () => getBrandLogoUrl(brandName(), 32);
 

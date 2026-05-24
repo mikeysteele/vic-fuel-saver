@@ -1,4 +1,3 @@
-import type { Component } from "solid-js";
 import { For } from "solid-js";
 
 interface SelectGroupProps {
@@ -11,7 +10,7 @@ interface SelectGroupProps {
   optionLabels?: Record<string, string>;
 }
 
-const SelectGroup: Component<SelectGroupProps> = (props) => {
+export function SelectGroup(props: SelectGroupProps) {
   return (
     <div class="flex flex-col space-y-1.5 flex-1 min-w-[200px]">
       <label
@@ -47,4 +46,4 @@ const SelectGroup: Component<SelectGroupProps> = (props) => {
   );
 };
 
-export default SelectGroup;
+

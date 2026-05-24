@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 import { describe, expect, it, vi } from "vitest";
-import FilterBar from "./FilterBar.tsx";
+import { FilterBar } from "./FilterBar.tsx";
 
 const defaultProps = {
   fuelTypes: ["U91", "P95", "P98"],

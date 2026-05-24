@@ -1,6 +1,6 @@
 import { createResource, For, Show, createMemo } from "solid-js";
 import { getStationPriceHistory } from "~/server/history.ts";
-import { PriceBadge } from "~/design-system/components/PriceBadge.tsx";
+import { PriceBadge } from "~/components/ui/PriceBadge.tsx";
 import { SVGLineChart } from "~/components/ui/SVGLineChart.tsx";
 import { SVGBarChart } from "~/components/ui/SVGBarChart.tsx";
 
@@ -21,10 +21,10 @@ const formatDateTime = (isoString?: string | null) => {
   }
 };
 
-function StationHistoryView(props: StationHistoryViewProps) {
+export function StationHistoryView(props: StationHistoryViewProps) {
   const [history] = createResource(
     () => props.stationId,
-    async (stationId) => await getStationPriceHistory({ data: { stationId, limit: 100 } })
+    async (stationId) => await getStationPriceHistory({ data: { stationId, limit: 500 } })
   );
 
   const groupedHistory = createMemo(() => {
@@ -37,16 +37,29 @@ function StationHistoryView(props: StationHistoryViewProps) {
       if (!acc[item.fuelType]) {
         acc[item.fuelType] = [];
       }
-      
       const list = acc[item.fuelType];
-      if (list.length > 0 && list[list.length - 1].price === item.price) {
-        // Collapse consecutive identical prices into a single entry
-        // By replacing the last item, we keep the older timestamp as the origin of this price period
-        list[list.length - 1] = item;
-      } else {
-        list.push(item);
+
+      if (list.length > 0) {
+        const itemDate = new Date(item.updatedAt);
+        const lastItemDate = new Date(list[list.length - 1].updatedAt);
+
+        // Limit to 1 datapoint per day (keeping the newest price of that day)
+        if (itemDate.toDateString() === lastItemDate.toDateString()) {
+          // If the older intra-day price is the exact same, keep the older timestamp
+          if (list[list.length - 1].price === item.price) {
+            list[list.length - 1] = item;
+          }
+          return acc;
+        }
+
+        // Collapse consecutive identical prices across different days
+        if (list[list.length - 1].price === item.price) {
+          list[list.length - 1] = item;
+          return acc;
+        }
       }
-      
+
+      list.push(item);
       return acc;
     }, {});
   });
@@ -56,13 +69,13 @@ function StationHistoryView(props: StationHistoryViewProps) {
     const res: Record<string, { min: number, max: number, avg: number, weekdays: { label: string, value: number }[] }> = {};
     for (const [fuelType, records] of Object.entries(groups)) {
       if (records.length === 0) continue;
-      
+
       let sum = 0;
       let min = Infinity;
       let max = -Infinity;
-      const daySums = [0,0,0,0,0,0,0];
-      const dayCounts = [0,0,0,0,0,0,0];
-      
+      const daySums = [0, 0, 0, 0, 0, 0, 0];
+      const dayCounts = [0, 0, 0, 0, 0, 0, 0];
+
       for (const r of records) {
         if (r.price < min) min = r.price;
         if (r.price > max) max = r.price;
@@ -73,7 +86,7 @@ function StationHistoryView(props: StationHistoryViewProps) {
           dayCounts[day]++;
         }
       }
-      
+
       const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       res[fuelType] = {
         min: min === Infinity ? 0 : min,
@@ -145,12 +158,12 @@ function StationHistoryView(props: StationHistoryViewProps) {
                       <div class="text-lg font-black text-rose-700 dark:text-rose-400">{stats()[fuelType].max.toFixed(1)} ¢</div>
                     </div>
                   </div>
-                  
+
                   {/* Line Chart */}
                   <div class="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-white/5 mb-6">
                     <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-4">Price Timeline (Newest ← Oldest)</div>
-                    <SVGLineChart 
-                      data={records.map(r => r.price)} 
+                    <SVGLineChart
+                      data={records.map(r => r.price)}
                       labels={records.map(r => formatDateTime(r.updatedAt))}
                       height={100}
                     />
@@ -159,8 +172,8 @@ function StationHistoryView(props: StationHistoryViewProps) {
                   {/* Weekday Bar Chart */}
                   <div class="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-white/5 mb-6">
                     <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-4">Average by Weekday</div>
-                    <SVGBarChart 
-                      data={stats()[fuelType].weekdays} 
+                    <SVGBarChart
+                      data={stats()[fuelType].weekdays}
                       height={100}
                     />
                   </div>
@@ -193,4 +206,4 @@ function StationHistoryView(props: StationHistoryViewProps) {
   );
 };
 
-export default StationHistoryView;
+

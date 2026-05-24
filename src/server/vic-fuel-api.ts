@@ -6,7 +6,7 @@ const cloudflareEnv = cfEnv as Record<string, unknown>;
 const consumerId = cloudflareEnv?.VIC_FUEL_CONSUMER_ID as string ?? env.VIC_FUEL_CONSUMER_ID ??
   "dummy-consumer-id-for-development";
 
-import type { FuelApiResponse, FuelBrandsResponse } from "../types/fuel.ts";
+import type { FuelApiResponse, FuelBrandsResponse } from "../features/fuel/types.ts";
 
 const PRICES_ENDPOINT =
   "https://api.fuel.service.vic.gov.au/open-data/v1/fuel/prices";

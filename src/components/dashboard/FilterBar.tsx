@@ -1,9 +1,9 @@
-import { type Component, Show } from "solid-js";
-import { Button } from "../design-system/components/Button.tsx";
-import { Label } from "../design-system/components/Label.tsx";
-import { Panel } from "../design-system/components/Panel.tsx";
-import MultiSelect from "./ui/MultiSelect.tsx";
-import { withFavouratable } from "./ui/FavouriteSelection.tsx";
+import { Show  } from "solid-js";
+import { Button } from "../ui/Button.tsx";
+import { Label } from "../ui/Label.tsx";
+import { Panel } from "../ui/Panel.tsx";
+import { MultiSelect } from "../ui/MultiSelect.tsx";
+import { withFavouratable } from "../ui/FavouriteSelection.tsx";
 
 const FavouratableMultiSelect = withFavouratable((props) => {
 
@@ -19,7 +19,6 @@ interface FilterBarProps {
   userLocation: { latitude: number; longitude: number } | null;
   onFuelTypesChange: (types: string[]) => void;
   onBrandIdsChange: (brands: string[]) => void;
-  /** Called by the smart container which owns the geolocation side-effect */
   onNearMeClick: () => void;
   isExpanded: boolean;
   onToggleExpanded: () => void;
@@ -29,7 +28,7 @@ interface FilterBarProps {
  * Dumb filter bar — purely presentational, no side-effects.
  * All user interactions are delegated to parent callbacks.
  */
-const FilterBar: Component<FilterBarProps> = (props) => {
+export function FilterBar(props: FilterBarProps) {
   const activeCount = () =>
     props.selectedFuelTypes.length + props.selectedBrandIds.length;
 
@@ -163,4 +162,4 @@ const FilterBar: Component<FilterBarProps> = (props) => {
   );
 };
 
-export default FilterBar;
+

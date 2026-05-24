@@ -1,6 +1,6 @@
-import FuelMap from "../map/FuelMap.tsx";
-import type { FuelMetricsAggregate, FuelMetricStat, FuelPriceDetail, Location } from "../../types/fuel.ts";
-import type { MapBounds } from "../../primitives/createFuelFilters.ts";
+import { FuelMap } from "../map/FuelMap.tsx";
+import type { FuelMetricsAggregate, FuelMetricStat, FuelPriceDetail, Location } from "~/features/fuel/types.ts";
+import type { MapBounds } from "~/features/fuel/filters.ts";
 
 interface MapViewLayerProps {
   viewMode: () => "map" | "list";
@@ -15,7 +15,7 @@ interface MapViewLayerProps {
   isDark: boolean;
 }
 
-const MapViewLayer = (props: MapViewLayerProps) => {
+export function MapViewLayer(props: MapViewLayerProps) {
   return (
     <div
       class={props.viewMode() === "list"
@@ -37,4 +37,4 @@ const MapViewLayer = (props: MapViewLayerProps) => {
   );
 };
 
-export default MapViewLayer;
+

@@ -1,8 +1,8 @@
-import { type Component, Show } from "solid-js";
-import { IconBox } from "../../design-system/components/IconBox.tsx";
-import { Label } from "../../design-system/components/Label.tsx";
-import { Panel } from "../../design-system/components/Panel.tsx";
-import { Button } from "../../design-system/components/Button.tsx";
+import { Show  } from "solid-js";
+import { IconBox } from "../ui/IconBox.tsx";
+import { Label } from "../ui/Label.tsx";
+import { Panel } from "../ui/Panel.tsx";
+import { Button } from "../ui/Button.tsx";
 import { getVictorianDisplayDate } from "../../lib/date.ts";
 
 interface HeaderProps {
@@ -51,7 +51,7 @@ const SunIcon = () => (
   </svg>
 );
 
-const Header: Component<HeaderProps> = (props) => {
+export function Header(props: HeaderProps) {
   return (
     <Panel
       intent="glass"
@@ -123,4 +123,4 @@ const Header: Component<HeaderProps> = (props) => {
   );
 };
 
-export default Header;
+

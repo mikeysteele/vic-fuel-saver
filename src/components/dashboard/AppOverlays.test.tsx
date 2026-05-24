@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@solidjs/testing-library";
 import { describe, it, expect, vi } from "vitest";
-import AppOverlays from "./AppOverlays.tsx";
+import { AppOverlays } from "./AppOverlays.tsx";
 
 describe("AppOverlays", () => {
   const defaultProps = {

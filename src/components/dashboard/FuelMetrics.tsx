@@ -1,7 +1,7 @@
 import { For, Show } from "solid-js";
-import type { FuelMetricsAggregate, FuelMetricStat } from "../../types/fuel.ts";
-import { Badge } from "../../design-system/components/Badge.tsx";
-import { MetricCard } from "../../design-system/components/MetricCard.tsx";
+import type { FuelMetricsAggregate, FuelMetricStat } from "~/features/fuel/types.ts";
+import { Badge } from "../ui/Badge.tsx";
+import { MetricCard } from "../ui/MetricCard.tsx";
 
 interface FuelMetricsProps {
   selectedFuelTypes?: string[];
@@ -10,7 +10,7 @@ interface FuelMetricsProps {
   onFocusStation?: (stat: FuelMetricStat) => void;
 }
 
-const FuelMetrics = (props: FuelMetricsProps) => {
+export function FuelMetrics(props: FuelMetricsProps) {
   const getMetrics = (fType: string) => {
     const stateData = () => props.stateMetrics?.[fType];
     const areaData = () => props.areaMetrics?.[fType];
@@ -162,4 +162,4 @@ const FuelMetrics = (props: FuelMetricsProps) => {
   );
 };
 
-export default FuelMetrics;
+

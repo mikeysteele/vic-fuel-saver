@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@solidjs/testing-library";
 import { describe, it, expect, vi } from "vitest";
-import Header from "./Header.tsx";
+import { Header } from "./Header.tsx";
 
 describe("Header", () => {
   const defaultProps = {

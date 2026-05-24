@@ -2,7 +2,7 @@ import { createQuery } from "@tanstack/solid-query";
 import { useQueryClient } from "@tanstack/solid-query";
 import { createSignal } from "solid-js";
 import { getFuelBrands, getFuelPrices, getFuelPricesSnapshot, getEarliestSyncDate } from "~/server/fuel.ts";
-import type { FuelApiResponse, FuelBrandsResponse } from "~/types/fuel.ts";
+import type { FuelApiResponse, FuelBrandsResponse } from "./types.ts";
 
 import { getVictorianISODate } from "~/lib/date.ts";
 export const fuelQueryKeys = {

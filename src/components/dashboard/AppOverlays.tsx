@@ -1,5 +1,5 @@
 import { Show } from "solid-js";
-import { Button } from "../../design-system/components/Button.tsx";
+import { Button } from "../ui/Button.tsx";
 
 interface AppOverlaysProps {
   loading: () => boolean;
@@ -7,7 +7,7 @@ interface AppOverlaysProps {
   refetch: () => void;
 }
 
-const AppOverlays = (props: AppOverlaysProps) => {
+export function AppOverlays(props: AppOverlaysProps) {
   return (
     <>
       {/* Loading overlay */}
@@ -44,4 +44,4 @@ const AppOverlays = (props: AppOverlaysProps) => {
   );
 };
 
-export default AppOverlays;
+

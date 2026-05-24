@@ -1,7 +1,6 @@
-import type { Component } from "solid-js";
 import { For, Show } from "solid-js";
-import type { FuelMetricsAggregate, FuelPrice } from "../../types/fuel.ts";
-import PriceItem from "./PriceItem.tsx";
+import type { FuelMetricsAggregate, FuelPrice } from "~/features/fuel/types.ts";
+import { PriceItem } from "./PriceItem.tsx";
 
 interface PriceListProps {
   prices: FuelPrice[];
@@ -9,7 +8,7 @@ interface PriceListProps {
   areaMetrics?: Record<string, FuelMetricsAggregate>;
 }
 
-const PriceList: Component<PriceListProps> = (props) => {
+export function PriceList(props: PriceListProps) {
   return (
     <>
       <div class="flex flex-col gap-3">
@@ -30,4 +29,4 @@ const PriceList: Component<PriceListProps> = (props) => {
   );
 };
 
-export default PriceList;
+

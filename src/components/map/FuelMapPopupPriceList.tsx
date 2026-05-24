@@ -1,6 +1,6 @@
 import { For, Show } from "solid-js";
 import { ArrowDownRight, ArrowUpRight, TrendingUp, TrendingDown, Minus } from "lucide-solid";
-import type { FuelMetricsAggregate, FuelPrice } from "~/types/fuel.ts";
+import type { FuelMetricsAggregate, FuelPrice } from "~/features/fuel/types.ts";
 
 interface BadgeProps {
   diff: number;
@@ -25,7 +25,7 @@ export interface FuelMapPopupPriceListProps {
   areaMetrics?: Record<string, FuelMetricsAggregate>;
 }
 
-export const FuelMapPopupPriceList = (props: FuelMapPopupPriceListProps) => {
+export function FuelMapPopupPriceList(props: FuelMapPopupPriceListProps) {
   return (
     <div class="p-2 flex flex-col gap-2 max-h-[256px] overflow-y-auto w-full">
       <For each={props.prices}>

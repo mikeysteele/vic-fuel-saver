@@ -6,7 +6,7 @@ export interface SVGBarChartProps {
   barColor?: string;
 }
 
-export const SVGBarChart = (props: SVGBarChartProps) => {
+export function SVGBarChart(props: SVGBarChartProps) {
   const height = () => props.height || 120;
   
   const maxValue = () => Math.max(...props.data.map(d => d.value), 0.1); // Avoid div by zero

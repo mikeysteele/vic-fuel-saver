@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { FuelPriceDetail } from "../types/fuel.ts";
+import type { FuelPriceDetail } from "./types.ts";
 import { computeAggregates } from "./aggregates.ts";
 
 const makeStation = (

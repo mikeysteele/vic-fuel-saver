@@ -1,9 +1,9 @@
-import { type Component, Show } from "solid-js";
-import { Label } from "../../design-system/components/Label.tsx";
-import { PriceBadge } from "../../design-system/components/PriceBadge.tsx";
-import { SelectButton } from "../../design-system/components/SelectButton.tsx";
+import { Show } from "solid-js";
+import { Label } from "../ui/Label.tsx";
+import { PriceBadge } from "../ui/PriceBadge.tsx";
+import { SelectButton } from "../ui/SelectButton.tsx";
 import { TrendingUp, TrendingDown, Minus } from "lucide-solid";
-import type { FuelMetricsAggregate, FuelPrice } from "../../types/fuel.ts";
+import type { FuelMetricsAggregate, FuelPrice } from "~/features/fuel/types.ts";
 
 interface PriceItemProps {
   priceEntry: FuelPrice;
@@ -15,7 +15,7 @@ interface PriceItemProps {
  * Dumb component: renders a single fuel price row with comparison badges.
  * No state, no side-effects — all values derived from props.
  */
-const PriceItem: Component<PriceItemProps> = (props) => {
+export function PriceItem(props: PriceItemProps) {
   const isAvailable = () => props.priceEntry.isAvailable;
 
   const stateDiff = () => {
@@ -83,11 +83,10 @@ const PriceItem: Component<PriceItemProps> = (props) => {
             {props.priceEntry.fuelType}
           </Label>
           <div
-            class={`h-2 w-2 rounded-full ${
-              isAvailable()
+            class={`h-2 w-2 rounded-full ${isAvailable()
                 ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)] animate-pulse"
                 : "bg-slate-600"
-            }`}
+              }`}
           />
         </div>
       </div>
@@ -129,8 +128,8 @@ const PriceItem: Component<PriceItemProps> = (props) => {
                 {stateDiff()! < -0.5
                   ? `${Math.abs(stateDiff()!).toFixed(1)}¢ below State`
                   : stateDiff()! > 0.5
-                  ? `${stateDiff()!.toFixed(1)}¢ above State`
-                  : "State Average"}
+                    ? `${stateDiff()!.toFixed(1)}¢ above State`
+                    : "State Average"}
               </PriceBadge>
             </Show>
             <Show when={areaDiff() !== null}>
@@ -143,8 +142,8 @@ const PriceItem: Component<PriceItemProps> = (props) => {
                 {areaDiff()! < -0.5
                   ? `${Math.abs(areaDiff()!).toFixed(1)}¢ below Area`
                   : areaDiff()! > 0.5
-                  ? `${areaDiff()!.toFixed(1)}¢ above Area`
-                  : "Area Average"}
+                    ? `${areaDiff()!.toFixed(1)}¢ above Area`
+                    : "Area Average"}
               </PriceBadge>
             </Show>
           </div>
@@ -154,4 +153,4 @@ const PriceItem: Component<PriceItemProps> = (props) => {
   );
 };
 
-export default PriceItem;
+

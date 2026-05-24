@@ -1,17 +1,17 @@
 import { render } from "@solidjs/testing-library";
 import { describe, it, expect, vi } from "vitest";
-import MapViewLayer from "./MapViewLayer.tsx";
-import type { FuelMetricsAggregate } from "../../types/fuel.ts";
+import { MapViewLayer } from "./MapViewLayer.tsx";
+import type { FuelMetricsAggregate } from "~/features/fuel/types.ts";
 
 // Mock FuelMap because it depends on Leaflet which is hard to test in JSDOM
 vi.mock("../map/FuelMap.tsx", () => ({
-  default: () => <div data-testid="mock-fuel-map" />
+  FuelMap: () => <div data-testid="mock-fuel-map" />
 }));
 
 describe("MapViewLayer", () => {
   const defaultProps = {
     viewMode: () => "map" as const,
-    stations: [] as any[],
+    stations: [],
     userLocation: null,
     selectedFuelTypes: [] as string[],
     brandMap: {} as Record<string, string>,

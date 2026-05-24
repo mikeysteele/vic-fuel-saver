@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 import { describe, expect, it, vi } from "vitest";
-import MultiSelect from "./MultiSelect.tsx";
+import { MultiSelect } from "./MultiSelect.tsx";
 
 const options = ["U91", "P95", "P98", "E10"];
 
@@ -8,6 +8,7 @@ describe("MultiSelect", () => {
   it("renders placeholder when nothing selected", () => {
     render(() => (
       <MultiSelect
+        id="test-multiselect"
         options={options}
         selected={[]}
         onChange={() => {}}
@@ -20,6 +21,7 @@ describe("MultiSelect", () => {
   it("renders single selected value", () => {
     render(() => (
       <MultiSelect
+        id="test-multiselect"
         options={options}
         selected={["U91"]}
         onChange={() => {}}
@@ -32,6 +34,7 @@ describe("MultiSelect", () => {
   it("renders count label when multiple selected", () => {
     render(() => (
       <MultiSelect
+        id="test-multiselect"
         options={options}
         selected={["U91", "P95"]}
         onChange={() => {}}
@@ -62,6 +65,7 @@ describe("MultiSelect", () => {
     const onChange = vi.fn();
     render(() => (
       <MultiSelect
+        id="test-multiselect"
         options={options}
         selected={["U91"]}
         onChange={onChange}
@@ -81,6 +85,7 @@ describe("MultiSelect", () => {
     const onChange = vi.fn();
     render(() => (
       <MultiSelect
+        id="test-multiselect"
         options={options}
         selected={["U91", "P95"]}
         onChange={onChange}
@@ -99,6 +104,7 @@ describe("MultiSelect", () => {
     const onChange = vi.fn();
     render(() => (
       <MultiSelect
+        id="test-multiselect"
         options={options}
         selected={["U91"]}
         onChange={onChange}
@@ -114,6 +120,7 @@ describe("MultiSelect", () => {
     const labelMap = { BP001: "BP", SHELL001: "Shell" };
     render(() => (
       <MultiSelect
+        id="test-multiselect"
         options={["BP001"]}
         selected={["BP001"]}
         onChange={() => {}}

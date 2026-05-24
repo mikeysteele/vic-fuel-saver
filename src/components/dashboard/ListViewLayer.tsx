@@ -1,6 +1,6 @@
-import { type Component, For, Show } from "solid-js";
-import FuelStationCard from "../FuelStationCard.tsx";
-import type { FuelMetricsAggregate, FuelPriceDetail } from "../../types/fuel.ts";
+import { For, Show  } from "solid-js";
+import { FuelStationCard } from "../station/FuelStationCard.tsx";
+import type { FuelMetricsAggregate, FuelPriceDetail } from "~/features/fuel/types.ts";
 
 interface ListViewLayerProps {
   viewMode: "map" | "list";
@@ -11,13 +11,13 @@ interface ListViewLayerProps {
   areaMetrics: Record<string, FuelMetricsAggregate>;
 }
 
-const ListViewLayer: Component<ListViewLayerProps> = (props) => {
+export function ListViewLayer(props: ListViewLayerProps) {
   return (
     <Show when={props.viewMode === "list"}>
       <div class="absolute inset-0 z-10 bg-slate-50 dark:bg-slate-950 overflow-y-auto pt-36 pb-44 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in duration-500">
-            <For each={props.stations}>
+            <For each={props.stations.slice(0, 50)}>
               {(stationData) => (
                 <FuelStationCard
                   station={stationData.fuelStation}
@@ -63,4 +63,4 @@ const ListViewLayer: Component<ListViewLayerProps> = (props) => {
   );
 };
 
-export default ListViewLayer;
+

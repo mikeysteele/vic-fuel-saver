@@ -1,11 +1,11 @@
 import { render, screen } from "@solidjs/testing-library";
 import { describe, expect, it, vi } from "vitest";
-import FuelMapPopup from "./FuelMapPopup.tsx";
+import { FuelMapPopup } from "./FuelMapPopup.tsx";
 
 vi.mock("~/components/station/StationHistoryView.tsx", () => ({
-  default: () => <div data-testid="mock-history-view" />,
+  StationHistoryView: () => <div data-testid="mock-history-view" />,
 }));
-import type { FuelStation, FuelPrice, FuelMetricsAggregate } from "../../types/fuel.ts";
+import type { FuelStation, FuelPrice, FuelMetricsAggregate } from "~/features/fuel/types.ts";
 
 const station: FuelStation = {
   id: "1",

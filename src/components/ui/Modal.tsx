@@ -9,7 +9,7 @@ export interface ModalProps {
   title?: string;
 }
 
-function Modal(props: ModalProps) {
+export function Modal(props: ModalProps) {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape" && props.isOpen) {
       props.onClose();
@@ -53,7 +53,7 @@ function Modal(props: ModalProps) {
           aria-hidden="true"
         />
         <div
-          class="relative bg-white dark:bg-slate-900 w-full h-[100dvh] sm:h-auto sm:max-w-lg sm:max-h-[85vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          class="relative bg-white dark:bg-slate-900 w-full h-[100dvh] sm:h-auto sm:max-w-2xl sm:max-h-[85vh] sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
           role="dialog"
           aria-modal="true"
         >
@@ -94,4 +94,4 @@ function Modal(props: ModalProps) {
   );
 }
 
-export default Modal;
+

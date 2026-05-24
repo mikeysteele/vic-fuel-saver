@@ -1,7 +1,11 @@
 import { render, screen } from "@solidjs/testing-library";
-import { describe, expect, it } from "vitest";
-import FuelStationCard from "./FuelStationCard.tsx";
-import type { FuelStation, FuelPrice } from "../types/fuel.ts";
+import { describe, expect, it, vi } from "vitest";
+import { FuelStationCard } from "./FuelStationCard.tsx";
+import type { FuelStation, FuelPrice } from "~/features/fuel/types.ts";
+
+vi.mock("./StationHistoryView.tsx", () => ({
+  StationHistoryView: (props: { stationName: string }) => <div data-testid="mock-history-view">{props.stationName} History</div>
+}));
 
 const station: FuelStation = {
   id: "1",

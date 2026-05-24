@@ -1,7 +1,7 @@
 import { render, screen } from "@solidjs/testing-library";
 import { describe, expect, it, vi } from "vitest";
 import { ErrorBoundary } from "solid-js";
-import StationHistoryView from "./StationHistoryView.tsx";
+import { StationHistoryView } from "./StationHistoryView.tsx";
 import { getStationPriceHistory } from "~/server/history.ts";
 
 vi.mock("~/server/history.ts", () => ({
@@ -19,7 +19,7 @@ describe("StationHistoryView", () => {
   });
 
   it("renders error state", async () => {
-    vi.mocked(getStationPriceHistory).mockImplementation(async () => { throw new Error("Failed"); });
+    vi.mocked(getStationPriceHistory).mockImplementation(() => Promise.reject(new Error("Failed")));
     
     render(() => (
       <ErrorBoundary fallback={() => <div>Failed to load history.</div>}>

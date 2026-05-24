@@ -1,10 +1,10 @@
 import { createEffect, createMemo, Show } from "solid-js";
 import { render } from "solid-js/web";
 import type * as LType from "leaflet";
-import type { FuelMetricsAggregate, FuelMetricStat, FuelPriceDetail } from "~/types/fuel.ts";
-import type { MapBounds } from "../../primitives/createFuelFilters.ts";
-import { getBrandLogoUrl } from "~/lib/brandLogo.ts";
-import FuelMapPopup from "./FuelMapPopup.tsx";
+import type { FuelMetricsAggregate, FuelMetricStat, FuelPriceDetail } from "~/features/fuel/types.ts";
+import type { MapBounds } from "~/features/fuel/filters.ts";
+import { getBrandLogoUrl } from "~/features/fuel/brandLogo.ts";
+import { FuelMapPopup } from "./FuelMapPopup.tsx";
 import { FuelMapMarkerIcon } from "./FuelMapMarkerIcon.tsx";
 import { createLeafletMap } from "./createLeafletMap.ts";
 
@@ -20,7 +20,7 @@ interface FuelMapProps {
   isDark?: boolean;
 }
 
-export default function FuelMap(props: FuelMapProps) {
+export function FuelMap(props: FuelMapProps) {
   let mapContainer!: HTMLDivElement;
   const markers = new Map<string, LType.Marker>();
 
@@ -34,10 +34,10 @@ export default function FuelMap(props: FuelMapProps) {
 
   const { map, leafletRef, clusterGroup } = createLeafletMap({
     container: () => mapContainer,
-    isDark: props.isDark,
+    isDark: () => props.isDark,
     onViewportChange: props.onViewportChange,
-    userLocation: props.userLocation,
-    mapFocus: props.mapFocus
+    userLocation: () => props.userLocation,
+    mapFocus: () => props.mapFocus
   });
 
   // Interactive metric panning
@@ -94,7 +94,7 @@ export default function FuelMap(props: FuelMapProps) {
 
         const markerDiv = document.createElement("div");
         render(() => <FuelMapMarkerIcon brand={brand} logoUrl={logoUrl} />, markerDiv);
-        
+
         const marker = L.marker([Number(latitude), Number(longitude)], {
           title: stationDetail.fuelStation.name,
           icon: L.divIcon({ html: markerDiv, className: "custom-brand-marker", iconSize: [0, 0] }),

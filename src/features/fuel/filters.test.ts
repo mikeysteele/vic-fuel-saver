@@ -1,18 +1,18 @@
 import { createRoot } from "solid-js";
 import { describe, expect, it } from "vitest";
-import { createFuelFilters } from "./createFuelFilters.ts";
-import type { FuelApiResponse, FuelPriceDetail } from "../types/fuel.ts";
+import { createFuelFilters } from "./filters.ts";
+import type { FuelApiResponse, FuelPriceDetail } from "./types.ts";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 const makeStation = (
-  id: number,
+  id: number | string,
   brandId: string,
   fuelType: string,
   price: number,
 ): FuelPriceDetail => ({
   fuelStation: {
-    id,
+    id: String(id),
     brandId,
     name: `Station ${id}`,
     address: "1 Test St",
@@ -77,7 +77,7 @@ describe("createFuelFilters", () => {
 
       filters.setSelectedFuelTypes(["P98"]);
       expect(filters.filteredStations()).toHaveLength(1);
-      expect(filters.filteredStations()[0].fuelStation.id).toBe(3);
+      expect(filters.filteredStations()[0].fuelStation.id).toBe("3");
       dispose();
     });
   });
@@ -89,7 +89,7 @@ describe("createFuelFilters", () => {
 
       filters.setSelectedBrandIds(["SHELL"]);
       expect(filters.filteredStations()).toHaveLength(1);
-      expect(filters.filteredStations()[0].fuelStation.id).toBe(2);
+      expect(filters.filteredStations()[0].fuelStation.id).toBe("2");
       dispose();
     });
   });
@@ -102,7 +102,7 @@ describe("createFuelFilters", () => {
       filters.setSelectedFuelTypes(["U91"]);
       filters.setSelectedBrandIds(["BP"]);
       expect(filters.filteredStations()).toHaveLength(1);
-      expect(filters.filteredStations()[0].fuelStation.id).toBe(1);
+      expect(filters.filteredStations()[0].fuelStation.id).toBe("1");
       dispose();
     });
   });

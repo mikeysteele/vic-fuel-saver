@@ -1,13 +1,13 @@
-import type { Component, JSX } from "solid-js";
+import type { JSX  } from "solid-js";
 import { type VariantProps } from "class-variance-authority";
-import { badgeVariants } from "../variants.ts";
+import { badgeVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface BadgeProps
   extends JSX.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof badgeVariants> {}
 
-export const Badge: Component<BadgeProps> = (props) => {
+export function Badge(props: BadgeProps) {
   const [local, others] = splitProps(props, [
     "intent",
     "size",

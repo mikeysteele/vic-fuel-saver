@@ -1,6 +1,6 @@
 import { render, fireEvent, screen } from "@solidjs/testing-library";
 import { describe, expect, it, vi } from "vitest";
-import Modal from "./Modal.tsx";
+import { Modal } from "./Modal.tsx";
 
 describe("Modal", () => {
   it("does not render when isOpen is false", () => {

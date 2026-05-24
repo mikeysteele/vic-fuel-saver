@@ -1,8 +1,8 @@
 import { render, waitFor } from "@solidjs/testing-library";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { createSignal } from "solid-js";
-import FuelMap from "./FuelMap.tsx";
-import type { FuelPriceDetail } from "~/types/fuel.ts";
+import { FuelMap } from "./FuelMap.tsx";
+import type { FuelPriceDetail } from "~/features/fuel/types.ts";
 
 // Mock Leaflet
 const mockMap = {
@@ -60,18 +60,18 @@ vi.mock("leaflet.markercluster", () => ({
 }));
 
 // Mock brandLogo and FuelMapPopup to avoid dependencies
-vi.mock("~/lib/brandLogo.ts", () => ({
+vi.mock("~/features/fuel/brandLogo.ts", () => ({
   getBrandLogoUrl: vi.fn().mockReturnValue("mock-logo-url"),
 }));
 
 vi.mock("./FuelMapPopup.tsx", () => ({
-  default: () => <div data-testid="mock-popup" />,
+  FuelMapPopup: () => <div data-testid="mock-popup" />,
 }));
 
 const mockStations: FuelPriceDetail[] = [
   {
     fuelStation: {
-      id: 1,
+      id: "1",
       name: "Test Station",
       brandId: "B1",
       location: { latitude: -37.85, longitude: 144.95 },

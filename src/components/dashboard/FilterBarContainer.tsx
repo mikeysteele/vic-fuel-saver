@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import FilterBar from "./FilterBar.tsx";
+import { FilterBar } from "./FilterBar.tsx";
 
 interface FilterBarContainerProps {
   fuelTypes: string[];
@@ -20,7 +20,7 @@ interface FilterBarContainerProps {
  * Owns the geolocation side-effect and "Near Me" toggle logic.
  * FilterBar itself remains a purely presentation-based dumb component.
  */
-function FilterBarContainer(props: FilterBarContainerProps) {
+export function FilterBarContainer(props: FilterBarContainerProps) {
   const [isExpanded, setIsExpanded] = createSignal(false);
 
   const handleNearMeClick = () => {
@@ -69,4 +69,4 @@ function FilterBarContainer(props: FilterBarContainerProps) {
   );
 };
 
-export default FilterBarContainer;
+

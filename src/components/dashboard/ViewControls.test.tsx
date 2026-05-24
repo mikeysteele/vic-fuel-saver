@@ -1,11 +1,11 @@
 import { render, screen, fireEvent } from "@solidjs/testing-library";
 import { describe, it, expect, vi } from "vitest";
-import ViewControls from "./ViewControls.tsx";
-import type { FuelMetricsAggregate } from "../../types/fuel.ts";
+import { ViewControls } from "./ViewControls.tsx";
+import type { FuelMetricsAggregate } from "~/features/fuel/types.ts";
 
 // Mock FuelMetrics to avoid testing its internal aggregate rendering
 vi.mock("./FuelMetrics.tsx", () => ({
-  default: () => <div data-testid="mock-fuel-metrics" />
+  FuelMetrics: () => <div data-testid="mock-fuel-metrics" />
 }));
 
 describe("ViewControls", () => {

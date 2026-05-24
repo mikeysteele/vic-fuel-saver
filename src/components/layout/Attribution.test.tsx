@@ -1,6 +1,6 @@
 import { render, screen } from "@solidjs/testing-library";
 import { describe, it, expect } from "vitest";
-import Attribution from "./Attribution.tsx";
+import { Attribution } from "./Attribution.tsx";
 
 describe("Attribution", () => {
   it("renders the Logo.dev link", () => {

@@ -1,4 +1,4 @@
-import type { FuelApiResponse, FuelPriceDetail, FuelType } from "../types/fuel.ts";
+import type { FuelApiResponse, FuelPriceDetail, FuelType } from "../features/fuel/types.ts";
 
 export interface SnapshotRow {
   station_id: string;

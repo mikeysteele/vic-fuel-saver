@@ -1,5 +1,5 @@
-import { type Component, Show } from "solid-js";
-import { labelVariants } from "~/design-system/variants.ts";
+import { Show  } from "solid-js";
+import { labelVariants } from "~/components/ui/variants.ts";
 
 interface StationAddressProps {
   address: {
@@ -11,7 +11,7 @@ interface StationAddressProps {
   };
 }
 
-const StationAddress: Component<StationAddressProps> = (props) => {
+export function StationAddress(props: StationAddressProps) {
   return (
     <div class="flex items-start text-slate-400 group-hover:text-slate-300 transition-colors">
       <div class="mt-0.5 mr-2 shrink-0">
@@ -45,4 +45,4 @@ const StationAddress: Component<StationAddressProps> = (props) => {
   );
 };
 
-export default StationAddress;
+

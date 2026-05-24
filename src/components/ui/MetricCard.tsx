@@ -1,6 +1,6 @@
-import type { Component, JSX } from "solid-js";
+import type { JSX  } from "solid-js";
 import { type VariantProps } from "class-variance-authority";
-import { metricCardLabelVariants, metricCardVariants } from "../variants.ts";
+import { metricCardLabelVariants, metricCardVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface MetricCardProps
@@ -9,7 +9,7 @@ export interface MetricCardProps
   label: string;
 }
 
-export const MetricCard: Component<MetricCardProps> = (props) => {
+export function MetricCard(props: MetricCardProps) {
   const [local, others] = splitProps(props, [
     "intent",
     "label",
