@@ -18,9 +18,11 @@
     "npm:@tanstack/solid-router@latest": "1.168.2_solid-js@1.9.11",
     "npm:@tanstack/solid-start@latest": "1.167.3_solid-js@1.9.11_vite@7.3.1_@testing-library+jest-dom@6.9.1_vite-plugin-solid@2.11.11__@testing-library+jest-dom@6.9.1__solid-js@1.9.11__vite@7.3.1",
     "npm:@testing-library/jest-dom@^6.9.1": "6.9.1",
+    "npm:@types/chartist@^1.0.4": "1.0.4",
     "npm:@types/leaflet.markercluster@^1.5.6": "1.5.6",
     "npm:@types/leaflet@^1.9.21": "1.9.21",
     "npm:@vitest/coverage-v8@^4.1.0": "4.1.0_vitest@4.1.0__jsdom@29.0.1__vite@7.3.1_jsdom@29.0.1_vite@7.3.1",
+    "npm:chartist@^1.5.0": "1.5.0",
     "npm:class-variance-authority@~0.7.1": "0.7.1",
     "npm:clsx@^2.1.1": "2.1.1",
     "npm:drizzle-kit@~0.31.10": "0.31.10",
@@ -2754,6 +2756,13 @@
         "assertion-error"
       ]
     },
+    "@types/chartist@1.0.4": {
+      "integrity": "sha512-z96fBm2SrRoP3bLRFfMpjaTqvQVUHp+WfNgF2tQK2koEnmn8Vzof6f3c89UlQP7SXY+0F+sTjBeTKc/UjqaIpw==",
+      "dependencies": [
+        "chartist"
+      ],
+      "deprecated": true
+    },
     "@types/deep-eql@4.0.2": {
       "integrity": "sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw=="
     },
@@ -3127,6 +3136,9 @@
     },
     "chalk@5.6.2": {
       "integrity": "sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA=="
+    },
+    "chartist@1.5.0": {
+      "integrity": "sha512-mcCJuWHpNqkJucuWEeHxymQCQEeAOkamGypqCV5+C+uI2NF4I3BOn/tjIuZaowJVNAcrY9BG3janLaCWSNVPDw=="
     },
     "cheerio-select@2.1.0": {
       "integrity": "sha512-9v9kG0LvzrlcungtnJtpGNxY+fzECQKhK4EGJX2vByejiMX84MFNQw4UxPJl3bFbTMw+Dfs37XaIkCwTZfLh4g==",
@@ -5568,6 +5580,7 @@
     },
     "uuid@10.0.0": {
       "integrity": "sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==",
+      "deprecated": true,
       "bin": true
     },
     "uuid@11.0.5": {
@@ -6023,9 +6036,11 @@
         "npm:@tanstack/solid-router@latest",
         "npm:@tanstack/solid-start@latest",
         "npm:@testing-library/jest-dom@^6.9.1",
+        "npm:@types/chartist@^1.0.4",
         "npm:@types/leaflet.markercluster@^1.5.6",
         "npm:@types/leaflet@^1.9.21",
         "npm:@vitest/coverage-v8@^4.1.0",
+        "npm:chartist@^1.5.0",
         "npm:class-variance-authority@~0.7.1",
         "npm:clsx@^2.1.1",
         "npm:drizzle-kit@~0.31.10",

@@ -164,3 +164,28 @@ code {
   border-color: rgba(255, 255, 255, 0.5) !important;
   font-weight: bold !important;
 }
+
+/* Chartist Orange Branding Overrides */
+.chartist-orange .ct-line {
+  stroke: var(--color-orange-500, #f97316) !important;
+  stroke-width: 3px;
+}
+.chartist-orange .ct-point {
+  stroke: var(--color-orange-500, #f97316) !important;
+  stroke-width: 8px;
+}
+.chartist-orange .ct-bar {
+  stroke: var(--color-orange-400, #fb923c) !important;
+  stroke-width: 20px;
+}
+.dark .chartist-orange .ct-bar {
+  stroke: var(--color-orange-500, #f97316) !important;
+}
+.chartist-orange .ct-label {
+  color: var(--color-slate-500, #64748b);
+  fill: var(--color-slate-500, #64748b);
+}
+.dark .chartist-orange .ct-label {
+  color: var(--color-slate-400, #94a3b8);
+  fill: var(--color-slate-400, #94a3b8);
+}

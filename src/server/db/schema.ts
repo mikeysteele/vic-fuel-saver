@@ -15,17 +15,17 @@ export const stations = sqliteTable("stations", {
 export const prices = sqliteTable("prices", {
   stationId: text("station_id").notNull(),
   fuelType: text("fuel_type").notNull(),
+  priceDate: text("price_date").notNull(), // 'YYYY-MM-DD' — one row per station/fuel/day
   price: real("price").notNull(),
   isAvailable: integer("is_available", { mode: "boolean" }).notNull(),
   updatedAt: text("updated_at").notNull(), // When the station last updated its price (from API)
-  syncedAt: text("synced_at").notNull(),   // When we synced this data (our timestamp)
+  syncedAt: text("synced_at").notNull(),   // When we last synced this row (our timestamp)
 }, (table) => {
   return [
-    // Use syncedAt in the PK so every full sync run creates a complete snapshot
-    primaryKey({ columns: [table.stationId, table.fuelType, table.syncedAt] }),
+    primaryKey({ columns: [table.stationId, table.fuelType, table.priceDate] }),
     index("prices_station_id_idx").on(table.stationId),
     index("prices_fuel_type_idx").on(table.fuelType),
-    index("prices_synced_at_idx").on(table.syncedAt),
+    index("prices_price_date_idx").on(table.priceDate),
   ];
 });
 

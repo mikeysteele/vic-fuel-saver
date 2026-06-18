@@ -18,6 +18,22 @@ export async function syncFuelPrices(d1Database: AnyD1Database) {
 
     console.log(`Fetched ${data.fuelPriceDetails.length} stations. Upserting into D1...`);
 
+    // Fetch latest prices to skip unchanged data (Event-sourced storage)
+    const latestPricesRes = await d1Database.prepare(`
+      SELECT station_id, fuel_type, price
+      FROM (
+        SELECT station_id, fuel_type, price,
+               ROW_NUMBER() OVER(PARTITION BY station_id, fuel_type ORDER BY price_date DESC) as rn
+        FROM prices
+      ) WHERE rn = 1
+    `).all();
+    
+    const latestPriceMap = new Map<string, number>();
+    for (const row of latestPricesRes.results || []) {
+      const r = row as { station_id: string, fuel_type: string, price: number };
+      latestPriceMap.set(`${r.station_id}-${r.fuel_type}`, r.price);
+    }
+
     const syncedAt = new Date().toISOString(); // single timestamp for the whole sync run
     const stationRows = [];
     const priceRows = [];
@@ -43,9 +59,21 @@ export async function syncFuelPrices(d1Database: AnyD1Database) {
           continue;
         }
 
+        const key = `${station.id}-${price.fuelType}`;
+        const latestPrice = latestPriceMap.get(key);
+        
+        if (latestPrice !== undefined && latestPrice === price.price) {
+          // Price hasn't changed from the last recorded price, skip inserting a new daily row!
+          continue;
+        }
+
+        // Only update the map so subsequent intraday loops don't insert again if they haven't changed
+        latestPriceMap.set(key, price.price);
+
         priceRows.push({
           stationId: station.id,
           fuelType: price.fuelType,
+          priceDate: price.updatedAt.slice(0, 10), // 'YYYY-MM-DD'
           price: price.price,
           isAvailable: price.isAvailable,
           updatedAt: price.updatedAt,
@@ -82,9 +110,17 @@ export async function syncFuelPrices(d1Database: AnyD1Database) {
       await db.batch(stationQueries.slice(i, i + 100) as unknown as Parameters<typeof db.batch>[0]);
     }
 
-    // Insert Prices
+    // Upsert Prices — one row per station/fuel/day; update if same day already exists
     const priceQueries = priceRows.map(row => 
-      db.insert(prices).values(row).onConflictDoNothing()
+      db.insert(prices).values(row).onConflictDoUpdate({
+        target: [prices.stationId, prices.fuelType, prices.priceDate],
+        set: {
+          price: sql`excluded.price`,
+          isAvailable: sql`excluded.is_available`,
+          updatedAt: sql`excluded.updated_at`,
+          syncedAt: sql`excluded.synced_at`,
+        }
+      })
     );
 
     // Process price batches

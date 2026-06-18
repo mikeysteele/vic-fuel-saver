@@ -12,20 +12,15 @@ export class FuelRepository {
 
   async getRecentTrends() {
     return await this.db.all(sql`
-      WITH UniquePrices AS (
-        SELECT DISTINCT station_id, fuel_type, price, updated_at
-        FROM prices
-        WHERE synced_at >= datetime('now', '-14 days')
-      ),
-      RankedChanges AS (
+      WITH RankedChanges AS (
         SELECT 
           station_id, 
           fuel_type, 
           price, 
           updated_at,
-          LAG(price) OVER(PARTITION BY station_id, fuel_type ORDER BY updated_at ASC) as prev_price,
-          ROW_NUMBER() OVER(PARTITION BY station_id, fuel_type ORDER BY updated_at DESC) as rn
-        FROM UniquePrices
+          LAG(price) OVER(PARTITION BY station_id, fuel_type ORDER BY price_date ASC) as prev_price,
+          ROW_NUMBER() OVER(PARTITION BY station_id, fuel_type ORDER BY price_date DESC) as rn
+        FROM prices
       )
       SELECT station_id, fuel_type, price, updated_at, prev_price FROM RankedChanges WHERE rn = 1
     `) as { station_id: string, fuel_type: string, price: number, updated_at: string, prev_price: number | null }[];
@@ -33,7 +28,7 @@ export class FuelRepository {
 
   async getEarliestSyncDate(): Promise<{ date: string | null }> {
     try {
-      const result = await this.d1.prepare("SELECT MIN(synced_at) as date FROM prices").all();
+      const result = await this.d1.prepare("SELECT MIN(price_date) as date FROM prices").all();
       const firstRow = result.results[0] as Record<string, unknown> | undefined;
       return { date: (firstRow?.date as string) || null };
     } catch (e: unknown) {
@@ -50,21 +45,17 @@ export class FuelRepository {
 
   async getPricesSnapshot(targetDate: string) {
     return await this.db.all(sql`
-      WITH UniquePrices AS (
-        SELECT DISTINCT station_id, fuel_type, price, is_available, updated_at
-        FROM prices
-        WHERE synced_at <= ${targetDate} AND synced_at >= datetime(${targetDate}, '-14 days')
-      ),
-      RankedChanges AS (
+      WITH RankedChanges AS (
         SELECT 
           station_id, 
           fuel_type, 
           price, 
           is_available, 
           updated_at,
-          LAG(price) OVER(PARTITION BY station_id, fuel_type ORDER BY updated_at ASC) as prev_price,
-          ROW_NUMBER() OVER(PARTITION BY station_id, fuel_type ORDER BY updated_at DESC) as rn
-        FROM UniquePrices
+          LAG(price) OVER(PARTITION BY station_id, fuel_type ORDER BY price_date ASC) as prev_price,
+          ROW_NUMBER() OVER(PARTITION BY station_id, fuel_type ORDER BY price_date DESC) as rn
+        FROM prices
+        WHERE price_date <= ${targetDate}
       )
       SELECT 
         s.id as station_id,

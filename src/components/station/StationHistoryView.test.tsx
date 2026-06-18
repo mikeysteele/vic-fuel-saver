@@ -40,8 +40,8 @@ describe("StationHistoryView", () => {
 
   it("renders history", async () => {
     vi.mocked(getStationPriceHistory).mockResolvedValue([
-      { fuelType: "U91", price: 150.5, updatedAt: "1970-01-01T12:00:00Z", stationId: "123", isAvailable: true, syncedAt: "1970-01-01V12:00:00Z" },
-      { fuelType: "U91", price: 151.5, updatedAt: "2026-04-04T00:00:00Z", stationId: "123", isAvailable: true, syncedAt: "1970-01-01V12:00:00Z" },
+      { fuelType: "U91", price: 150.5, updatedAt: "1970-01-01T12:00:00Z", stationId: "123", isAvailable: true, priceDate: "1970-01-01", syncedAt: "1970-01-01V12:00:00Z" },
+      { fuelType: "U91", price: 151.5, updatedAt: "2026-04-04T00:00:00Z", stationId: "123", isAvailable: true, priceDate: "2026-04-04", syncedAt: "1970-01-01V12:00:00Z" },
     ]);
     
     const { findByText, getAllByText } = render(() => (
@@ -51,7 +51,7 @@ describe("StationHistoryView", () => {
     expect(getAllByText("150.5 ¢").length).toBeGreaterThan(0);
     
     vi.mocked(getStationPriceHistory).mockResolvedValue([
-      { fuelType: "U91", price: 150.5, updatedAt: "invalid-date", stationId: "123", isAvailable: true, syncedAt: "1970-01-01T12:00:00Z" },
+      { fuelType: "U91", price: 150.5, updatedAt: "invalid-date", stationId: "123", isAvailable: true, priceDate: "invalid", syncedAt: "1970-01-01T12:00:00Z" },
     ]);
   });
 });
