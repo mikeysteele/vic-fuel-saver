@@ -5,7 +5,11 @@ import { FuelMapPopup } from "./FuelMapPopup.tsx";
 vi.mock("~/components/station/StationHistoryView.tsx", () => ({
   StationHistoryView: () => <div data-testid="mock-history-view" />,
 }));
-import type { FuelStation, FuelPrice, FuelMetricsAggregate } from "~/features/fuel/types.ts";
+import type {
+  FuelMetricsAggregate,
+  FuelPrice,
+  FuelStation,
+} from "~/features/fuel/types.ts";
 
 const station: FuelStation = {
   id: "1",

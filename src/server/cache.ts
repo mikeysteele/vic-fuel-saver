@@ -19,13 +19,15 @@ class MemoryCache implements CacheStorage {
     return await item.value as T;
   }
 
-  async set<T>(key: string, value: T, ttlMs?: number): Promise<void> {
+  set<T>(key: string, value: T, ttlMs?: number): Promise<void> {
     const expiry = ttlMs ? Date.now() + ttlMs : null;
     this.cache.set(key, { value, expiry });
+    return Promise.resolve();
   }
 
-  async delete(key: string): Promise<void> {
+  delete(key: string): Promise<void> {
     this.cache.delete(key);
+    return Promise.resolve();
   }
 }
 
@@ -41,14 +43,15 @@ interface KVNamespace {
 
 class CloudflareKVCache implements CacheStorage {
   private getKV(): KVNamespace | null {
-    const cloudflareEnv = env as any;
-    return (cloudflareEnv?.FUEL_CACHE_KV as KVNamespace) || null;
+    return env?.FUEL_CACHE_KV || globalThis.FUEL_CACHE_KV || null;
   }
 
   async get<T>(key: string): Promise<T | null> {
     const kv = this.getKV();
     if (!kv) {
-      console.warn("CloudflareKVCache: KV namespace not found. Falling back to returning null.");
+      console.warn(
+        "CloudflareKVCache: KV namespace not found. Falling back to returning null.",
+      );
       return null;
     }
 
@@ -84,7 +87,9 @@ class CloudflareKVCache implements CacheStorage {
     if (kv) {
       try {
         await kv.delete(key);
-      } catch (_e) {}
+      } catch (_e) {
+        // Ignored
+      }
     }
   }
 }
@@ -94,8 +99,7 @@ let globalCache: CacheStorage | null = null;
 
 export function getCache(): CacheStorage {
   if (!globalCache) {
-    const cloudflareEnv = env as any;
-    const hasCloudflareKV = !!cloudflareEnv?.FUEL_CACHE_KV;
+    const hasCloudflareKV = !!(env?.FUEL_CACHE_KV || globalThis.FUEL_CACHE_KV);
 
     if (hasCloudflareKV) {
       console.log("Using CloudflareKVCache");

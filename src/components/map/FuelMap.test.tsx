@@ -1,5 +1,5 @@
 import { render, waitFor } from "@solidjs/testing-library";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createSignal } from "solid-js";
 import { FuelMap } from "./FuelMap.tsx";
 import type { FuelPriceDetail } from "~/features/fuel/types.ts";
@@ -127,7 +127,7 @@ describe("FuelMap", () => {
     await waitFor(() => {
       expect(L.tileLayer).toHaveBeenCalledWith(
         expect.stringContaining("openstreetmap.org"),
-        expect.anything()
+        expect.anything(),
       );
     });
 
@@ -136,7 +136,7 @@ describe("FuelMap", () => {
     await waitFor(() => {
       expect(L.tileLayer).toHaveBeenCalledWith(
         expect.stringContaining("cartocdn.com/dark_all"),
-        expect.anything()
+        expect.anything(),
       );
     });
   });
@@ -159,7 +159,8 @@ describe("FuelMap", () => {
 
     await waitFor(() => {
       expect(mockClusterGroup.addLayers).toHaveBeenCalled();
-      const addedMarkerCount = mockClusterGroup.addLayers.mock.calls[0][0].length;
+      const addedMarkerCount =
+        mockClusterGroup.addLayers.mock.calls[0][0].length;
       expect(addedMarkerCount).toBe(1);
     });
 

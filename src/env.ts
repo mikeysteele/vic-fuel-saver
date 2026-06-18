@@ -9,7 +9,9 @@ const runtimeEnv = {
   // @ts-ignore: process is not typed in deno by default
   ...(typeof process !== "undefined" ? process.env : {}),
   // @ts-ignore: import.meta.env might not be typed depending on environment
-  ...((typeof import.meta !== "undefined" && import.meta.env) ? import.meta.env : {}),
+  ...((typeof import.meta !== "undefined" && import.meta.env)
+    ? import.meta.env
+    : {}),
 };
 export const env = createEnv({
   server: {
@@ -47,3 +49,5 @@ export const env = createEnv({
    */
   emptyStringAsUndefined: true,
 });
+
+export type Env = typeof env;

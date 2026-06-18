@@ -62,16 +62,30 @@ export function FuelStationCard(props: FuelStationCardProps) {
           onClick={() => setShowHistory(true)}
           class="w-full py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl transition-colors flex items-center justify-center gap-2"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18" /><path d="m19 9-5 5-4-4-3 3" /></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 3v18h18" />
+            <path d="m19 9-5 5-4-4-3 3" />
+          </svg>
           View Price History
         </button>
       </div>
 
       <Modal isOpen={showHistory()} onClose={() => setShowHistory(false)}>
-        <StationHistoryView stationId={props.station.id} stationName={props.station.name} />
+        <StationHistoryView
+          stationId={props.station.id}
+          stationName={props.station.name}
+        />
       </Modal>
     </div>
   );
-};
-
-
+}

@@ -1,4 +1,4 @@
-import { onMount, createEffect, onCleanup } from "solid-js";
+import { createEffect, onCleanup, onMount } from "solid-js";
 import { LineChart } from "chartist";
 import "chartist/dist/index.css";
 
@@ -24,7 +24,7 @@ export function SVGLineChart(props: SVGLineChartProps) {
       fullWidth: true,
       chartPadding: { top: 10, right: 10, bottom: 20, left: 10 },
       axisX: { showGrid: false, showLabel: true },
-      axisY: { showGrid: false, showLabel: false }
+      axisY: { showGrid: false, showLabel: false },
     });
   });
 

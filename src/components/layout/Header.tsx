@@ -1,4 +1,4 @@
-import { Show  } from "solid-js";
+import { Show } from "solid-js";
 import { IconBox } from "../ui/IconBox.tsx";
 import { Label } from "../ui/Label.tsx";
 import { Panel } from "../ui/Panel.tsx";
@@ -121,6 +121,4 @@ export function Header(props: HeaderProps) {
       </div>
     </Panel>
   );
-};
-
-
+}

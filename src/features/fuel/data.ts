@@ -1,7 +1,12 @@
 import { createQuery } from "@tanstack/solid-query";
 import { useQueryClient } from "@tanstack/solid-query";
 import { createSignal } from "solid-js";
-import { getFuelBrands, getFuelPrices, getFuelPricesSnapshot, getEarliestSyncDate } from "~/server/fuel.ts";
+import {
+  getEarliestSyncDate,
+  getFuelBrands,
+  getFuelPrices,
+  getFuelPricesSnapshot,
+} from "~/server/fuel.ts";
 import type { FuelApiResponse, FuelBrandsResponse } from "./types.ts";
 
 import { getVictorianISODate } from "~/lib/date.ts";
@@ -25,7 +30,10 @@ export function createFuelData() {
 
     return {
       queryKey: fuelQueryKeys.prices(date),
-      queryFn: () => snapshotTs ? getFuelPricesSnapshot({ data: snapshotTs }) : getFuelPrices(),
+      queryFn: () =>
+        snapshotTs
+          ? getFuelPricesSnapshot({ data: snapshotTs })
+          : getFuelPrices(),
       staleTime: date ? 24 * 60 * 60 * 1000 : 5 * 60 * 1000,
       placeholderData: (prev) => prev,
     };
@@ -45,7 +53,9 @@ export function createFuelData() {
   }));
 
   const refetch = () => {
-    queryClient.invalidateQueries({ queryKey: fuelQueryKeys.prices(selectedDate()) });
+    queryClient.invalidateQueries({
+      queryKey: fuelQueryKeys.prices(selectedDate()),
+    });
   };
 
   const brandMap = () => {

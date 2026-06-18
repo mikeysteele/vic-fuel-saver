@@ -27,6 +27,4 @@ export function PriceList(props: PriceListProps) {
       </Show>
     </>
   );
-};
-
-
+}

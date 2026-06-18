@@ -104,9 +104,11 @@ export const iconBoxVariants = cva(
   {
     variants: {
       intent: {
-        standard: "bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10",
+        standard:
+          "bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10",
         primary: "bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.3)]",
-        gradient: "bg-gradient-to-br from-orange-500 to-amber-600 shadow-[0_4px_12px_rgba(249,115,22,0.2)]",
+        gradient:
+          "bg-gradient-to-br from-orange-500 to-amber-600 shadow-[0_4px_12px_rgba(249,115,22,0.2)]",
       },
       size: {
         sm: "h-8 w-8",
@@ -161,7 +163,8 @@ export const badgeVariants = cva(
       intent: {
         dark: "bg-slate-800 text-white dark:bg-white dark:text-slate-900",
         primary: "bg-orange-500 text-white",
-        outline: "border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400",
+        outline:
+          "border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400",
       },
       size: {
         xs: "text-[10px] px-1.5 py-0.5",

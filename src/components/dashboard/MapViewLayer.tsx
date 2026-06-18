@@ -1,5 +1,10 @@
 import { FuelMap } from "../map/FuelMap.tsx";
-import type { FuelMetricsAggregate, FuelMetricStat, FuelPriceDetail, Location } from "~/features/fuel/types.ts";
+import type {
+  FuelMetricsAggregate,
+  FuelMetricStat,
+  FuelPriceDetail,
+  Location,
+} from "~/features/fuel/types.ts";
 import type { MapBounds } from "~/features/fuel/filters.ts";
 
 interface MapViewLayerProps {
@@ -35,6 +40,4 @@ export function MapViewLayer(props: MapViewLayerProps) {
       />
     </div>
   );
-};
-
-
+}

@@ -65,8 +65,7 @@ export function FilterBarContainer(props: FilterBarContainerProps) {
           isExpanded={isExpanded()}
           onToggleExpanded={() => setIsExpanded(!isExpanded())}
         />
-      </div></div>
+      </div>
+    </div>
   );
-};
-
-
+}

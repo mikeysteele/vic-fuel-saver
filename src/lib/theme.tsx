@@ -1,4 +1,10 @@
-import { createContext, useContext, createSignal, type ParentProps, type JSX } from "solid-js";
+import {
+  createContext,
+  createSignal,
+  type JSX,
+  type ParentProps,
+  useContext,
+} from "solid-js";
 import { setThemeCookie } from "../server/theme.ts";
 
 type ThemeContextType = {
@@ -8,7 +14,9 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType>();
 
-export function ThemeProvider(props: ParentProps<{ initialTheme: "light" | "dark" }>): JSX.Element {
+export function ThemeProvider(
+  props: ParentProps<{ initialTheme: "light" | "dark" }>,
+): JSX.Element {
   const [theme, setTheme] = createSignal(props.initialTheme);
 
   const toggleTheme = async () => {
@@ -16,7 +24,9 @@ export function ThemeProvider(props: ParentProps<{ initialTheme: "light" | "dark
     setTheme(next);
     try {
       await setThemeCookie({ data: next });
-    } catch (e) { }
+    } catch (_e) {
+      // Ignored
+    }
   };
 
   return (
@@ -24,7 +34,7 @@ export function ThemeProvider(props: ParentProps<{ initialTheme: "light" | "dark
       {props.children}
     </ThemeContext.Provider>
   );
-};
+}
 
 export const useTheme = () => {
   const ctx = useContext(ThemeContext);

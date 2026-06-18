@@ -1,4 +1,4 @@
-import { vi, describe, it, expect } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render } from "@solidjs/testing-library";
 import { ThemeProvider, useTheme } from "./theme.tsx";
 

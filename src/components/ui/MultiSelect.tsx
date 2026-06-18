@@ -30,11 +30,15 @@ export function MultiSelect(props: MultiSelectProps) {
   };
   if (typeof document !== "undefined") {
     onMount(() => {
-      withDocument(document => document.addEventListener("click", handleClickOutside));
+      withDocument((document) =>
+        document.addEventListener("click", handleClickOutside)
+      );
     });
 
     onCleanup(() => {
-      withDocument(document => document.removeEventListener("click", handleClickOutside));
+      withDocument((document) =>
+        document.removeEventListener("click", handleClickOutside)
+      );
     });
   }
   const getLabel = (opt: string) => props.labelMap?.[opt] ?? opt;
@@ -75,8 +79,9 @@ export function MultiSelect(props: MultiSelectProps) {
             stroke-width="2.5"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class={`transition-transform duration-300 ${isOpen() ? "rotate-180" : ""
-              }`}
+            class={`transition-transform duration-300 ${
+              isOpen() ? "rotate-180" : ""
+            }`}
           >
             <path d="m6 9 6 6 6-6" />
           </svg>
@@ -93,10 +98,11 @@ export function MultiSelect(props: MultiSelectProps) {
             <For each={props.options}>
               {(option) => (
                 <label
-                  class={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-3 cursor-pointer group ${props.selected.includes(option)
-                    ? "bg-orange-500/10 text-orange-600 dark:text-orange-400"
-                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-200"
-                    }`}
+                  class={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-3 cursor-pointer group ${
+                    props.selected.includes(option)
+                      ? "bg-orange-500/10 text-orange-600 dark:text-orange-400"
+                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-200"
+                  }`}
                 >
                   <div class="relative flex items-center justify-center w-4 h-4 shrink-0">
                     <input
@@ -131,6 +137,4 @@ export function MultiSelect(props: MultiSelectProps) {
       </Show>
     </div>
   );
-};
-
-
+}

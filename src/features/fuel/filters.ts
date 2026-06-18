@@ -14,7 +14,9 @@ export interface MapBounds {
   west: number;
 }
 
-export function createFuelFilters(dataAccessor: () => FuelApiResponse | undefined) {
+export function createFuelFilters(
+  dataAccessor: () => FuelApiResponse | undefined,
+) {
   const [selectedFuelTypes, setSelectedFuelTypes] = createSignal<string[]>([]);
   const [selectedBrandIds, setSelectedBrandIds] = createSignal<string[]>([]);
   const [userLocation, setUserLocation] = createSignal<UserLocation | null>(

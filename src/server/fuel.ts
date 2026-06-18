@@ -1,12 +1,17 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { env } from "cloudflare:workers";
-import type { FuelApiResponse, FuelBrandsResponse } from "../features/fuel/types.ts";
+import type {
+  FuelApiResponse,
+  FuelBrandsResponse,
+} from "../features/fuel/types.ts";
 import { getCache } from "./cache.ts";
 import { vicFuelApiClient } from "./vic-fuel-api.ts";
 import { FuelRepository } from "./db/fuel_repository.ts";
-import { attachTrendsToApiResponse, mapSnapshotRowsToApiResponse } from "./fuel_mappers.ts";
+import {
+  attachTrendsToApiResponse,
+  mapSnapshotRowsToApiResponse,
+} from "./fuel_mappers.ts";
 import type { SnapshotRow, TrendRow } from "./fuel_mappers.ts";
-import type { AnyD1Database } from "drizzle-orm/d1";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -62,10 +67,9 @@ export const getFuelPrices = createServerFn({ method: "GET" }).handler(
     return withStaleFallback(
       async () => {
         const data = await vicFuelApiClient.fetchPrices();
-        
+
         // Enhance live data with historical trends from D1
-        const cloudflareEnv = env as Record<string, unknown>;
-        const d1 = (cloudflareEnv?.DB || (globalThis as Record<string, unknown>).DB || (globalThis as Record<string, unknown>).FUEL_CACHE_KV) as AnyD1Database | undefined;
+        const d1 = env?.DB || globalThis.DB;
         if (d1) {
           try {
             const repo = new FuelRepository(d1);
@@ -90,29 +94,29 @@ export const getFuelPrices = createServerFn({ method: "GET" }).handler(
 
 export const getEarliestSyncDate = createServerFn({ method: "GET" }).handler(
   async (): Promise<{ date: string | null }> => {
-    const cloudflareEnv = env as Record<string, unknown>;
-    const d1 = (cloudflareEnv?.DB || (globalThis as Record<string, unknown>).DB || (globalThis as Record<string, unknown>).FUEL_CACHE_KV) as AnyD1Database | undefined;
+    const d1 = env?.DB || globalThis.DB;
 
     if (!d1) return { date: null };
-    
+
     const repo = new FuelRepository(d1);
     return await repo.getEarliestSyncDate();
-  }
+  },
 );
 
 export const getFuelPricesSnapshot = createServerFn({ method: "GET" })
   .inputValidator((date: string) => date)
   .handler(async (ctx: { data: string }): Promise<FuelApiResponse> => {
-    const targetDate = ctx.data; 
-    const cloudflareEnv = env as Record<string, unknown>;
-    const d1 = (cloudflareEnv?.DB || (globalThis as Record<string, unknown>).DB || (globalThis as Record<string, unknown>).FUEL_CACHE_KV) as AnyD1Database | undefined;
+    const targetDate = ctx.data;
+    const d1 = env?.DB || globalThis.DB;
 
     if (!d1) {
       throw new Error("D1 database binding 'DB' not found");
     }
 
     const repo = new FuelRepository(d1);
-    const rows = await repo.getPricesSnapshot(targetDate) as unknown as SnapshotRow[];
+    const rows = await repo.getPricesSnapshot(
+      targetDate,
+    ) as unknown as SnapshotRow[];
     return mapSnapshotRowsToApiResponse(rows);
   });
 

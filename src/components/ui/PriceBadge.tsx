@@ -1,10 +1,11 @@
-import type { JSX  } from "solid-js";
+import type { JSX } from "solid-js";
 import { type VariantProps } from "class-variance-authority";
 import { priceBadgeVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface PriceBadgeProps
-  extends JSX.HTMLAttributes<HTMLSpanElement>,
+  extends
+    JSX.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof priceBadgeVariants> {}
 
 export function PriceBadge(props: PriceBadgeProps) {
@@ -18,4 +19,4 @@ export function PriceBadge(props: PriceBadgeProps) {
       {local.children}
     </span>
   );
-};
+}

@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { FuelApiResponse, FuelBrandsResponse } from "../features/fuel/types.ts";
+import type {
+  FuelApiResponse,
+  FuelBrandsResponse,
+} from "../features/fuel/types.ts";
 
 // We test the core fetch-and-cache pattern by extracting it as a standalone helper.
 // The createServerFn wrapper is TanStack-specific and not unit-testable in isolation.

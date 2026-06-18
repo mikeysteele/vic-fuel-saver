@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from "@solidjs/testing-library";
-import { describe, it, expect, vi } from "vitest";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { describe, expect, it, vi } from "vitest";
 import { Header } from "./Header.tsx";
 
 describe("Header", () => {
@@ -18,7 +18,10 @@ describe("Header", () => {
   it("renders the data freshness timestamp when provided", () => {
     const timestamp = "2026-03-22T02:00:00Z";
     render(() => (
-      <Header {...defaultProps} latestUpdatedAt={() => timestamp} />
+      <Header
+        {...defaultProps}
+        latestUpdatedAt={() => timestamp}
+      />
     ));
     // The date format might vary by environment, so we check for the text surrounding it
     expect(screen.getByText(/Prices as of/i)).toBeInTheDocument();

@@ -1,4 +1,4 @@
-import { createSignal, onMount, onCleanup, createEffect } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import type * as LType from "leaflet";
 import type { MapBounds } from "~/features/fuel/filters.ts";
 import "leaflet.markercluster/dist/MarkerCluster.css";
@@ -18,7 +18,9 @@ export function createLeafletMap(options: {
 }) {
   const [map, setMap] = createSignal<LType.Map | null>(null);
   const [leafletRef, setLeafletRef] = createSignal<typeof LType | null>(null);
-  const [clusterGroup, setClusterGroup] = createSignal<LType.MarkerClusterGroup | null>(null);
+  const [clusterGroup, setClusterGroup] = createSignal<
+    LType.MarkerClusterGroup | null
+  >(null);
 
   let tileLayer: LType.TileLayer | null = null;
 
@@ -39,7 +41,7 @@ export function createLeafletMap(options: {
     });
 
     const newMap = L.map(el, { maxZoom: 18 }).setView([-37.8136, 144.9631], 10);
-    
+
     const newClusterGroup = L.markerClusterGroup({
       chunkedLoading: true,
       maxClusterRadius: 50,
@@ -62,7 +64,7 @@ export function createLeafletMap(options: {
     newMap.on("zoomend", updateBounds);
 
     updateBounds();
-    
+
     setMap(() => newMap);
     setClusterGroup(() => newClusterGroup);
     setLeafletRef(() => L);
@@ -102,7 +104,14 @@ export function createLeafletMap(options: {
 
       L.circleMarker(
         [loc.latitude, loc.longitude],
-        { radius: 8, fillColor: "#a855f7", color: "#fff", weight: 2, opacity: 1, fillOpacity: 0.8 },
+        {
+          radius: 8,
+          fillColor: "#a855f7",
+          color: "#fff",
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.8,
+        },
       ).addTo(currentMap);
     }
   });

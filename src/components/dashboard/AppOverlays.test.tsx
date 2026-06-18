@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from "@solidjs/testing-library";
-import { describe, it, expect, vi } from "vitest";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { describe, expect, it, vi } from "vitest";
 import { AppOverlays } from "./AppOverlays.tsx";
 
 describe("AppOverlays", () => {
@@ -17,7 +17,7 @@ describe("AppOverlays", () => {
   it("shows error message when error is provided", () => {
     const error = new Error("Failed to fetch");
     render(() => <AppOverlays {...defaultProps} error={() => error} />);
-    
+
     expect(screen.getByText(/Connection Disturbed/i)).toBeInTheDocument();
     expect(screen.getByText(/Failed to fetch/i)).toBeInTheDocument();
   });
@@ -26,12 +26,16 @@ describe("AppOverlays", () => {
     const refetch = vi.fn();
     const error = new Error("Error");
     render(() => (
-      <AppOverlays {...defaultProps} error={() => error} refetch={refetch} />
+      <AppOverlays
+        {...defaultProps}
+        error={() => error}
+        refetch={refetch}
+      />
     ));
-    
+
     const button = screen.getByRole("button", { name: /try again/i });
     fireEvent.click(button);
-    
+
     expect(refetch).toHaveBeenCalled();
   });
 

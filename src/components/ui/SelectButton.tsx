@@ -1,10 +1,11 @@
-import type { JSX  } from "solid-js";
+import type { JSX } from "solid-js";
 import { type VariantProps } from "class-variance-authority";
 import { inputVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface SelectButtonProps
-  extends JSX.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    JSX.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof inputVariants> {}
 
 export function SelectButton(props: SelectButtonProps) {
@@ -19,4 +20,4 @@ export function SelectButton(props: SelectButtonProps) {
       {local.children}
     </button>
   );
-};
+}

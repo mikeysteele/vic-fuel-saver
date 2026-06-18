@@ -42,6 +42,4 @@ export function AppOverlays(props: AppOverlaysProps) {
       </Show>
     </>
   );
-};
-
-
+}

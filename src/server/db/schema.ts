@@ -1,4 +1,11 @@
-import { sqliteTable, text, real, integer, primaryKey, index } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  primaryKey,
+  real,
+  sqliteTable,
+  text,
+} from "drizzle-orm/sqlite-core";
 
 export const stations = sqliteTable("stations", {
   id: text("id").primaryKey(), // We use the exact ID from the API
@@ -19,7 +26,7 @@ export const prices = sqliteTable("prices", {
   price: real("price").notNull(),
   isAvailable: integer("is_available", { mode: "boolean" }).notNull(),
   updatedAt: text("updated_at").notNull(), // When the station last updated its price (from API)
-  syncedAt: text("synced_at").notNull(),   // When we last synced this row (our timestamp)
+  syncedAt: text("synced_at").notNull(), // When we last synced this row (our timestamp)
 }, (table) => {
   return [
     primaryKey({ columns: [table.stationId, table.fuelType, table.priceDate] }),
@@ -28,4 +35,3 @@ export const prices = sqliteTable("prices", {
     index("prices_price_date_idx").on(table.priceDate),
   ];
 });
-

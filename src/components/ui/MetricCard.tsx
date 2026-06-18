@@ -1,10 +1,11 @@
-import type { JSX  } from "solid-js";
+import type { JSX } from "solid-js";
 import { type VariantProps } from "class-variance-authority";
 import { metricCardLabelVariants, metricCardVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface MetricCardProps
-  extends JSX.HTMLAttributes<HTMLDivElement>,
+  extends
+    JSX.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof metricCardVariants> {
   label: string;
 }
@@ -30,4 +31,4 @@ export function MetricCard(props: MetricCardProps) {
       </div>
     </div>
   );
-};
+}

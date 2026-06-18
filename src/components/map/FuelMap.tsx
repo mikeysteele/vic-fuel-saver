@@ -1,7 +1,11 @@
 import { createEffect, createMemo, Show } from "solid-js";
 import { render } from "solid-js/web";
 import type * as LType from "leaflet";
-import type { FuelMetricsAggregate, FuelMetricStat, FuelPriceDetail } from "~/features/fuel/types.ts";
+import type {
+  FuelMetricsAggregate,
+  FuelMetricStat,
+  FuelPriceDetail,
+} from "~/features/fuel/types.ts";
 import type { MapBounds } from "~/features/fuel/filters.ts";
 import { getBrandLogoUrl } from "~/features/fuel/brandLogo.ts";
 import { FuelMapPopup } from "./FuelMapPopup.tsx";
@@ -37,7 +41,7 @@ export function FuelMap(props: FuelMapProps) {
     isDark: () => props.isDark,
     onViewportChange: props.onViewportChange,
     userLocation: () => props.userLocation,
-    mapFocus: () => props.mapFocus
+    mapFocus: () => props.mapFocus,
   });
 
   // Interactive metric panning
@@ -53,7 +57,10 @@ export function FuelMap(props: FuelMapProps) {
         setTimeout(() => {
           const marker = markers.get(focus.stationId);
           if (marker) {
-            currentClusterGroup.zoomToShowLayer(marker, () => marker.openPopup());
+            currentClusterGroup.zoomToShowLayer(
+              marker,
+              () => marker.openPopup(),
+            );
           }
         }, 100);
       });
@@ -89,15 +96,23 @@ export function FuelMap(props: FuelMapProps) {
       const id = stationDetail.fuelStation.id;
       if (!markers.has(id)) {
         const { latitude, longitude } = stationDetail.fuelStation.location;
-        const brand = props.brandMap[stationDetail.fuelStation.brandId] ?? "Fuel";
+        const brand = props.brandMap[stationDetail.fuelStation.brandId] ??
+          "Fuel";
         const logoUrl = getBrandLogoUrl(brand, 64);
 
         const markerDiv = document.createElement("div");
-        render(() => <FuelMapMarkerIcon brand={brand} logoUrl={logoUrl} />, markerDiv);
+        render(
+          () => <FuelMapMarkerIcon brand={brand} logoUrl={logoUrl} />,
+          markerDiv,
+        );
 
         const marker = L.marker([Number(latitude), Number(longitude)], {
           title: stationDetail.fuelStation.name,
-          icon: L.divIcon({ html: markerDiv, className: "custom-brand-marker", iconSize: [0, 0] }),
+          icon: L.divIcon({
+            html: markerDiv,
+            className: "custom-brand-marker",
+            iconSize: [0, 0],
+          }),
         });
 
         let dispose: (() => void) | null = null;
@@ -128,7 +143,10 @@ export function FuelMap(props: FuelMapProps) {
         );
 
         const cleanup = () => {
-          if (dispose) { dispose(); dispose = null; }
+          if (dispose) {
+            dispose();
+            dispose = null;
+          }
         };
 
         marker.on("popupclose", cleanup);
@@ -145,7 +163,10 @@ export function FuelMap(props: FuelMapProps) {
   });
 
   return (
-    <div ref={mapContainer} class="w-full h-full isolate relative z-0 bg-slate-900">
+    <div
+      ref={mapContainer}
+      class="w-full h-full isolate relative z-0 bg-slate-900"
+    >
       <style>
         {`
 		.custom-leaflet-popup .leaflet-popup-content-wrapper { background: transparent; padding: 0; box-shadow: none; }

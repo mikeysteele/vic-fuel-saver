@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { FuelPriceDetail, FuelType, FuelPrice } from "./types.ts";
+import type { FuelPrice, FuelPriceDetail, FuelType } from "./types.ts";
 import { filterAndSortStations } from "./filter-utils.ts";
 
 const makeStation = (
@@ -55,14 +55,17 @@ describe("filterAndSortStations", () => {
   it("filters by brand", () => {
     const result = filterAndSortStations(allStations, ["BP"], []);
     expect(result).toHaveLength(2);
-    expect(result.every((s: FuelPriceDetail) => s.fuelStation.brandId === "BP")).toBe(true);
+    expect(result.every((s: FuelPriceDetail) => s.fuelStation.brandId === "BP"))
+      .toBe(true);
   });
 
   it("filters by fuel type", () => {
     const result = filterAndSortStations(allStations, [], ["U91"]);
     expect(result).toHaveLength(2);
     expect(
-      result.every((s: FuelPriceDetail) => s.fuelPrices.some((p: FuelPrice) => p.fuelType === "U91")),
+      result.every((s: FuelPriceDetail) =>
+        s.fuelPrices.some((p: FuelPrice) => p.fuelType === "U91")
+      ),
     ).toBe(true);
   });
 

@@ -1,6 +1,10 @@
-import { onMount, createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { TrendingUp } from "lucide-solid";
-import type { FuelMetricsAggregate, FuelPrice, FuelStation } from "~/features/fuel/types.ts";
+import type {
+  FuelMetricsAggregate,
+  FuelPrice,
+  FuelStation,
+} from "~/features/fuel/types.ts";
 import { Modal } from "~/components/ui/Modal.tsx";
 import { StationHistoryView } from "~/components/station/StationHistoryView.tsx";
 import { FuelMapPopupHeader } from "./FuelMapPopupHeader.tsx";
@@ -30,13 +34,24 @@ export function FuelMapPopup(props: FuelMapPopupProps) {
 
   onMount(() => {
     //scroll the viewport so the popup is in the centre of it
-    popupRef.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+    popupRef.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
   });
 
   return (
-    <div ref={popupRef} class="flex flex-col w-[260px] bg-white dark:bg-slate-950 rounded-xl shadow-2xl overflow-hidden border border-slate-200 dark:border-white/10">
+    <div
+      ref={popupRef}
+      class="flex flex-col w-[260px] bg-white dark:bg-slate-950 rounded-xl shadow-2xl overflow-hidden border border-slate-200 dark:border-white/10"
+    >
       <FuelMapPopupHeader station={props.station} brandMap={props.brandMap} />
-      <FuelMapPopupPriceList prices={displayedPrices()} stateMetrics={props.stateMetrics} areaMetrics={props.areaMetrics} />
+      <FuelMapPopupPriceList
+        prices={displayedPrices()}
+        stateMetrics={props.stateMetrics}
+        areaMetrics={props.areaMetrics}
+      />
 
       <div class="p-2 pt-0">
         <button
@@ -50,10 +65,11 @@ export function FuelMapPopup(props: FuelMapPopupProps) {
       </div>
 
       <Modal isOpen={showHistory()} onClose={() => setShowHistory(false)}>
-        <StationHistoryView stationId={props.station.id} stationName={props.station.name} />
+        <StationHistoryView
+          stationId={props.station.id}
+          stationName={props.station.name}
+        />
       </Modal>
     </div>
   );
 }
-
-

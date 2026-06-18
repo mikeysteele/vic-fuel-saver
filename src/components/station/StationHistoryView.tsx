@@ -1,4 +1,4 @@
-import { createResource, For, Show, createMemo } from "solid-js";
+import { createMemo, createResource, For, Show } from "solid-js";
 import { getStationPriceHistory } from "~/server/history.ts";
 import { PriceBadge } from "~/components/ui/PriceBadge.tsx";
 import { SVGLineChart } from "~/components/ui/SVGLineChart.tsx";
@@ -14,7 +14,10 @@ const formatDateTime = (isoString?: string | null) => {
   try {
     const d = new Date(isoString);
     return new Intl.DateTimeFormat("en-AU", {
-      day: "numeric", month: "short", hour: "numeric", minute: "2-digit"
+      day: "numeric",
+      month: "short",
+      hour: "numeric",
+      minute: "2-digit",
     }).format(d);
   } catch (_e) {
     return isoString;
@@ -24,7 +27,8 @@ const formatDateTime = (isoString?: string | null) => {
 export function StationHistoryView(props: StationHistoryViewProps) {
   const [history] = createResource(
     () => props.stationId,
-    async (stationId) => await getStationPriceHistory({ data: { stationId, limit: 500 } })
+    async (stationId) =>
+      await getStationPriceHistory({ data: { stationId, limit: 500 } }),
   );
 
   const groupedHistory = createMemo(() => {
@@ -33,40 +37,51 @@ export function StationHistoryView(props: StationHistoryViewProps) {
     if (!data) return {};
 
     // Group by fuelType
-    return data.reduce((acc: Record<string, typeof data>, item: NonNullable<typeof data>[0]) => {
-      if (!acc[item.fuelType]) {
-        acc[item.fuelType] = [];
-      }
-      const list = acc[item.fuelType];
+    return data.reduce(
+      (acc: Record<string, typeof data>, item: NonNullable<typeof data>[0]) => {
+        if (!acc[item.fuelType]) {
+          acc[item.fuelType] = [];
+        }
+        const list = acc[item.fuelType];
 
-      if (list.length > 0) {
-        const itemDate = new Date(item.updatedAt);
-        const lastItemDate = new Date(list[list.length - 1].updatedAt);
+        if (list.length > 0) {
+          const itemDate = new Date(item.updatedAt);
+          const lastItemDate = new Date(list[list.length - 1].updatedAt);
 
-        // Limit to 1 datapoint per day (keeping the newest price of that day)
-        if (itemDate.toDateString() === lastItemDate.toDateString()) {
-          // If the older intra-day price is the exact same, keep the older timestamp
+          // Limit to 1 datapoint per day (keeping the newest price of that day)
+          if (itemDate.toDateString() === lastItemDate.toDateString()) {
+            // If the older intra-day price is the exact same, keep the older timestamp
+            if (list[list.length - 1].price === item.price) {
+              list[list.length - 1] = item;
+            }
+            return acc;
+          }
+
+          // Collapse consecutive identical prices across different days
           if (list[list.length - 1].price === item.price) {
             list[list.length - 1] = item;
+            return acc;
           }
-          return acc;
         }
 
-        // Collapse consecutive identical prices across different days
-        if (list[list.length - 1].price === item.price) {
-          list[list.length - 1] = item;
-          return acc;
-        }
-      }
-
-      list.push(item);
-      return acc;
-    }, {});
+        list.push(item);
+        return acc;
+      },
+      {},
+    );
   });
 
   const stats = createMemo(() => {
     const groups = groupedHistory();
-    const res: Record<string, { min: number, max: number, avg: number, weekdays: { label: string, value: number }[] }> = {};
+    const res: Record<
+      string,
+      {
+        min: number;
+        max: number;
+        avg: number;
+        weekdays: { label: string; value: number }[];
+      }
+    > = {};
     for (const [fuelType, records] of Object.entries(groups)) {
       if (records.length === 0) continue;
 
@@ -94,8 +109,8 @@ export function StationHistoryView(props: StationHistoryViewProps) {
         avg: sum / records.length,
         weekdays: dayLabels.map((label, i) => ({
           label,
-          value: dayCounts[i] ? daySums[i] / dayCounts[i] : 0
-        })).filter(d => d.value > 0) // only show days we have data for
+          value: dayCounts[i] ? daySums[i] / dayCounts[i] : 0,
+        })).filter((d) => d.value > 0), // only show days we have data for
       };
     }
     return res;
@@ -114,7 +129,8 @@ export function StationHistoryView(props: StationHistoryViewProps) {
 
       <Show when={history.loading}>
         <div class="flex justify-center items-center py-12">
-          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500">
+          </div>
         </div>
       </Show>
 
@@ -124,7 +140,9 @@ export function StationHistoryView(props: StationHistoryViewProps) {
         </div>
       </Show>
 
-      <Show when={!history.loading && !history.error && history()?.length === 0}>
+      <Show
+        when={!history.loading && !history.error && history()?.length === 0}
+      >
         <div class="text-slate-500 dark:text-slate-400 py-8 text-center bg-slate-50 dark:bg-white/5 rounded-xl border border-dashed border-slate-200 dark:border-white/10">
           No history available for this station yet.
         </div>
@@ -139,39 +157,57 @@ export function StationHistoryView(props: StationHistoryViewProps) {
                   <div class="text-xs font-black px-2 py-1 bg-orange-100 text-orange-800 dark:bg-orange-500/20 dark:text-orange-300 rounded uppercase tracking-wider">
                     {fuelType}
                   </div>
-                  <div class="text-sm text-slate-500 dark:text-slate-400 font-medium">History & Stats</div>
+                  <div class="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                    History & Stats
+                  </div>
                 </div>
 
                 {/* Stats Grid */}
                 <Show when={stats()[fuelType]}>
                   <div class="grid grid-cols-3 gap-3 mb-6">
                     <div class="bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-200 dark:border-white/5">
-                      <div class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Average</div>
-                      <div class="text-lg font-black text-slate-900 dark:text-white">{stats()[fuelType].avg.toFixed(1)} ¢</div>
+                      <div class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">
+                        Average
+                      </div>
+                      <div class="text-lg font-black text-slate-900 dark:text-white">
+                        {stats()[fuelType].avg.toFixed(1)} ¢
+                      </div>
                     </div>
                     <div class="bg-emerald-50 dark:bg-emerald-500/10 rounded-xl p-3 border border-emerald-200/50 dark:border-emerald-500/20">
-                      <div class="text-[10px] text-emerald-600 uppercase tracking-widest font-bold mb-1">Cheapest</div>
-                      <div class="text-lg font-black text-emerald-700 dark:text-emerald-400">{stats()[fuelType].min.toFixed(1)} ¢</div>
+                      <div class="text-[10px] text-emerald-600 uppercase tracking-widest font-bold mb-1">
+                        Cheapest
+                      </div>
+                      <div class="text-lg font-black text-emerald-700 dark:text-emerald-400">
+                        {stats()[fuelType].min.toFixed(1)} ¢
+                      </div>
                     </div>
                     <div class="bg-rose-50 dark:bg-rose-500/10 rounded-xl p-3 border border-rose-200/50 dark:border-rose-500/20">
-                      <div class="text-[10px] text-rose-600 uppercase tracking-widest font-bold mb-1">Most Exp.</div>
-                      <div class="text-lg font-black text-rose-700 dark:text-rose-400">{stats()[fuelType].max.toFixed(1)} ¢</div>
+                      <div class="text-[10px] text-rose-600 uppercase tracking-widest font-bold mb-1">
+                        Most Exp.
+                      </div>
+                      <div class="text-lg font-black text-rose-700 dark:text-rose-400">
+                        {stats()[fuelType].max.toFixed(1)} ¢
+                      </div>
                     </div>
                   </div>
 
                   {/* Line Chart */}
                   <div class="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-white/5 mb-6">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-4">Price Timeline (Newest ← Oldest)</div>
+                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-4">
+                      Price Timeline (Newest ← Oldest)
+                    </div>
                     <SVGLineChart
-                      data={records.map(r => r.price)}
-                      labels={records.map(r => formatDateTime(r.updatedAt))}
+                      data={records.map((r) => r.price)}
+                      labels={records.map((r) => formatDateTime(r.updatedAt))}
                       height={100}
                     />
                   </div>
 
                   {/* Weekday Bar Chart */}
                   <div class="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-white/5 mb-6">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-4">Average by Weekday</div>
+                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-4">
+                      Average by Weekday
+                    </div>
                     <SVGBarChart
                       data={stats()[fuelType].weekdays}
                       height={100}
@@ -180,12 +216,15 @@ export function StationHistoryView(props: StationHistoryViewProps) {
                 </Show>
 
                 <div class="space-y-3">
-                  <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 px-1">Raw History Log</div>
+                  <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 px-1">
+                    Raw History Log
+                  </div>
                   <For each={records}>
                     {(record) => (
                       <div class="flex items-center justify-between group py-1">
                         <div class="flex items-center space-x-4">
-                          <div class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600 group-hover:bg-orange-400 transition-colors"></div>
+                          <div class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600 group-hover:bg-orange-400 transition-colors">
+                          </div>
                           <span class="text-sm text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap">
                             {formatDateTime(record.updatedAt)}
                           </span>
@@ -204,6 +243,4 @@ export function StationHistoryView(props: StationHistoryViewProps) {
       </Show>
     </div>
   );
-};
-
-
+}

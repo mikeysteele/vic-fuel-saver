@@ -4,8 +4,11 @@ import { Title } from "@solidjs/meta";
 import { computeAggregates } from "~/features/fuel/aggregates.ts";
 import { createFuelData } from "~/features/fuel/data.ts";
 import { createFuelFilters } from "~/features/fuel/filters.ts";
-import { useTheme } from '~/lib/theme.tsx';
-import type { FuelMetricStat, FuelPriceDetail as _FuelPriceDetail } from "~/features/fuel/types.ts";
+import { useTheme } from "~/lib/theme.tsx";
+import type {
+  FuelMetricStat,
+  FuelPriceDetail as _FuelPriceDetail,
+} from "~/features/fuel/types.ts";
 
 import { FilterBarContainer } from "~/components/dashboard/FilterBarContainer.tsx";
 import { Header } from "~/components/layout/Header.tsx";
@@ -15,7 +18,6 @@ import { MapViewLayer } from "~/components/dashboard/MapViewLayer.tsx";
 import { ListViewLayer } from "~/components/dashboard/ListViewLayer.tsx";
 import { ViewControls } from "~/components/dashboard/ViewControls.tsx";
 import { DateNavigator } from "~/components/dashboard/DateNavigator.tsx";
-
 
 export function Home() {
   const { theme, toggleTheme } = useTheme();
@@ -47,12 +49,10 @@ export function Home() {
   const [viewMode, setViewMode] = createSignal<"map" | "list">("map");
   const [mapFocus, setMapFocus] = createSignal<FuelMetricStat | null>(null);
 
-
-
   const stateMetrics = createMemo(() => computeAggregates(filteredStations()));
   const areaMetrics = createMemo(() => {
     const stations = stationsInView();
-    return computeAggregates(stations)
+    return computeAggregates(stations);
   });
 
   return (
@@ -103,7 +103,6 @@ export function Home() {
             onUserLocationChange={setUserLocation}
           />
 
-
           {/* Bottom HUD: metrics + view toggle */}
           <div class="absolute bottom-6 left-6 z-30 flex flex-col gap-4 pointer-events-none">
             <div class="pointer-events-auto">
@@ -137,9 +136,9 @@ export function Home() {
             areaMetrics={areaMetrics()}
           />
         </Show>
-      </div >
+      </div>
 
       <Attribution />
-    </main >
+    </main>
   );
 }

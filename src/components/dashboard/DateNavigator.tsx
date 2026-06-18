@@ -9,15 +9,54 @@ interface DateNavigatorProps {
 }
 
 const ChevronLeft = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="m15 18-6-6 6-6" />
+  </svg>
 );
 
 const ChevronRight = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="m9 18 6-6-6-6" />
+  </svg>
 );
 
 const CalendarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+    <line x1="16" x2="16" y1="2" y2="6" />
+    <line x1="8" x2="8" y1="2" y2="6" />
+    <line x1="3" x2="21" y1="10" y2="10" />
+  </svg>
 );
 
 export function DateNavigator(props: DateNavigatorProps) {
@@ -37,7 +76,7 @@ export function DateNavigator(props: DateNavigatorProps) {
   const handlePrev = () => {
     const d = new Date(props.selectedDate || new Date());
     d.setDate(d.getDate() - 1);
-    
+
     if (props.earliestDate) {
       const dStr = getVictorianISODate(d) || "";
       const earliestStr = getVictorianISODate(props.earliestDate) || "";
@@ -64,7 +103,7 @@ export function DateNavigator(props: DateNavigatorProps) {
     // Parse YYYY-MM-DD as LOCAL time (not UTC!) to prevent day-shift in AEST/AEDT
     const [year, month, day] = val.split("-").map(Number);
     const d = new Date(year, month - 1, day);
-    
+
     // Enforce earliest date bound
     const dStr = getVictorianISODate(d) || "";
     if (props.earliestDate) {
@@ -90,7 +129,7 @@ export function DateNavigator(props: DateNavigatorProps) {
       timeZone: "Australia/Melbourne",
       day: "2-digit",
       month: "2-digit",
-      year: "numeric"
+      year: "numeric",
     }).replace(/\//g, ".");
   };
 
@@ -100,7 +139,12 @@ export function DateNavigator(props: DateNavigatorProps) {
   };
 
   return (
-    <div class={cn("flex items-center gap-1 p-1 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl shadow-xl border border-slate-200 dark:border-white/10 transition-all duration-300", props.class)}>
+    <div
+      class={cn(
+        "flex items-center gap-1 p-1 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl shadow-xl border border-slate-200 dark:border-white/10 transition-all duration-300",
+        props.class,
+      )}
+    >
       {/* Back button */}
       <button
         type="button"
@@ -151,12 +195,17 @@ export function DateNavigator(props: DateNavigatorProps) {
           "flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-300",
           props.selectedDate === null
             ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
-            : "text-slate-400 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
+            : "text-slate-400 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10",
         )}
       >
-        <div class={cn("w-2 h-2 rounded-full animate-pulse", props.selectedDate === null ? "bg-white" : "bg-slate-400")} />
+        <div
+          class={cn(
+            "w-2 h-2 rounded-full animate-pulse",
+            props.selectedDate === null ? "bg-white" : "bg-slate-400",
+          )}
+        />
         LIVE
       </button>
     </div>
   );
-};
+}

@@ -1,4 +1,4 @@
-import { render, fireEvent, screen } from "@solidjs/testing-library";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
 import { describe, expect, it, vi } from "vitest";
 import { Modal } from "./Modal.tsx";
 

@@ -1,10 +1,11 @@
-import type { JSX  } from "solid-js";
+import type { JSX } from "solid-js";
 import { type VariantProps } from "class-variance-authority";
 import { iconBoxVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface IconBoxProps
-  extends JSX.HTMLAttributes<HTMLDivElement>,
+  extends
+    JSX.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof iconBoxVariants> {}
 
 export function IconBox(props: IconBoxProps) {
@@ -23,4 +24,4 @@ export function IconBox(props: IconBoxProps) {
       {local.children}
     </div>
   );
-};
+}

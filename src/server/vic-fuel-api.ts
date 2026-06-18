@@ -1,12 +1,15 @@
 import { env } from "../env.ts";
 
-import { env as cfEnv } from "cloudflare:workers";
+import { env as cloudflareEnv } from "cloudflare:workers";
 
-const cloudflareEnv = cfEnv as Record<string, unknown>;
-const consumerId = cloudflareEnv?.VIC_FUEL_CONSUMER_ID as string ?? env.VIC_FUEL_CONSUMER_ID ??
+const consumerId = cloudflareEnv.VIC_FUEL_CONSUMER_ID ??
+  env.VIC_FUEL_CONSUMER_ID ??
   "dummy-consumer-id-for-development";
 
-import type { FuelApiResponse, FuelBrandsResponse } from "../features/fuel/types.ts";
+import type {
+  FuelApiResponse,
+  FuelBrandsResponse,
+} from "../features/fuel/types.ts";
 
 const PRICES_ENDPOINT =
   "https://api.fuel.service.vic.gov.au/open-data/v1/fuel/prices";
@@ -78,7 +81,6 @@ export class VicFuelApiClient {
     return await this.fetchJson<FuelBrandsResponse>(BRANDS_ENDPOINT);
   }
 }
-
 
 /** Shared singleton client — instantiated once at module load. */
 export const vicFuelApiClient = new VicFuelApiClient(consumerId);

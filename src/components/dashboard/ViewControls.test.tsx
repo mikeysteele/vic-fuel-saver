@@ -1,11 +1,11 @@
-import { render, screen, fireEvent } from "@solidjs/testing-library";
-import { describe, it, expect, vi } from "vitest";
+import { fireEvent, render, screen } from "@solidjs/testing-library";
+import { describe, expect, it, vi } from "vitest";
 import { ViewControls } from "./ViewControls.tsx";
 import type { FuelMetricsAggregate } from "~/features/fuel/types.ts";
 
 // Mock FuelMetrics to avoid testing its internal aggregate rendering
 vi.mock("./FuelMetrics.tsx", () => ({
-  FuelMetrics: () => <div data-testid="mock-fuel-metrics" />
+  FuelMetrics: () => <div data-testid="mock-fuel-metrics" />,
 }));
 
 describe("ViewControls", () => {
@@ -20,17 +20,19 @@ describe("ViewControls", () => {
 
   it("renders both view toggle buttons", () => {
     render(() => <ViewControls {...defaultProps} />);
-    expect(screen.getByRole("button", { name: /map view/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /list view/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /map view/i }))
+      .toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /list view/i }))
+      .toBeInTheDocument();
   });
 
   it("calls setViewMode when a toggle button is clicked", () => {
     const setViewMode = vi.fn();
     render(() => <ViewControls {...defaultProps} setViewMode={setViewMode} />);
-    
+
     const listBtn = screen.getByRole("button", { name: /list view/i });
     fireEvent.click(listBtn);
-    
+
     expect(setViewMode).toHaveBeenCalledWith("list");
   });
 

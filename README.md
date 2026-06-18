@@ -79,8 +79,8 @@ deno task test --coverage
 
 ## 📜 Documentation
 
-- [User Stories](docs/user-stories.md):
-  Detailed scenarios and functionality overview.
+- [User Stories](docs/user-stories.md): Detailed scenarios and functionality
+  overview.
 
 ---
 

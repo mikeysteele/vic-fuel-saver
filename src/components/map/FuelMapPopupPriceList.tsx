@@ -1,5 +1,11 @@
 import { For, Show } from "solid-js";
-import { ArrowDownRight, ArrowUpRight, TrendingUp, TrendingDown, Minus } from "lucide-solid";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Minus,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-solid";
 import type { FuelMetricsAggregate, FuelPrice } from "~/features/fuel/types.ts";
 
 interface BadgeProps {
@@ -9,13 +15,19 @@ interface BadgeProps {
 
 const Badge = (props: BadgeProps) => (
   <div
-    class={`flex flex-row items-center text-[12px] font-extrabold px-1 py-[1.5px] rounded border w-[88px] text-center leading-none shadow-sm ${props.diff! < 0
-      ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200/50 dark:border-emerald-500/20"
-      : "text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 border-rose-200/50 dark:border-rose-500/20"
-      }`}
+    class={`flex flex-row items-center text-[12px] font-extrabold px-1 py-[1.5px] rounded border w-[88px] text-center leading-none shadow-sm ${
+      props.diff! < 0
+        ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200/50 dark:border-emerald-500/20"
+        : "text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 border-rose-200/50 dark:border-rose-500/20"
+    }`}
   >
     {Math.abs(props.diff!).toFixed(1)}¢{" "}
-    <span>{props.diff! < 0 ? <ArrowDownRight size={10} /> : <ArrowUpRight size={10} />}</span> {props.label}
+    <span>
+      {props.diff! < 0
+        ? <ArrowDownRight size={10} />
+        : <ArrowUpRight size={10} />}
+    </span>{" "}
+    {props.label}
   </div>
 );
 
@@ -54,8 +66,9 @@ export function FuelMapPopupPriceList(props: FuelMapPopupPriceListProps) {
                   {priceEntry.fuelType}
                 </span>
                 <div
-                  class={`h-1.5 w-1.5 rounded-full ${isAvailable ? "bg-emerald-400" : "bg-slate-600"
-                    }`}
+                  class={`h-1.5 w-1.5 rounded-full ${
+                    isAvailable ? "bg-emerald-400" : "bg-slate-600"
+                  }`}
                 >
                 </div>
               </div>
@@ -109,7 +122,6 @@ export function FuelMapPopupPriceList(props: FuelMapPopupPriceListProps) {
                     }
                   >
                     <Badge diff={areaDiff()!} label="Area" />
-
                   </Show>
                 </div>
               </div>

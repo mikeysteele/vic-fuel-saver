@@ -2,7 +2,7 @@ import { Show } from "solid-js";
 import { Label } from "../ui/Label.tsx";
 import { PriceBadge } from "../ui/PriceBadge.tsx";
 import { SelectButton } from "../ui/SelectButton.tsx";
-import { TrendingUp, TrendingDown, Minus } from "lucide-solid";
+import { Minus, TrendingDown, TrendingUp } from "lucide-solid";
 import type { FuelMetricsAggregate, FuelPrice } from "~/features/fuel/types.ts";
 
 interface PriceItemProps {
@@ -83,10 +83,11 @@ export function PriceItem(props: PriceItemProps) {
             {props.priceEntry.fuelType}
           </Label>
           <div
-            class={`h-2 w-2 rounded-full ${isAvailable()
+            class={`h-2 w-2 rounded-full ${
+              isAvailable()
                 ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)] animate-pulse"
                 : "bg-slate-600"
-              }`}
+            }`}
           />
         </div>
       </div>
@@ -128,8 +129,8 @@ export function PriceItem(props: PriceItemProps) {
                 {stateDiff()! < -0.5
                   ? `${Math.abs(stateDiff()!).toFixed(1)}¢ below State`
                   : stateDiff()! > 0.5
-                    ? `${stateDiff()!.toFixed(1)}¢ above State`
-                    : "State Average"}
+                  ? `${stateDiff()!.toFixed(1)}¢ above State`
+                  : "State Average"}
               </PriceBadge>
             </Show>
             <Show when={areaDiff() !== null}>
@@ -142,8 +143,8 @@ export function PriceItem(props: PriceItemProps) {
                 {areaDiff()! < -0.5
                   ? `${Math.abs(areaDiff()!).toFixed(1)}¢ below Area`
                   : areaDiff()! > 0.5
-                    ? `${areaDiff()!.toFixed(1)}¢ above Area`
-                    : "Area Average"}
+                  ? `${areaDiff()!.toFixed(1)}¢ above Area`
+                  : "Area Average"}
               </PriceBadge>
             </Show>
           </div>
@@ -151,6 +152,4 @@ export function PriceItem(props: PriceItemProps) {
       </div>
     </SelectButton>
   );
-};
-
-
+}

@@ -1,10 +1,11 @@
-import type { JSX  } from "solid-js";
+import type { JSX } from "solid-js";
 import { type VariantProps } from "class-variance-authority";
 import { badgeVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface BadgeProps
-  extends JSX.HTMLAttributes<HTMLSpanElement>,
+  extends
+    JSX.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof badgeVariants> {}
 
 export function Badge(props: BadgeProps) {
@@ -23,4 +24,4 @@ export function Badge(props: BadgeProps) {
       {local.children}
     </span>
   );
-};
+}

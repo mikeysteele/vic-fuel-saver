@@ -127,7 +127,10 @@ describe("createFuelFilters", () => {
       expect(filters.userLocation()).toBeNull();
 
       filters.setUserLocation({ latitude: -37.8, longitude: 144.9 });
-      expect(filters.userLocation()).toEqual({ latitude: -37.8, longitude: 144.9 });
+      expect(filters.userLocation()).toEqual({
+        latitude: -37.8,
+        longitude: 144.9,
+      });
 
       filters.setUserLocation(null);
       expect(filters.userLocation()).toBeNull();

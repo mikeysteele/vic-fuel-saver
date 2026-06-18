@@ -1,4 +1,8 @@
-import type { FuelApiResponse, FuelPriceDetail, FuelType } from "../features/fuel/types.ts";
+import type {
+  FuelApiResponse,
+  FuelPriceDetail,
+  FuelType,
+} from "../features/fuel/types.ts";
 
 export interface SnapshotRow {
   station_id: string;
@@ -17,15 +21,17 @@ export interface SnapshotRow {
   previous_price: number | null;
 }
 
-export interface TrendRow { 
+export interface TrendRow {
   station_id: string;
-  fuel_type: string; 
-  price: number; 
-  updated_at: string; 
-  prev_price: number | null; 
+  fuel_type: string;
+  price: number;
+  updated_at: string;
+  prev_price: number | null;
 }
 
-export function mapSnapshotRowsToApiResponse(rows: SnapshotRow[]): FuelApiResponse {
+export function mapSnapshotRowsToApiResponse(
+  rows: SnapshotRow[],
+): FuelApiResponse {
   const detailMap = new Map<string, FuelPriceDetail>();
 
   for (const row of rows) {
@@ -48,11 +54,11 @@ export function mapSnapshotRowsToApiResponse(rows: SnapshotRow[]): FuelApiRespon
 
     const detail = detailMap.get(row.station_id)!;
     let trend: "up" | "down" | "flat" | undefined;
-    
+
     if (row.previous_price !== null && row.previous_price !== undefined) {
-        if (row.price > row.previous_price) trend = "up";
-        else if (row.price < row.previous_price) trend = "down";
-        else trend = "flat";
+      if (row.price > row.previous_price) trend = "up";
+      else if (row.price < row.previous_price) trend = "down";
+      else trend = "flat";
     }
 
     detail.fuelPrices.push({
@@ -71,16 +77,24 @@ export function mapSnapshotRowsToApiResponse(rows: SnapshotRow[]): FuelApiRespon
   return { fuelPriceDetails: Array.from(detailMap.values()) };
 }
 
-export function attachTrendsToApiResponse(data: FuelApiResponse, snapshot: TrendRow[]) {
+export function attachTrendsToApiResponse(
+  data: FuelApiResponse,
+  snapshot: TrendRow[],
+) {
   const prevMap = new Map<string, TrendRow>();
-  for (const row of snapshot) prevMap.set(`${row.station_id}_${row.fuel_type}`, row);
+  for (const row of snapshot) {
+    prevMap.set(`${row.station_id}_${row.fuel_type}`, row);
+  }
 
   for (const detail of data.fuelPriceDetails) {
     for (const price of detail.fuelPrices) {
       const key = `${detail.fuelStation.id}_${price.fuelType}`;
       const hist = prevMap.get(key);
       if (hist) {
-        if (new Date(price.updatedAt).getTime() > new Date(hist.updated_at).getTime()) {
+        if (
+          new Date(price.updatedAt).getTime() >
+            new Date(hist.updated_at).getTime()
+        ) {
           if (price.price > hist.price) price.trend = "up";
           else if (price.price < hist.price) price.trend = "down";
           else price.trend = "flat";

@@ -1,7 +1,10 @@
 import { Panel } from "../ui/Panel.tsx";
 import { Button } from "../ui/Button.tsx";
 import { FuelMetrics } from "./FuelMetrics.tsx";
-import type { FuelMetricsAggregate, FuelMetricStat } from "~/features/fuel/types.ts";
+import type {
+  FuelMetricsAggregate,
+  FuelMetricStat,
+} from "~/features/fuel/types.ts";
 
 interface ViewControlsProps {
   selectedFuelTypes: string[];
@@ -22,7 +25,6 @@ export function ViewControls(props: ViewControlsProps) {
         onFocusStation={props.onFocusStation}
       />
 
-
       {/* View toggle */}
       <div class="flex items-center justify-center">
         <Panel
@@ -32,7 +34,9 @@ export function ViewControls(props: ViewControlsProps) {
         >
           <Button
             onClick={() => props.setViewMode("map")}
-            intent={props.viewMode === "map" ? "viewToggleActive" : "viewToggleInactive"}
+            intent={props.viewMode === "map"
+              ? "viewToggleActive"
+              : "viewToggleInactive"}
             size="viewToggle"
             type="button"
           >
@@ -40,7 +44,9 @@ export function ViewControls(props: ViewControlsProps) {
           </Button>
           <Button
             onClick={() => props.setViewMode("list")}
-            intent={props.viewMode === "list" ? "viewToggleActive" : "viewToggleInactive"}
+            intent={props.viewMode === "list"
+              ? "viewToggleActive"
+              : "viewToggleInactive"}
             size="viewToggle"
             type="button"
           >
@@ -50,6 +56,4 @@ export function ViewControls(props: ViewControlsProps) {
       </div>
     </div>
   );
-};
-
-
+}

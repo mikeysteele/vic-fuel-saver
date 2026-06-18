@@ -1,10 +1,11 @@
-import type { JSX  } from "solid-js";
+import type { JSX } from "solid-js";
 import { type VariantProps } from "class-variance-authority";
 import { panelVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface PanelProps
-  extends JSX.HTMLAttributes<HTMLDivElement>,
+  extends
+    JSX.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof panelVariants> {}
 
 export function Panel(props: PanelProps) {
@@ -23,4 +24,4 @@ export function Panel(props: PanelProps) {
       {local.children}
     </div>
   );
-};
+}

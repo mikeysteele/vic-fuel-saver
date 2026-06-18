@@ -1,4 +1,3 @@
-
 export function Attribution() {
   return (
     <div class="fixed bottom-0 left-0 z-[60] pointer-events-auto">
@@ -16,5 +15,3 @@ export function Attribution() {
     </div>
   );
 }
-
-

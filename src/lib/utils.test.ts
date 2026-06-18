@@ -16,7 +16,15 @@ describe("cn", () => {
   });
 
   it("ignores falsy values", () => {
-    expect(cn("text-red-500", false, undefined, null as unknown as string, "font-bold")).toBe(
+    expect(
+      cn(
+        "text-red-500",
+        false,
+        undefined,
+        null as unknown as string,
+        "font-bold",
+      ),
+    ).toBe(
       "text-red-500 font-bold",
     );
   });

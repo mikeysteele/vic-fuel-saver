@@ -16,13 +16,11 @@ import { HydrationScript } from "solid-js/web";
 
 import styleCss from "../styles.css?url";
 
-
-
 import { getThemeFromCookie } from "../server/theme.ts";
 import { ThemeProvider, useTheme } from "../lib/theme.tsx";
 
 export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient
+  queryClient: QueryClient;
 }>()({
   loader: async () => {
     const theme = await getThemeFromCookie();
@@ -32,11 +30,10 @@ export const Route = createRootRouteWithContext<{
     links: [{ rel: "stylesheet", href: styleCss }],
     meta: [
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-    ]
+    ],
   }),
-  shellComponent: RootComponent
+  shellComponent: RootComponent,
 });
-
 
 function RootComponent() {
   const data = Route.useLoaderData();
@@ -54,11 +51,13 @@ function RootHtml() {
   const { theme } = useTheme();
 
   return (
-    <html lang="en" class={theme() === 'dark' ? 'dark' : ''}>
+    <html lang="en" class={theme() === "dark" ? "dark" : ""}>
       <head>
         <HydrationScript />
       </head>
-      <body class={`min-h-screen text-slate-200 antialiased selection:bg-purple-500/30`}>
+      <body
+        class={`min-h-screen text-slate-200 antialiased selection:bg-purple-500/30`}
+      >
         <HeadContent />
         <Suspense>
           <Outlet />

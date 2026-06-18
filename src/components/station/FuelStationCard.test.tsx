@@ -1,10 +1,12 @@
 import { render, screen } from "@solidjs/testing-library";
 import { describe, expect, it, vi } from "vitest";
 import { FuelStationCard } from "./FuelStationCard.tsx";
-import type { FuelStation, FuelPrice } from "~/features/fuel/types.ts";
+import type { FuelPrice, FuelStation } from "~/features/fuel/types.ts";
 
 vi.mock("./StationHistoryView.tsx", () => ({
-  StationHistoryView: (props: { stationName: string }) => <div data-testid="mock-history-view">{props.stationName} History</div>
+  StationHistoryView: (props: { stationName: string }) => (
+    <div data-testid="mock-history-view">{props.stationName} History</div>
+  ),
 }));
 
 const station: FuelStation = {
@@ -95,7 +97,7 @@ describe("FuelStationCard", () => {
       <FuelStationCard
         station={station}
         prices={prices}
-        brandMap={{}}        
+        brandMap={{}}
       />
     ));
     // Falls back to 'Fuel' as the brandId passed to StationHeader

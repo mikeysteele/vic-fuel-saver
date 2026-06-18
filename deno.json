@@ -9,21 +9,31 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable", "deno.ns"],
-    "types": ["vite/client", "./src/global.d.ts"],
-
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable",
+      "deno.ns"
+    ],
+    "types": [
+      "vite/client",
+      "./src/global.d.ts"
+    ],
     "moduleResolution": "bundler",
     "skipLibCheck": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": "."
+    "noFallthroughCasesInSwitch": true
   },
   "imports": {
-    "~/": "./src/"
+    "~/": "./src/",
+    "cloudflare:workers": "npm:@cloudflare/workers-types@latest"
   },
   "lint": {
-    "exclude": ["./src/routeTree.gen.ts"]
+    "exclude": [
+      "./src/routeTree.gen.ts",
+      "./worker-configuration.d.ts"
+    ]
   }
 }

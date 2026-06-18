@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
-import { withDocument, withWindow, withLocation } from "./safe-dom.ts";
+import { describe, expect, it, vi } from "vitest";
+import { withDocument, withLocation, withWindow } from "./safe-dom.ts";
 
 describe("safe-dom utilities", () => {
   describe("withDocument", () => {
@@ -14,13 +14,13 @@ describe("safe-dom utilities", () => {
       const cb = vi.fn();
       const originalDocument = globalThis.document;
       // @ts-ignore: Deleting document to simulate environment without DOM
-      delete (globalThis as any).document;
+      delete (globalThis as Record<string, unknown>).document;
 
       try {
         withDocument(cb);
         expect(cb).not.toHaveBeenCalled();
       } finally {
-        (globalThis as any).document = originalDocument;
+        (globalThis as Record<string, unknown>).document = originalDocument;
       }
     });
   });
@@ -42,7 +42,7 @@ describe("safe-dom utilities", () => {
         withWindow(cb);
         expect(cb).not.toHaveBeenCalled();
       } finally {
-        (globalThis).window = originalWindow;
+        globalThis.window = originalWindow;
       }
     });
   });
@@ -58,13 +58,13 @@ describe("safe-dom utilities", () => {
       const cb = vi.fn();
       const originalLocation = globalThis.location;
       // @ts-ignore: Deleting location to simulate environment without DOM
-      delete (globalThis).location;
+      delete globalThis.location;
 
       try {
         withLocation(cb);
         expect(cb).not.toHaveBeenCalled();
       } finally {
-        (globalThis).location = originalLocation;
+        globalThis.location = originalLocation;
       }
     });
   });

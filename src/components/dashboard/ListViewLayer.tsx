@@ -1,6 +1,9 @@
-import { For, Show  } from "solid-js";
+import { For, Show } from "solid-js";
 import { FuelStationCard } from "../station/FuelStationCard.tsx";
-import type { FuelMetricsAggregate, FuelPriceDetail } from "~/features/fuel/types.ts";
+import type {
+  FuelMetricsAggregate,
+  FuelPriceDetail,
+} from "~/features/fuel/types.ts";
 
 interface ListViewLayerProps {
   viewMode: "map" | "list";
@@ -52,8 +55,8 @@ export function ListViewLayer(props: ListViewLayerProps) {
                 No stations found
               </h3>
               <p class="text-slate-500 mt-2 max-w-sm">
-                Try adjusting your filters or selecting a different fuel
-                type to reveal more locations.
+                Try adjusting your filters or selecting a different fuel type to
+                reveal more locations.
               </p>
             </div>
           </Show>
@@ -61,6 +64,4 @@ export function ListViewLayer(props: ListViewLayerProps) {
       </div>
     </Show>
   );
-};
-
-
+}

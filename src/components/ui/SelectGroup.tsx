@@ -44,6 +44,4 @@ export function SelectGroup(props: SelectGroupProps) {
       </div>
     </div>
   );
-};
-
-
+}

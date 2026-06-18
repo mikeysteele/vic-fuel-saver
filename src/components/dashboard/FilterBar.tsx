@@ -1,4 +1,4 @@
-import { Show  } from "solid-js";
+import { Show } from "solid-js";
 import { Button } from "../ui/Button.tsx";
 import { Label } from "../ui/Label.tsx";
 import { Panel } from "../ui/Panel.tsx";
@@ -6,8 +6,16 @@ import { MultiSelect } from "../ui/MultiSelect.tsx";
 import { withFavouratable } from "../ui/FavouriteSelection.tsx";
 
 const FavouratableMultiSelect = withFavouratable((props) => {
-
-  return <MultiSelect id={props.id} labelMap={props.labelMap} options={props.options} selected={props.selected as string[]} onChange={props.onChange} placeholder={props.placeholder} />
+  return (
+    <MultiSelect
+      id={props.id}
+      labelMap={props.labelMap}
+      options={props.options}
+      selected={props.selected as string[]}
+      onChange={props.onChange}
+      placeholder={props.placeholder}
+    />
+  );
 });
 
 interface FilterBarProps {
@@ -64,8 +72,9 @@ export function FilterBar(props: FilterBarProps) {
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class={`h-4 w-4 transition-transform duration-300 ${props.isExpanded ? "rotate-180" : ""
-              }`}
+            class={`h-4 w-4 transition-transform duration-300 ${
+              props.isExpanded ? "rotate-180" : ""
+            }`}
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -80,10 +89,11 @@ export function FilterBar(props: FilterBarProps) {
         <button
           type="button"
           onClick={props.onNearMeClick}
-          class={`h-10 w-12 flex items-center justify-center rounded-xl transition-all shadow-sm border ${props.userLocation
-            ? "bg-orange-500 border-orange-600 text-white"
-            : "bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-white/10 text-slate-500"
-            }`}
+          class={`h-10 w-12 flex items-center justify-center rounded-xl transition-all shadow-sm border ${
+            props.userLocation
+              ? "bg-orange-500 border-orange-600 text-white"
+              : "bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-white/10 text-slate-500"
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -103,8 +113,9 @@ export function FilterBar(props: FilterBarProps) {
       </div>
 
       <div
-        class={`relative z-10 flex flex-col md:flex-row gap-4 md:gap-6 items-end mt-3 md:mt-0 ${props.isExpanded ? "flex" : "hidden md:flex"
-          }`}
+        class={`relative z-10 flex flex-col md:flex-row gap-4 md:gap-6 items-end mt-3 md:mt-0 ${
+          props.isExpanded ? "flex" : "hidden md:flex"
+        }`}
       >
         <div class="flex-1 w-full flex flex-col gap-1.5">
           <Label intent="dim" size="xs" class="pl-1">
@@ -160,6 +171,4 @@ export function FilterBar(props: FilterBarProps) {
       </div>
     </Panel>
   );
-};
-
-
+}
