@@ -13,6 +13,7 @@ interface ViewControlsProps {
   onFocusStation: (stat: FuelMetricStat) => void;
   viewMode: "map" | "list";
   setViewMode: (mode: "map" | "list") => void;
+  dateNavigator?: import("solid-js").JSX.Element;
 }
 
 export function ViewControls(props: ViewControlsProps) {
@@ -25,34 +26,39 @@ export function ViewControls(props: ViewControlsProps) {
         onFocusStation={props.onFocusStation}
       />
 
-      {/* View toggle */}
-      <div class="flex items-center justify-center">
-        <Panel
-          intent="glass"
-          padding="none"
-          class="inline-flex p-1 !rounded-xl"
-        >
-          <Button
-            onClick={() => props.setViewMode("map")}
-            intent={props.viewMode === "map"
-              ? "viewToggleActive"
-              : "viewToggleInactive"}
-            size="viewToggle"
-            type="button"
+      {/* View toggle & Date Navigator */}
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 w-full relative">
+        <div class="self-start md:self-auto z-10">
+          {props.dateNavigator}
+        </div>
+        <div class="flex items-center justify-center md:absolute md:left-1/2 md:-translate-x-1/2">
+          <Panel
+            intent="glass"
+            padding="none"
+            class="inline-flex p-1 !rounded-xl"
           >
-            Map View
-          </Button>
-          <Button
-            onClick={() => props.setViewMode("list")}
-            intent={props.viewMode === "list"
-              ? "viewToggleActive"
-              : "viewToggleInactive"}
-            size="viewToggle"
-            type="button"
-          >
-            List View
-          </Button>
-        </Panel>
+            <Button
+              onClick={() => props.setViewMode("map")}
+              intent={props.viewMode === "map"
+                ? "viewToggleActive"
+                : "viewToggleInactive"}
+              size="viewToggle"
+              type="button"
+            >
+              Map View
+            </Button>
+            <Button
+              onClick={() => props.setViewMode("list")}
+              intent={props.viewMode === "list"
+                ? "viewToggleActive"
+                : "viewToggleInactive"}
+              size="viewToggle"
+              type="button"
+            >
+              List View
+            </Button>
+          </Panel>
+        </div>
       </div>
     </div>
   );

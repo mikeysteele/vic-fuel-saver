@@ -104,16 +104,6 @@ export function Home() {
           />
 
           {/* Bottom HUD: metrics + view toggle */}
-          <div class="absolute bottom-6 left-6 z-30 flex flex-col gap-4 pointer-events-none">
-            <div class="pointer-events-auto">
-              <DateNavigator
-                selectedDate={selectedDate()}
-                onDateChange={setSelectedDate}
-                earliestDate={earliestDate()}
-              />
-            </div>
-          </div>
-
           <ViewControls
             selectedFuelTypes={selectedFuelTypes()}
             stateMetrics={stateMetrics()}
@@ -124,6 +114,13 @@ export function Home() {
             }}
             viewMode={viewMode()}
             setViewMode={setViewMode}
+            dateNavigator={
+              <DateNavigator
+                selectedDate={selectedDate()}
+                onDateChange={setSelectedDate}
+                earliestDate={earliestDate()}
+              />
+            }
           />
 
           {/* List view */}
