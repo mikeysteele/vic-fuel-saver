@@ -6,6 +6,7 @@ const denoEnv = typeof Deno !== "undefined" ? Deno.env.toObject() : {};
 const runtimeEnv = {
   ...denoEnv,
   // deno-lint-ignore no-process-global
+  // @ts-ignore: process is not typed in deno by default
   ...(typeof process !== "undefined" ? process.env : {}),
   // @ts-ignore: import.meta.env might not be typed depending on environment
   ...((typeof import.meta !== "undefined" && import.meta.env) ? import.meta.env : {}),
