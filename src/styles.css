@@ -137,6 +137,11 @@ code {
   }
 }
 
+/* Prevent Leaflet default light gray background flash */
+.leaflet-container {
+  background: var(--background) !important;
+}
+
 /* Leaflet Marker Cluster Orange Branding Overrides */
 .marker-cluster-small {
   background-color: rgba(249, 115, 22, 0.6) !important;

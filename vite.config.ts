@@ -12,7 +12,11 @@ import viteStaticCopy from "rollup-plugin-copy";
 
 export default defineConfig({
   plugins: [
-    devtools(),
+    devtools({
+      consolePiping: {
+        enabled: false,
+      },
+    }),
     cloudflare({ viteEnvironment: { name: "ssr" } }),
     // this is the plugin that enables path aliases
     viteTsConfigPaths({

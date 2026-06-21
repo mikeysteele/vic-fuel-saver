@@ -25,6 +25,7 @@ export function Home() {
     data,
     refetch,
     loading,
+    pricesLoading,
     error,
     uniqueFuelTypes,
     uniqueBrands,
@@ -56,86 +57,88 @@ export function Home() {
   });
 
   return (
-    <main class="h-screen font-sans antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 selection:bg-orange-500/30 overflow-hidden flex flex-col relative w-full">
+    <>
       <Title>FuelSaver - Find the Cheapest Fuel</Title>
-
-      {/* ── Header ─────────────────────────────────────────────── */}
-      <Header
-        theme={theme}
-        toggleTheme={toggleTheme}
-        latestUpdatedAt={latestUpdatedAt}
-      />
-
-      {/* ── Body ───────────────────────────────────────────────── */}
-      <div class="flex-1 relative w-full h-full">
-        <AppOverlays
-          loading={loading}
-          error={error}
-          refetch={refetch}
+      <main class="h-screen font-sans antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 selection:bg-orange-500/30 overflow-hidden flex flex-col relative w-full">
+        {/* ── Header ─────────────────────────────────────────────── */}
+        <Header
+          theme={theme}
+          toggleTheme={toggleTheme}
+          latestUpdatedAt={latestUpdatedAt}
         />
 
-        <Show when={data()}>
-          {/* Map layer */}
-          <MapViewLayer
-            viewMode={viewMode}
-            stations={stationsInView()}
-            userLocation={userLocation()}
-            selectedFuelTypes={selectedFuelTypes()}
-            brandMap={brandMap()}
-            onViewportChange={setMapBounds}
-            stateMetrics={stateMetrics()}
-            areaMetrics={areaMetrics()}
-            mapFocus={mapFocus()}
-            isDark={theme() !== "light"}
+        {/* ── Body ───────────────────────────────────────────────── */}
+        <div class="flex-1 relative w-full h-full">
+          <AppOverlays
+            loading={loading}
+            error={error}
+            refetch={refetch}
           />
 
-          {/* Filter bar */}
+          <Show when={data()}>
+            {/* Map layer */}
+            <MapViewLayer
+              viewMode={viewMode}
+              stations={stationsInView()}
+              userLocation={userLocation()}
+              selectedFuelTypes={selectedFuelTypes()}
+              brandMap={brandMap()}
+              onViewportChange={setMapBounds}
+              stateMetrics={stateMetrics()}
+              areaMetrics={areaMetrics()}
+              mapFocus={mapFocus()}
+              isDark={theme() !== "light"}
+              pricesLoading={pricesLoading()}
+            />
 
-          <FilterBarContainer
-            fuelTypes={uniqueFuelTypes()}
-            brands={uniqueBrands()}
-            brandMap={brandMap()}
-            selectedFuelTypes={selectedFuelTypes()}
-            selectedBrandIds={selectedBrandIds()}
-            userLocation={userLocation()}
-            onFuelTypesChange={setSelectedFuelTypes}
-            onBrandIdsChange={setSelectedBrandIds}
-            onUserLocationChange={setUserLocation}
-          />
+            {/* Filter bar */}
+            <FilterBarContainer
+              fuelTypes={uniqueFuelTypes()}
+              brands={uniqueBrands()}
+              brandMap={brandMap()}
+              selectedFuelTypes={selectedFuelTypes()}
+              selectedBrandIds={selectedBrandIds()}
+              userLocation={userLocation()}
+              onFuelTypesChange={setSelectedFuelTypes}
+              onBrandIdsChange={setSelectedBrandIds}
+              onUserLocationChange={setUserLocation}
+            />
 
-          {/* Bottom HUD: metrics + view toggle */}
-          <ViewControls
-            selectedFuelTypes={selectedFuelTypes()}
-            stateMetrics={stateMetrics()}
-            areaMetrics={areaMetrics()}
-            onFocusStation={(stat) => {
-              setViewMode("map");
-              setMapFocus(stat);
-            }}
-            viewMode={viewMode()}
-            setViewMode={setViewMode}
-            dateNavigator={
-              <DateNavigator
-                selectedDate={selectedDate()}
-                onDateChange={setSelectedDate}
-                earliestDate={earliestDate()}
-              />
-            }
-          />
+            {/* Bottom HUD: metrics + view toggle */}
+            <ViewControls
+              selectedFuelTypes={selectedFuelTypes()}
+              stateMetrics={stateMetrics()}
+              areaMetrics={areaMetrics()}
+              pricesLoading={pricesLoading()}
+              onFocusStation={(stat) => {
+                setViewMode("map");
+                setMapFocus(stat);
+              }}
+              viewMode={viewMode()}
+              setViewMode={setViewMode}
+              dateNavigator={
+                <DateNavigator
+                  selectedDate={selectedDate()}
+                  onDateChange={setSelectedDate}
+                  earliestDate={earliestDate()}
+                />
+              }
+            />
 
-          {/* List view */}
-          <ListViewLayer
-            viewMode={viewMode()}
-            stations={filteredStations()}
-            selectedFuelTypes={selectedFuelTypes()}
-            brandMap={brandMap()}
-            stateMetrics={stateMetrics()}
-            areaMetrics={areaMetrics()}
-          />
-        </Show>
-      </div>
+            {/* List view */}
+            <ListViewLayer
+              viewMode={viewMode()}
+              stations={filteredStations()}
+              selectedFuelTypes={selectedFuelTypes()}
+              brandMap={brandMap()}
+              stateMetrics={stateMetrics()}
+              areaMetrics={areaMetrics()}
+            />
+          </Show>
+        </div>
 
-      <Attribution />
-    </main>
+        <Attribution />
+      </main>
+    </>
   );
 }

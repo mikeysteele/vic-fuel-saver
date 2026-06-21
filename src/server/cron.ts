@@ -22,11 +22,12 @@ export async function syncFuelPrices(d1Database: AnyD1Database) {
     // Fetch latest prices to skip unchanged data (Event-sourced storage)
     const latestPricesRes = await d1Database.prepare(`
       SELECT station_id, fuel_type, price
-      FROM (
-        SELECT station_id, fuel_type, price,
-               ROW_NUMBER() OVER(PARTITION BY station_id, fuel_type ORDER BY price_date DESC) as rn
+      FROM prices
+      WHERE (station_id, fuel_type, price_date) IN (
+        SELECT station_id, fuel_type, MAX(price_date)
         FROM prices
-      ) WHERE rn = 1
+        GROUP BY station_id, fuel_type
+      )
     `).all();
 
     const latestPriceMap = new Map<string, number>();

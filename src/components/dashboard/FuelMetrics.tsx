@@ -11,6 +11,7 @@ interface FuelMetricsProps {
   stateMetrics?: Record<string, FuelMetricsAggregate>;
   areaMetrics?: Record<string, FuelMetricsAggregate>;
   onFocusStation?: (stat: FuelMetricStat) => void;
+  pricesLoading?: boolean;
 }
 
 export function FuelMetrics(props: FuelMetricsProps) {
@@ -32,7 +33,8 @@ export function FuelMetrics(props: FuelMetricsProps) {
       <For each={props.selectedFuelTypes || []}>
         {(fType) => {
           const m = getMetrics(fType);
-          if (!m) return null;
+          const loading = props.pricesLoading;
+          if (!m && !loading) return null;
 
           return (
             <div class="flex flex-col gap-1.5 w-full">
@@ -45,115 +47,175 @@ export function FuelMetrics(props: FuelMetricsProps) {
               <div class="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 animate-in fade-in slide-in-from-bottom-4 shadow-sm w-full">
                 {/* Cheapest Card */}
                 <MetricCard intent="cheap" label="Cheapest">
-                  <Show when={m.area()?.min}>
-                    <div
-                      class="flex items-center justify-between cursor-pointer hover:bg-teal-50 dark:hover:bg-teal-900/40 p-1.5 -m-1.5 rounded-lg transition-colors group"
-                      onClick={() => handleClick(m.area()?.min)}
-                    >
-                      <span class="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                        Area
-                      </span>
-                      <div class="flex items-baseline gap-0.5">
-                        <p class="text-base sm:text-lg font-black text-teal-700 dark:text-teal-300 leading-none group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                          {m.area()!.min!.price.toFixed(1)}
-                        </p>
-                        <span class="text-[10px] font-bold text-teal-600/70 dark:text-teal-400/70 leading-none">
-                          ¢
+                  <Show
+                    when={!loading}
+                    fallback={
+                      <>
+                        <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg animate-pulse">
+                          <span class="text-[10px] sm:text-xs font-medium text-slate-400 dark:text-slate-500">
+                            Area
+                          </span>
+                          <div class="h-5 w-12 bg-teal-200/50 dark:bg-teal-900/30 rounded" />
+                        </div>
+                        <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg animate-pulse">
+                          <span class="text-[10px] sm:text-xs font-medium text-slate-400 dark:text-slate-500">
+                            State
+                          </span>
+                          <div class="h-5 w-12 bg-teal-200/50 dark:bg-teal-900/30 rounded" />
+                        </div>
+                      </>
+                    }
+                  >
+                    <Show when={m?.area()?.min}>
+                      <div
+                        class="flex items-center justify-between cursor-pointer hover:bg-teal-50 dark:hover:bg-teal-900/40 p-1.5 -m-1.5 rounded-lg transition-colors group"
+                        onClick={() => handleClick(m?.area()?.min)}
+                      >
+                        <span class="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                          Area
                         </span>
+                        <div class="flex items-baseline gap-0.5">
+                          <p class="text-base sm:text-lg font-black text-teal-700 dark:text-teal-300 leading-none group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                            {m?.area()?.min?.price.toFixed(1)}
+                          </p>
+                          <span class="text-[10px] font-bold text-teal-600/70 dark:text-teal-400/70 leading-none">
+                            ¢
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </Show>
-                  <Show when={m.state()?.min}>
-                    <div
-                      class="flex items-center justify-between cursor-pointer hover:bg-teal-50 dark:hover:bg-teal-900/40 p-1.5 -m-1.5 rounded-lg transition-colors group"
-                      onClick={() => handleClick(m.state()?.min)}
-                    >
-                      <span class="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                        State
-                      </span>
-                      <div class="flex items-baseline gap-0.5">
-                        <p class="text-base sm:text-lg font-black text-teal-700 dark:text-teal-300 leading-none group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                          {m.state()!.min!.price.toFixed(1)}
-                        </p>
-                        <span class="text-[10px] font-bold text-teal-600/70 dark:text-teal-400/70 leading-none">
-                          ¢
+                    </Show>
+                    <Show when={m?.state()?.min}>
+                      <div
+                        class="flex items-center justify-between cursor-pointer hover:bg-teal-50 dark:hover:bg-teal-900/40 p-1.5 -m-1.5 rounded-lg transition-colors group"
+                        onClick={() => handleClick(m?.state()?.min)}
+                      >
+                        <span class="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                          State
                         </span>
+                        <div class="flex items-baseline gap-0.5">
+                          <p class="text-base sm:text-lg font-black text-teal-700 dark:text-teal-300 leading-none group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                            {m?.state()?.min?.price.toFixed(1)}
+                          </p>
+                          <span class="text-[10px] font-bold text-teal-600/70 dark:text-teal-400/70 leading-none">
+                            ¢
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    </Show>
                   </Show>
                 </MetricCard>
 
                 {/* Average Card */}
                 <MetricCard intent="avg" label="Average">
-                  <Show when={m.area()?.avg !== undefined}>
-                    <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg">
-                      <span class="text-xs font-medium text-slate-500 dark:text-slate-400">
-                        Area
-                      </span>
-                      <div class="flex items-baseline gap-0.5">
-                        <p class="text-lg font-black text-orange-700 dark:text-orange-300 leading-none">
-                          {m.area()!.avg.toFixed(1)}
-                        </p>
-                        <span class="text-[10px] font-bold text-orange-600/70 dark:text-orange-400/70 leading-none">
-                          ¢
+                  <Show
+                    when={!loading}
+                    fallback={
+                      <>
+                        <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg animate-pulse">
+                          <span class="text-xs font-medium text-slate-400 dark:text-slate-500">
+                            Area
+                          </span>
+                          <div class="h-5 w-12 bg-orange-200/50 dark:bg-orange-900/30 rounded" />
+                        </div>
+                        <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg animate-pulse">
+                          <span class="text-xs font-medium text-slate-400 dark:text-slate-500">
+                            State
+                          </span>
+                          <div class="h-5 w-12 bg-orange-200/50 dark:bg-orange-900/30 rounded" />
+                        </div>
+                      </>
+                    }
+                  >
+                    <Show when={m?.area()?.avg !== undefined}>
+                      <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg">
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                          Area
                         </span>
+                        <div class="flex items-baseline gap-0.5">
+                          <p class="text-lg font-black text-orange-700 dark:text-orange-300 leading-none">
+                            {m?.area()?.avg.toFixed(1)}
+                          </p>
+                          <span class="text-[10px] font-bold text-orange-600/70 dark:text-orange-400/70 leading-none">
+                            ¢
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </Show>
-                  <Show when={m.state()?.avg !== undefined}>
-                    <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg">
-                      <span class="text-xs font-medium text-slate-500 dark:text-slate-400">
-                        State
-                      </span>
-                      <div class="flex items-baseline gap-0.5">
-                        <p class="text-lg font-black text-orange-700 dark:text-orange-300 leading-none">
-                          {m.state()!.avg.toFixed(1)}
-                        </p>
-                        <span class="text-[10px] font-bold text-orange-600/70 dark:text-orange-400/70 leading-none">
-                          ¢
+                    </Show>
+                    <Show when={m?.state()?.avg !== undefined}>
+                      <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg">
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                          State
                         </span>
+                        <div class="flex items-baseline gap-0.5">
+                          <p class="text-lg font-black text-orange-700 dark:text-orange-300 leading-none">
+                            {m?.state()?.avg.toFixed(1)}
+                          </p>
+                          <span class="text-[10px] font-bold text-orange-600/70 dark:text-orange-400/70 leading-none">
+                            ¢
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    </Show>
                   </Show>
                 </MetricCard>
 
                 {/* Highest Card */}
                 <MetricCard intent="expensive" label="Highest">
-                  <Show when={m.area()?.max}>
-                    <div
-                      class="flex items-center justify-between cursor-pointer hover:bg-rose-50 dark:hover:bg-rose-900/40 p-1.5 -m-1.5 rounded-lg transition-colors group"
-                      onClick={() => handleClick(m.area()?.max)}
-                    >
-                      <span class="text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
-                        Area
-                      </span>
-                      <div class="flex items-baseline gap-0.5">
-                        <p class="text-lg font-black text-rose-700 dark:text-rose-300 leading-none group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
-                          {m.area()!.max!.price.toFixed(1)}
-                        </p>
-                        <span class="text-[10px] font-bold text-rose-600/70 dark:text-rose-400/70 leading-none">
-                          ¢
+                  <Show
+                    when={!loading}
+                    fallback={
+                      <>
+                        <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg animate-pulse">
+                          <span class="text-xs font-medium text-slate-400 dark:text-slate-500">
+                            Area
+                          </span>
+                          <div class="h-5 w-12 bg-rose-200/50 dark:bg-rose-900/30 rounded" />
+                        </div>
+                        <div class="flex items-center justify-between p-1.5 -m-1.5 rounded-lg animate-pulse">
+                          <span class="text-xs font-medium text-slate-400 dark:text-slate-500">
+                            State
+                          </span>
+                          <div class="h-5 w-12 bg-rose-200/50 dark:bg-rose-900/30 rounded" />
+                        </div>
+                      </>
+                    }
+                  >
+                    <Show when={m?.area()?.max}>
+                      <div
+                        class="flex items-center justify-between cursor-pointer hover:bg-rose-50 dark:hover:bg-rose-900/40 p-1.5 -m-1.5 rounded-lg transition-colors group"
+                        onClick={() => handleClick(m?.area()?.max)}
+                      >
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+                          Area
                         </span>
+                        <div class="flex items-baseline gap-0.5">
+                          <p class="text-lg font-black text-rose-700 dark:text-rose-300 leading-none group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+                            {m?.area()?.max?.price.toFixed(1)}
+                          </p>
+                          <span class="text-[10px] font-bold text-rose-600/70 dark:text-rose-400/70 leading-none">
+                            ¢
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </Show>
-                  <Show when={m.state()?.max}>
-                    <div
-                      class="flex items-center justify-between cursor-pointer hover:bg-rose-50 dark:hover:bg-rose-900/40 p-1.5 -m-1.5 rounded-lg transition-colors group"
-                      onClick={() => handleClick(m.state()?.max)}
-                    >
-                      <span class="text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
-                        State
-                      </span>
-                      <div class="flex items-baseline gap-0.5">
-                        <p class="text-lg font-black text-rose-700 dark:text-rose-300 leading-none group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
-                          {m.state()!.max!.price.toFixed(1)}
-                        </p>
-                        <span class="text-[10px] font-bold text-rose-600/70 dark:text-rose-400/70 leading-none">
-                          ¢
+                    </Show>
+                    <Show when={m?.state()?.max}>
+                      <div
+                        class="flex items-center justify-between cursor-pointer hover:bg-rose-50 dark:hover:bg-rose-900/40 p-1.5 -m-1.5 rounded-lg transition-colors group"
+                        onClick={() => handleClick(m?.state()?.max)}
+                      >
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+                          State
                         </span>
+                        <div class="flex items-baseline gap-0.5">
+                          <p class="text-lg font-black text-rose-700 dark:text-rose-300 leading-none group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+                            {m?.state()?.max?.price.toFixed(1)}
+                          </p>
+                          <span class="text-[10px] font-bold text-rose-600/70 dark:text-rose-400/70 leading-none">
+                            ¢
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    </Show>
                   </Show>
                 </MetricCard>
               </div>

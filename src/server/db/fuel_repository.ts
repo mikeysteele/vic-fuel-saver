@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import { createDb } from "./client.ts";
 import { type AnyD1Database } from "drizzle-orm/d1";
+import { stations } from "./schema.ts";
 
 export class FuelRepository {
   private db;
@@ -8,6 +9,10 @@ export class FuelRepository {
   constructor(d1: AnyD1Database) {
     this.d1 = d1;
     this.db = createDb(d1);
+  }
+
+  async getStations() {
+    return await this.db.select().from(stations);
   }
 
   async getRecentTrends() {
@@ -21,6 +26,7 @@ export class FuelRepository {
           LAG(price) OVER(PARTITION BY station_id, fuel_type ORDER BY price_date ASC) as prev_price,
           ROW_NUMBER() OVER(PARTITION BY station_id, fuel_type ORDER BY price_date DESC) as rn
         FROM prices
+        WHERE price_date >= date((SELECT MAX(price_date) FROM prices), '-14 days')
       )
       SELECT station_id, fuel_type, price, updated_at, prev_price FROM RankedChanges WHERE rn = 1
     `) as {
@@ -59,6 +65,7 @@ export class FuelRepository {
   }
 
   async getPricesSnapshot(targetDate: string) {
+    const targetDateOnly = targetDate.slice(0, 10);
     return await this.db.all(sql`
       WITH RankedChanges AS (
         SELECT 
@@ -70,7 +77,7 @@ export class FuelRepository {
           LAG(price) OVER(PARTITION BY station_id, fuel_type ORDER BY price_date ASC) as prev_price,
           ROW_NUMBER() OVER(PARTITION BY station_id, fuel_type ORDER BY price_date DESC) as rn
         FROM prices
-        WHERE price_date <= ${targetDate}
+        WHERE price_date <= ${targetDateOnly} AND price_date >= date(${targetDateOnly}, '-30 days')
       )
       SELECT 
         s.id as station_id,

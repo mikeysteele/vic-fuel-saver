@@ -43,6 +43,16 @@ export interface FuelApiResponse {
   fuelPriceDetails: FuelPriceDetail[];
 }
 
+export interface FuelPriceEntry {
+  stationId: string;
+  fuelPrices: FuelPrice[];
+  updatedAt: string;
+}
+
+export interface FuelPricesResponse {
+  prices: FuelPriceEntry[];
+}
+
 export interface FuelMetricStat {
   price: number;
   stationId: string;

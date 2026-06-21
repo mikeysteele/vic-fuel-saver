@@ -22,6 +22,7 @@ interface FuelMapProps {
   areaMetrics?: Record<string, FuelMetricsAggregate>;
   mapFocus?: FuelMetricStat | null;
   isDark?: boolean;
+  pricesLoading?: boolean;
 }
 
 export function FuelMap(props: FuelMapProps) {
@@ -96,13 +97,13 @@ export function FuelMap(props: FuelMapProps) {
       const id = stationDetail.fuelStation.id;
       if (!markers.has(id)) {
         const { latitude, longitude } = stationDetail.fuelStation.location;
-        const brand = props.brandMap[stationDetail.fuelStation.brandId] ??
-          "Fuel";
-        const logoUrl = getBrandLogoUrl(brand, 64);
-
         const markerDiv = document.createElement("div");
         render(
-          () => <FuelMapMarkerIcon brand={brand} logoUrl={logoUrl} />,
+          () => {
+            const brandName = () => props.brandMap[stationDetail.fuelStation.brandId] ?? "Fuel";
+            const logoUrl = () => getBrandLogoUrl(brandName(), 64);
+            return <FuelMapMarkerIcon brand={brandName()} logoUrl={logoUrl()} />;
+          },
           markerDiv,
         );
 
@@ -131,6 +132,7 @@ export function FuelMap(props: FuelMapProps) {
                       brandMap={props.brandMap}
                       stateMetrics={props.stateMetrics}
                       areaMetrics={props.areaMetrics}
+                      pricesLoading={props.pricesLoading}
                     />
                   )}
                 </Show>

@@ -3,6 +3,9 @@ import { env } from "cloudflare:workers";
 import type {
   FuelApiResponse,
   FuelBrandsResponse,
+  FuelPriceEntry,
+  FuelPricesResponse,
+  FuelStation,
 } from "../features/fuel/types.ts";
 import { getCache } from "./cache.ts";
 import { vicFuelApiClient } from "./vic-fuel-api.ts";
@@ -15,8 +18,8 @@ import type { SnapshotRow, TrendRow } from "./fuel_mappers.ts";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const PRICES_CACHE_KEY = "vic_fuel_prices_cache";
-const PRICES_CACHE_TTL_MS = 60_000; // 60 seconds
+const PRICES_CACHE_KEY = "vic_fuel_prices_cache_v2";
+const PRICES_CACHE_TTL_MS = 4 * 60 * 60_000; // 60 seconds
 
 const BRANDS_CACHE_KEY = "vic_fuel_brands_cache";
 const BRANDS_CACHE_TTL_MS = 24 * 60 * 60 * 1_000; // 24 hours — reference data changes rarely
@@ -49,16 +52,57 @@ async function withStaleFallback<T>(
   }
 }
 
+// ─── Stations ────────────────────────────────────────────────────────────────
+
+export const getFuelStations = createServerFn({ method: "GET" }).handler(
+  async () => {
+    const d1 = env?.DB || globalThis.DB;
+    if (!d1) {
+      throw new Error("D1 database binding 'DB' not found");
+    }
+    const repo = new FuelRepository(d1);
+    const rows = await repo.getStations();
+
+    const stations = rows.map<FuelStation>((s) => ({
+      id: s.id,
+      brandId: s.brandId,
+      name: s.name,
+      address: s.address,
+      suburb: s.suburb,
+      state: s.state,
+      postcode: s.postcode,
+      location: { latitude: s.lat, longitude: s.lng },
+    }));
+    return { stations };
+  }
+);
+
 // ─── Prices ──────────────────────────────────────────────────────────────────
 
 /** In-memory fallback retained across cache evictions */
-const pricesStale = { current: null as FuelApiResponse | null };
+const pricesStale = { current: null as FuelPricesResponse | null };
+
+function stripStationMetadata(data: FuelApiResponse): FuelPricesResponse {
+  return {
+    prices: data.fuelPriceDetails.map<FuelPriceEntry>((d) => ({
+      stationId: d.fuelStation.id,
+      fuelPrices: d.fuelPrices.map((p) => ({
+        fuelType: p.fuelType,
+        price: p.price,
+        isAvailable: p.isAvailable,
+        updatedAt: p.updatedAt,
+        trend: p.trend,
+      })),
+      updatedAt: d.updatedAt,
+    })),
+  };
+}
 
 export const getFuelPrices = createServerFn({ method: "GET" }).handler(
-  async (): Promise<FuelApiResponse> => {
+  async (): Promise<FuelPricesResponse> => {
     const cache = getCache();
 
-    const cached = await cache.get<FuelApiResponse>(PRICES_CACHE_KEY);
+    const cached = await cache.get<FuelPricesResponse>(PRICES_CACHE_KEY);
     if (cached) {
       console.log("Returning cached fuel prices");
       return cached;
@@ -81,8 +125,9 @@ export const getFuelPrices = createServerFn({ method: "GET" }).handler(
         }
 
         console.log("Fetched new fuel prices, updating cache");
-        await cache.set(PRICES_CACHE_KEY, data, PRICES_CACHE_TTL_MS);
-        return data;
+        const stripped = stripStationMetadata(data);
+        await cache.set(PRICES_CACHE_KEY, stripped, PRICES_CACHE_TTL_MS);
+        return stripped;
       },
       pricesStale,
       "fuel prices",
@@ -104,8 +149,8 @@ export const getEarliestSyncDate = createServerFn({ method: "GET" }).handler(
 );
 
 export const getFuelPricesSnapshot = createServerFn({ method: "GET" })
-  .inputValidator((date: string) => date)
-  .handler(async (ctx: { data: string }): Promise<FuelApiResponse> => {
+  .validator((date: string) => date)
+  .handler(async (ctx: { data: string }): Promise<FuelPricesResponse> => {
     const targetDate = ctx.data;
     const d1 = env?.DB || globalThis.DB;
 
@@ -117,7 +162,8 @@ export const getFuelPricesSnapshot = createServerFn({ method: "GET" })
     const rows = await repo.getPricesSnapshot(
       targetDate,
     ) as unknown as SnapshotRow[];
-    return mapSnapshotRowsToApiResponse(rows);
+    const apiResponse = mapSnapshotRowsToApiResponse(rows);
+    return stripStationMetadata(apiResponse);
   });
 
 // ─── Brands ──────────────────────────────────────────────────────────────────

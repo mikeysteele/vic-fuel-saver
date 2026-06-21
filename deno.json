@@ -27,8 +27,7 @@
     "noFallthroughCasesInSwitch": true
   },
   "imports": {
-    "~/": "./src/",
-    "cloudflare:workers": "npm:@cloudflare/workers-types@latest"
+    "~/": "./src/"
   },
   "lint": {
     "exclude": [

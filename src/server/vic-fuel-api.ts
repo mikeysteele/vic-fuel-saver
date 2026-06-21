@@ -52,7 +52,10 @@ export class VicFuelApiClient {
    * @returns The JSON response as a Promise.
    */
   private async fetchJson<T>(url: string): Promise<T> {
-    const response = await fetch(url, { headers: this.makeHeaders() });
+    const response = await fetch(url, {
+      headers: this.makeHeaders(),
+      signal: AbortSignal.timeout(10_000),
+    });
 
     if (!response.ok) {
       throw new Error(

@@ -18,6 +18,7 @@ interface MapViewLayerProps {
   areaMetrics: Record<string, FuelMetricsAggregate>;
   mapFocus: FuelMetricStat | null;
   isDark: boolean;
+  pricesLoading?: boolean;
 }
 
 export function MapViewLayer(props: MapViewLayerProps) {
@@ -37,6 +38,7 @@ export function MapViewLayer(props: MapViewLayerProps) {
         areaMetrics={props.areaMetrics}
         mapFocus={props.mapFocus}
         isDark={props.isDark}
+        pricesLoading={props.pricesLoading}
       />
     </div>
   );

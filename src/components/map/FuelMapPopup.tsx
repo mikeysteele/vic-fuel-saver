@@ -17,6 +17,7 @@ export interface FuelMapPopupProps {
   brandMap: Record<string, string>;
   stateMetrics?: Record<string, FuelMetricsAggregate>;
   areaMetrics?: Record<string, FuelMetricsAggregate>;
+  pricesLoading?: boolean;
 }
 
 export function FuelMapPopup(props: FuelMapPopupProps) {
@@ -51,6 +52,7 @@ export function FuelMapPopup(props: FuelMapPopupProps) {
         prices={displayedPrices()}
         stateMetrics={props.stateMetrics}
         areaMetrics={props.areaMetrics}
+        loading={props.pricesLoading}
       />
 
       <div class="p-2 pt-0">

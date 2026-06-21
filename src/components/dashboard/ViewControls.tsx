@@ -14,6 +14,7 @@ interface ViewControlsProps {
   viewMode: "map" | "list";
   setViewMode: (mode: "map" | "list") => void;
   dateNavigator?: import("solid-js").JSX.Element;
+  pricesLoading?: boolean;
 }
 
 export function ViewControls(props: ViewControlsProps) {
@@ -24,6 +25,7 @@ export function ViewControls(props: ViewControlsProps) {
         stateMetrics={props.stateMetrics}
         areaMetrics={props.areaMetrics}
         onFocusStation={props.onFocusStation}
+        pricesLoading={props.pricesLoading}
       />
 
       {/* View toggle & Date Navigator */}

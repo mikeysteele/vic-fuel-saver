@@ -1,17 +1,24 @@
 import { createQuery } from "@tanstack/solid-query";
 import { useQueryClient } from "@tanstack/solid-query";
-import { createSignal } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 import {
   getEarliestSyncDate,
   getFuelBrands,
   getFuelPrices,
   getFuelPricesSnapshot,
+  getFuelStations,
 } from "~/server/fuel.ts";
-import type { FuelApiResponse, FuelBrandsResponse } from "./types.ts";
+import type {
+  FuelBrandsResponse,
+  FuelPricesResponse,
+  FuelStation,
+  FuelPriceDetail,
+} from "./types.ts";
 
 import { getVictorianISODate } from "~/lib/date.ts";
 export const fuelQueryKeys = {
   prices: (date: string | null) => ["fuel", "prices", date] as const,
+  stations: ["fuel", "stations"] as const,
   brands: ["fuel", "brands"] as const,
   earliest: ["fuel", "earliest"] as const,
 };
@@ -22,12 +29,18 @@ export function createFuelData() {
   // null = live mode.
   const [selectedDate, setSelectedDate] = createSignal<string | null>(null);
 
-  const pricesQuery = createQuery<FuelApiResponse>(() => {
+  const stationsQuery = createQuery(() => ({
+    queryKey: fuelQueryKeys.stations,
+    queryFn: () => getFuelStations(),
+    staleTime: Infinity,
+    gcTime: Infinity,
+  }));
+
+  const pricesQuery = createQuery<FuelPricesResponse>(() => {
     const date = selectedDate();
     // Append end-of-day in UTC+11 (AEDT). This targets everything synced on that day in Vic time.
     // e.g. "2026-03-25" → "2026-03-25T13:59:59Z" (end of 2026-03-26 00:59 AEDT, safely covers the day)
     const snapshotTs = date ? `${date}T13:59:59Z` : null;
-
     return {
       queryKey: fuelQueryKeys.prices(date),
       queryFn: () =>
@@ -52,6 +65,42 @@ export function createFuelData() {
     gcTime: 24 * 60 * 60 * 1000,
   }));
 
+  const combinedData = createMemo(() => {
+    const stations = stationsQuery.data;
+    if (!stations) return undefined;
+
+    const pricesData = pricesQuery.data;
+    const stationMap = new Map<string, FuelStation>();
+    for (const s of stations.stations) {
+      stationMap.set(s.id, s);
+    }
+
+    const fuelPriceDetails: FuelPriceDetail[] = [];
+    if (pricesData) {
+      for (const p of pricesData.prices) {
+        const fuelStation = stationMap.get(p.stationId);
+        if (fuelStation) {
+          fuelPriceDetails.push({
+            fuelStation,
+            fuelPrices: p.fuelPrices,
+            updatedAt: p.updatedAt,
+          });
+        }
+      }
+    } else {
+      // Fallback: render stations with empty prices so the map renders immediately
+      for (const s of stations.stations) {
+        fuelPriceDetails.push({
+          fuelStation: s,
+          fuelPrices: [],
+          updatedAt: "",
+        });
+      }
+    }
+
+    return { fuelPriceDetails };
+  });
+
   const refetch = () => {
     queryClient.invalidateQueries({
       queryKey: fuelQueryKeys.prices(selectedDate()),
@@ -69,9 +118,10 @@ export function createFuelData() {
   };
 
   const uniqueFuelTypes = () => {
-    if (!pricesQuery.data) return [];
+    const details = combinedData()?.fuelPriceDetails;
+    if (!details) return [];
     const types = new Set<string>();
-    pricesQuery.data.fuelPriceDetails.forEach((station) => {
+    details.forEach((station) => {
       station.fuelPrices.forEach((price) => {
         types.add(price.fuelType);
       });
@@ -80,9 +130,10 @@ export function createFuelData() {
   };
 
   const uniqueBrands = () => {
-    if (!pricesQuery.data) return [];
+    const details = combinedData()?.fuelPriceDetails;
+    if (!details) return [];
     const brands = new Set<string>();
-    pricesQuery.data.fuelPriceDetails.forEach((station) => {
+    details.forEach((station) => {
       brands.add(station.fuelStation.brandId);
     });
     return Array.from(brands).sort((a, b) => {
@@ -94,7 +145,7 @@ export function createFuelData() {
   };
 
   const latestUpdatedAt = () => {
-    const details = pricesQuery.data?.fuelPriceDetails;
+    const details = combinedData()?.fuelPriceDetails;
     if (!details?.length) return null;
     return details.reduce((latest, s) => {
       return s.updatedAt > latest ? s.updatedAt : latest;
@@ -123,10 +174,11 @@ export function createFuelData() {
   };
 
   return {
-    data: () => pricesQuery.data,
+    data: combinedData,
     refetch,
-    loading: () => pricesQuery.isPending,
-    error: () => pricesQuery.error || brandsQuery.error,
+    loading: () => stationsQuery.isPending,
+    pricesLoading: () => pricesQuery.isPending,
+    error: () => pricesQuery.error || stationsQuery.error || brandsQuery.error,
     uniqueFuelTypes,
     uniqueBrands,
     brandMap,

@@ -5,7 +5,7 @@ import { and, desc, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 export const getStationPriceHistory = createServerFn({ method: "GET" })
-  .inputValidator((
+  .validator((
     d: { stationId: string; fuelType?: string; limit?: number },
   ) => d)
   .handler(async (ctx) => {
