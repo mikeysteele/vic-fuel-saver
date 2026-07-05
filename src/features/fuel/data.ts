@@ -34,6 +34,7 @@ export function createFuelData() {
     queryFn: () => getFuelStations(),
     staleTime: Infinity,
     gcTime: Infinity,
+    enabled: typeof window !== "undefined",
   }));
 
   const pricesQuery = createQuery<FuelPricesResponse>(() => {
@@ -49,6 +50,7 @@ export function createFuelData() {
           : getFuelPrices(),
       staleTime: date ? 24 * 60 * 60 * 1000 : 5 * 60 * 1000,
       placeholderData: (prev) => prev,
+      enabled: typeof window !== "undefined",
     };
   });
 
@@ -56,6 +58,7 @@ export function createFuelData() {
     queryKey: fuelQueryKeys.earliest,
     queryFn: () => getEarliestSyncDate(),
     staleTime: Infinity,
+    enabled: typeof window !== "undefined",
   }));
 
   const brandsQuery = createQuery<FuelBrandsResponse>(() => ({
@@ -63,6 +66,7 @@ export function createFuelData() {
     queryFn: () => getFuelBrands(),
     staleTime: 24 * 60 * 60 * 1000,
     gcTime: 24 * 60 * 60 * 1000,
+    enabled: typeof window !== "undefined",
   }));
 
   const combinedData = createMemo(() => {
