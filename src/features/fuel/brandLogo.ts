@@ -48,8 +48,9 @@ export function getBrandLogoUrl(
   if (!isBrand(brandName)) return undefined;
   const domain = BRAND_DOMAIN_MAP[brandName];
 
-  const token = typeof import.meta !== "undefined" && import.meta.env
-    ? import.meta.env.VITE_LOGO_DEV_TOKEN
-    : env.VITE_LOGO_DEV_TOKEN;
+  const token =
+    (typeof import.meta !== "undefined" && import.meta.env?.VITE_LOGO_DEV_TOKEN) ||
+    env.VITE_LOGO_DEV_TOKEN;
   return `https://img.logo.dev/${domain}?token=${token}&size=${sizeValue}`;
 }
+

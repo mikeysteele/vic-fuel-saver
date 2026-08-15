@@ -27,12 +27,14 @@ describe("getBrandLogoUrl", () => {
     expect(getBrandLogoUrl("UnknownBrand")).toBeUndefined();
   });
 
-  it("returns a URL string for a known brand", () => {
+  it("returns a URL string for a known brand with token", () => {
     const url = getBrandLogoUrl("BP", 64);
     expect(url).not.toBeNull();
     expect(url).not.toBeUndefined();
     expect(url).toContain("bp.com.au");
     expect(url).toContain("size=64");
+    expect(url).toContain("token=");
+    expect(url).not.toContain("token=undefined");
     expect(url).toMatch(/^https:\/\/img\.logo\.dev\//);
   });
 

@@ -26,7 +26,7 @@ export const env = createEnv({
   clientPrefix: "VITE_",
 
   client: {
-    VITE_LOGO_DEV_TOKEN: z.string().min(1).default("dummy-token"),
+    VITE_LOGO_DEV_TOKEN: z.string().min(1).default("pk_D2SenNN6RaSjFmo0q8cDvA"),
   },
 
   /**
