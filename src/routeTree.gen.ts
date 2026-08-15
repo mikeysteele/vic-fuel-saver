@@ -8,79 +8,79 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiSyncPricesRouteImport } from './routes/api/sync-prices'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as ApiSyncPricesRouteImport } from "./routes/api/sync-prices";
 
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ApiSyncPricesRoute = ApiSyncPricesRouteImport.update({
-  id: '/api/sync-prices',
-  path: '/api/sync-prices',
+  id: "/api/sync-prices",
+  path: "/api/sync-prices",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/api/sync-prices': typeof ApiSyncPricesRoute
+  "/": typeof IndexRoute;
+  "/api/sync-prices": typeof ApiSyncPricesRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/api/sync-prices': typeof ApiSyncPricesRoute
+  "/": typeof IndexRoute;
+  "/api/sync-prices": typeof ApiSyncPricesRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/api/sync-prices': typeof ApiSyncPricesRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexRoute;
+  "/api/sync-prices": typeof ApiSyncPricesRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/sync-prices'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/sync-prices'
-  id: '__root__' | '/' | '/api/sync-prices'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: "/" | "/api/sync-prices";
+  fileRoutesByTo: FileRoutesByTo;
+  to: "/" | "/api/sync-prices";
+  id: "__root__" | "/" | "/api/sync-prices";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  ApiSyncPricesRoute: typeof ApiSyncPricesRoute
+  IndexRoute: typeof IndexRoute;
+  ApiSyncPricesRoute: typeof ApiSyncPricesRoute;
 }
 
-declare module '@tanstack/solid-router' {
+declare module "@tanstack/solid-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/sync-prices': {
-      id: '/api/sync-prices'
-      path: '/api/sync-prices'
-      fullPath: '/api/sync-prices'
-      preLoaderRoute: typeof ApiSyncPricesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/api/sync-prices": {
+      id: "/api/sync-prices";
+      path: "/api/sync-prices";
+      fullPath: "/api/sync-prices";
+      preLoaderRoute: typeof ApiSyncPricesRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiSyncPricesRoute: ApiSyncPricesRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/solid-start'
-declare module '@tanstack/solid-start' {
+import type { getRouter } from "./router.tsx";
+import type { createStart } from "@tanstack/solid-start";
+declare module "@tanstack/solid-start" {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }

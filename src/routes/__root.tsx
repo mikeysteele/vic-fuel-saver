@@ -34,7 +34,7 @@ export const Route = createRootRouteWithContext<{
   }),
   shellComponent: RootComponent,
   errorComponent: ErrorComponent,
-  notFoundComponent: () => "Not Found"
+  notFoundComponent: () => "Not Found",
 });
 
 function getInitialTheme(loaderData: { theme: "light" | "dark" } | undefined) {
@@ -64,7 +64,7 @@ function RootComponent() {
   );
 }
 function ErrorComponent() {
-  return 'Error'
+  return "Error";
 }
 function RootHtml() {
   const { theme } = useTheme();

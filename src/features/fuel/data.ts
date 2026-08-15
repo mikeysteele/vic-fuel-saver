@@ -10,9 +10,9 @@ import {
 } from "~/server/fuel.ts";
 import type {
   FuelBrandsResponse,
+  FuelPriceDetail,
   FuelPricesResponse,
   FuelStation,
-  FuelPriceDetail,
 } from "./types.ts";
 
 import { getVictorianISODate } from "~/lib/date.ts";

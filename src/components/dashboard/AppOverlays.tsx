@@ -26,10 +26,11 @@ export function AppOverlays(props: AppOverlaysProps) {
       {/* Loading overlay */}
       <Show when={showDom()}>
         <div
-          class={`absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm space-y-4 transition-all duration-700 ease-in-out ${props.loading()
-            ? "opacity-100 scale-100 pointer-events-auto"
-            : "opacity-0 scale-95 pointer-events-none"
-            }`}
+          class={`absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm space-y-4 transition-all duration-700 ease-in-out ${
+            props.loading()
+              ? "opacity-100 scale-100 pointer-events-auto"
+              : "opacity-0 scale-95 pointer-events-none"
+          }`}
         >
           <div class="animate-spin h-10 w-10 border-4 border-orange-500 border-t-transparent rounded-full shadow-[0_0_15px_rgba(249,115,22,0.5)]" />
           <p class="text-slate-600 dark:text-slate-400 font-medium animate-pulse">

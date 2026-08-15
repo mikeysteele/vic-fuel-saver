@@ -100,9 +100,12 @@ export function FuelMap(props: FuelMapProps) {
         const markerDiv = document.createElement("div");
         render(
           () => {
-            const brandName = () => props.brandMap[stationDetail.fuelStation.brandId] ?? "Fuel";
+            const brandName = () =>
+              props.brandMap[stationDetail.fuelStation.brandId] ?? "Fuel";
             const logoUrl = () => getBrandLogoUrl(brandName(), 64);
-            return <FuelMapMarkerIcon brand={brandName()} logoUrl={logoUrl()} />;
+            return (
+              <FuelMapMarkerIcon brand={brandName()} logoUrl={logoUrl()} />
+            );
           },
           markerDiv,
         );
@@ -120,7 +123,9 @@ export function FuelMap(props: FuelMapProps) {
         marker.bindPopup(
           () => {
             const popupDiv = document.createElement("div");
-            if (dispose) dispose();
+            if (dispose) {
+              dispose();
+            }
             dispose = render(
               () => (
                 <Show when={currentStationsMap().get(id)}>

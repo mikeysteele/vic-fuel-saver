@@ -74,7 +74,7 @@ export const getFuelStations = createServerFn({ method: "GET" }).handler(
       location: { latitude: s.lat, longitude: s.lng },
     }));
     return { stations };
-  }
+  },
 );
 
 // ─── Prices ──────────────────────────────────────────────────────────────────

@@ -10,7 +10,7 @@ const parseTheme = (theme?: string) => {
     return lower;
   }
   return null;
-}
+};
 
 export const getThemeFromCookie = createServerFn({ method: "GET" }).handler(
   async () => {

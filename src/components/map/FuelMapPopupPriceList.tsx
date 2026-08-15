@@ -64,7 +64,8 @@ export function FuelMapPopupPriceList(props: FuelMapPopupPriceListProps) {
         <For each={props.prices}>
           {(priceEntry) => {
             const isAvailable = priceEntry.isAvailable;
-            const stateAvg = () => props.stateMetrics?.[priceEntry.fuelType]?.avg;
+            const stateAvg = () =>
+              props.stateMetrics?.[priceEntry.fuelType]?.avg;
             const stateDiff = () => {
               const avg = stateAvg();
               return avg && isAvailable && priceEntry.price > 0
@@ -125,7 +126,8 @@ export function FuelMapPopupPriceList(props: FuelMapPopupPriceListProps) {
                   {/* Comparative Margin Badges Stack */}
                   <div class="flex flex-col items-end gap-[2px]">
                     <Show
-                      when={stateDiff() !== null && Math.abs(stateDiff()!) > 0.5}
+                      when={stateDiff() !== null &&
+                        Math.abs(stateDiff()!) > 0.5}
                       fallback={
                         <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-1 py-[1.5px] rounded w-[60px] text-center shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]">
                           State Avg
