@@ -1,9 +1,5 @@
 import { createSignal } from "solid-js";
-import type {
-  FuelMetricsAggregate,
-  FuelPrice,
-  FuelStation,
-} from "~/features/fuel/types.ts";
+import type { FuelMetricsAggregate, FuelPrice, FuelStation } from "~/features/fuel/types.ts";
 import { PriceList } from "./PriceList.tsx";
 import { StationAddress } from "./StationAddress.tsx";
 import { StationHeader } from "./StationHeader.tsx";
@@ -24,9 +20,7 @@ export function FuelStationCard(props: FuelStationCardProps) {
 
   const displayedPrices = () => {
     if (props.selectedFuelTypes && props.selectedFuelTypes.length > 0) {
-      return props.prices.filter((p) =>
-        props.selectedFuelTypes!.includes(p.fuelType)
-      );
+      return props.prices.filter((p) => props.selectedFuelTypes!.includes(p.fuelType));
     }
     return props.prices;
   };
@@ -34,8 +28,7 @@ export function FuelStationCard(props: FuelStationCardProps) {
   return (
     <div class="group relative flex flex-col border border-slate-200 dark:border-white/10 rounded-2xl p-6 md:p-8 transition-all duration-500 overflow-hidden w-full bg-white/80 dark:bg-white/[0.03] backdrop-blur-md hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgb(249,115,22,0.15)] hover:border-orange-500/30 hover:bg-white dark:hover:bg-white/[0.05]">
       {/* Decorative glare effect on hover */}
-      <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/50 dark:via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none -translate-x-full group-hover:translate-x-full ease-out">
-      </div>
+      <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/50 dark:via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none -translate-x-full group-hover:translate-x-full ease-out"></div>
 
       <StationHeader
         name={props.station.name}
@@ -81,10 +74,7 @@ export function FuelStationCard(props: FuelStationCardProps) {
       </div>
 
       <Modal isOpen={showHistory()} onClose={() => setShowHistory(false)}>
-        <StationHistoryView
-          stationId={props.station.id}
-          stationName={props.station.name}
-        />
+        <StationHistoryView stationId={props.station.id} stationName={props.station.name} />
       </Modal>
     </div>
   );

@@ -22,8 +22,7 @@ export const useFavouratable = () => useContext(FavouratableContext);
 const safeLocalStorage = {
   getItem: (key: string) => {
     try {
-      return typeof localStorage !== "undefined" &&
-          typeof localStorage.getItem === "function"
+      return typeof localStorage !== "undefined" && typeof localStorage.getItem === "function"
         ? localStorage.getItem(key)
         : null;
     } catch (_e) {
@@ -32,10 +31,7 @@ const safeLocalStorage = {
   },
   setItem: (key: string, value: string) => {
     try {
-      if (
-        typeof localStorage !== "undefined" &&
-        typeof localStorage.setItem === "function"
-      ) {
+      if (typeof localStorage !== "undefined" && typeof localStorage.setItem === "function") {
         localStorage.setItem(key, value);
       }
     } catch (_e) {
@@ -44,10 +40,7 @@ const safeLocalStorage = {
   },
   removeItem: (key: string) => {
     try {
-      if (
-        typeof localStorage !== "undefined" &&
-        typeof localStorage.removeItem === "function"
-      ) {
+      if (typeof localStorage !== "undefined" && typeof localStorage.removeItem === "function") {
         localStorage.removeItem(key);
       }
     } catch (_e) {
@@ -110,9 +103,7 @@ export function Favouratable(props: FavouratableContainerProps) {
   };
 
   return (
-    <FavouratableContext.Provider value={context}>
-      {props.children}
-    </FavouratableContext.Provider>
+    <FavouratableContext.Provider value={context}>{props.children}</FavouratableContext.Provider>
   );
 }
 
@@ -136,9 +127,7 @@ export function FavourableIcon(props: { class?: string }) {
           ? "text-amber-500 bg-amber-500/10 scale-110 shadow-sm shadow-amber-500/10"
           : "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
       } ${props.class || ""}`}
-      title={context.isFavourited()
-        ? "Remove from favourites"
-        : "Add to favourites"}
+      title={context.isFavourited() ? "Remove from favourites" : "Add to favourites"}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -175,8 +164,7 @@ export function withFavouratable<P extends FavouratableComponentProps>(
   BaseComponent: Component<P>,
 ): Component<P & { storageKey?: string; wrapperClass?: string }> {
   return (props) => {
-    const storageKey = () =>
-      props.storageKey || props.id || "unnamed_favourite";
+    const storageKey = () => props.storageKey || props.id || "unnamed_favourite";
 
     return (
       <Favouratable
@@ -185,11 +173,7 @@ export function withFavouratable<P extends FavouratableComponentProps>(
           props.onChange?.(val);
         }}
       >
-        <div
-          class={`flex items-center gap-2 w-full group/favourable ${
-            props.wrapperClass || ""
-          }`}
-        >
+        <div class={`flex items-center gap-2 w-full group/favourable ${props.wrapperClass || ""}`}>
           <div class="flex-1">
             <FavouratableConsumer BaseComponent={BaseComponent} {...props} />
           </div>
@@ -215,8 +199,8 @@ function FavouratableConsumer<P extends FavouratableComponentProps>(
       {...(isMultiSelect()
         ? { selected: context.value() || props.selected || [] }
         : {
-          value: (context.value() as string) || (props.value as string) || "",
-        })}
+            value: (context.value() as string) || (props.value as string) || "",
+          })}
       onChange={(val: unknown) => {
         context.setValue(val);
         props.onChange?.(val);

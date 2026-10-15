@@ -12,28 +12,20 @@ export function filterAndSortStations(
   let result = stations;
 
   if (selectedBrandIds.length > 0) {
-    result = result.filter((s) =>
-      selectedBrandIds.includes(s.fuelStation.brandId)
-    );
+    result = result.filter((s) => selectedBrandIds.includes(s.fuelStation.brandId));
   }
 
   if (selectedFuelTypes.length > 0) {
     result = result.filter((s) =>
-      s.fuelPrices.some((p: FuelPrice) =>
-        selectedFuelTypes.includes(p.fuelType)
-      )
+      s.fuelPrices.some((p: FuelPrice) => selectedFuelTypes.includes(p.fuelType)),
     );
 
     const primaryFuel = selectedFuelTypes[0];
     result = result.slice().sort((a, b) => {
-      const priceA = a.fuelPrices.find((p) =>
-        p.fuelType === primaryFuel
-      )?.price ??
-        Number.POSITIVE_INFINITY;
-      const priceB = b.fuelPrices.find((p) =>
-        p.fuelType === primaryFuel
-      )?.price ??
-        Number.POSITIVE_INFINITY;
+      const priceA =
+        a.fuelPrices.find((p) => p.fuelType === primaryFuel)?.price ?? Number.POSITIVE_INFINITY;
+      const priceB =
+        b.fuelPrices.find((p) => p.fuelType === primaryFuel)?.price ?? Number.POSITIVE_INFINITY;
       return priceA - priceB;
     });
   }

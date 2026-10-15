@@ -1,10 +1,7 @@
 import { Panel } from "../ui/Panel.tsx";
 import { Button } from "../ui/Button.tsx";
 import { FuelMetrics } from "./FuelMetrics.tsx";
-import type {
-  FuelMetricsAggregate,
-  FuelMetricStat,
-} from "~/features/fuel/types.ts";
+import type { FuelMetricsAggregate, FuelMetricStat } from "~/features/fuel/types.ts";
 
 interface ViewControlsProps {
   selectedFuelTypes: string[];
@@ -30,20 +27,12 @@ export function ViewControls(props: ViewControlsProps) {
 
       {/* View toggle & Date Navigator */}
       <div class="flex flex-col md:flex-row items-center justify-between gap-3 w-full relative">
-        <div class="self-start md:self-auto z-10">
-          {props.dateNavigator}
-        </div>
+        <div class="self-start md:self-auto z-10">{props.dateNavigator}</div>
         <div class="flex items-center justify-center md:absolute md:left-1/2 md:-translate-x-1/2">
-          <Panel
-            intent="glass"
-            padding="none"
-            class="inline-flex p-1 !rounded-xl"
-          >
+          <Panel intent="glass" padding="none" class="inline-flex p-1 !rounded-xl">
             <Button
               onClick={() => props.setViewMode("map")}
-              intent={props.viewMode === "map"
-                ? "viewToggleActive"
-                : "viewToggleInactive"}
+              intent={props.viewMode === "map" ? "viewToggleActive" : "viewToggleInactive"}
               size="viewToggle"
               type="button"
             >
@@ -51,9 +40,7 @@ export function ViewControls(props: ViewControlsProps) {
             </Button>
             <Button
               onClick={() => props.setViewMode("list")}
-              intent={props.viewMode === "list"
-                ? "viewToggleActive"
-                : "viewToggleInactive"}
+              intent={props.viewMode === "list" ? "viewToggleActive" : "viewToggleInactive"}
               size="viewToggle"
               type="button"
             >

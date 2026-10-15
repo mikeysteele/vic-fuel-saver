@@ -16,23 +16,13 @@ describe("cn", () => {
   });
 
   it("ignores falsy values", () => {
-    expect(
-      cn(
-        "text-red-500",
-        false,
-        undefined,
-        null as unknown as string,
-        "font-bold",
-      ),
-    ).toBe(
+    expect(cn("text-red-500", false, undefined, null as unknown as string, "font-bold")).toBe(
       "text-red-500 font-bold",
     );
   });
 
   it("handles conditional classes via object syntax", () => {
-    expect(cn({ "text-red-500": true, "font-bold": false })).toBe(
-      "text-red-500",
-    );
+    expect(cn({ "text-red-500": true, "font-bold": false })).toBe("text-red-500");
   });
 
   it("returns empty string when no args", () => {

@@ -95,19 +95,13 @@ export function PriceItem(props: PriceItemProps) {
       <div class="text-right z-10 flex flex-col items-end">
         <Show
           when={isAvailable()}
-          fallback={
-            <span class="text-lg font-medium text-slate-400 dark:text-slate-600">
-              N/A
-            </span>
-          }
+          fallback={<span class="text-lg font-medium text-slate-400 dark:text-slate-600">N/A</span>}
         >
           <div class="flex items-baseline gap-1">
             <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
               {props.priceEntry.price}
             </span>
-            <span class="text-sm font-bold text-slate-500 dark:text-slate-400">
-              ¢
-            </span>
+            <span class="text-sm font-bold text-slate-500 dark:text-slate-400">¢</span>
             <span class="ml-1 flex items-center self-center">
               <Show when={props.priceEntry.trend === "up"}>
                 <TrendingUp class="w-5 h-5 text-rose-500 drop-shadow-sm" />
@@ -129,22 +123,19 @@ export function PriceItem(props: PriceItemProps) {
                 {stateDiff()! < -0.5
                   ? `${Math.abs(stateDiff()!).toFixed(1)}¢ below State`
                   : stateDiff()! > 0.5
-                  ? `${stateDiff()!.toFixed(1)}¢ above State`
-                  : "State Average"}
+                    ? `${stateDiff()!.toFixed(1)}¢ above State`
+                    : "State Average"}
               </PriceBadge>
             </Show>
             <Show when={areaDiff() !== null}>
-              <PriceBadge
-                intent={diffIntent(areaDiff())}
-                class="shadow-sm"
-              >
+              <PriceBadge intent={diffIntent(areaDiff())} class="shadow-sm">
                 {areaDiff()! < -0.5 && <ChevronDown />}
                 {areaDiff()! > 0.5 && <ChevronUp />}
                 {areaDiff()! < -0.5
                   ? `${Math.abs(areaDiff()!).toFixed(1)}¢ below Area`
                   : areaDiff()! > 0.5
-                  ? `${areaDiff()!.toFixed(1)}¢ above Area`
-                  : "Area Average"}
+                    ? `${areaDiff()!.toFixed(1)}¢ above Area`
+                    : "Area Average"}
               </PriceBadge>
             </Show>
           </div>

@@ -26,18 +26,10 @@ const makeStation = (
   updatedAt: "",
 });
 
-const stationBP_U91_180 = makeStation("1", "BP", [
-  { fuelType: "U91", price: 180 },
-]);
-const stationShell_U91_160 = makeStation("2", "SHELL", [
-  { fuelType: "U91", price: 160 },
-]);
-const stationBP_P98_200 = makeStation("3", "BP", [
-  { fuelType: "P98", price: 200 },
-]);
-const stationShell_P98_190 = makeStation("4", "SHELL", [
-  { fuelType: "P98", price: 190 },
-]);
+const stationBP_U91_180 = makeStation("1", "BP", [{ fuelType: "U91", price: 180 }]);
+const stationShell_U91_160 = makeStation("2", "SHELL", [{ fuelType: "U91", price: 160 }]);
+const stationBP_P98_200 = makeStation("3", "BP", [{ fuelType: "P98", price: 200 }]);
+const stationShell_P98_190 = makeStation("4", "SHELL", [{ fuelType: "P98", price: 190 }]);
 
 const allStations = [
   stationBP_U91_180,
@@ -55,8 +47,7 @@ describe("filterAndSortStations", () => {
   it("filters by brand", () => {
     const result = filterAndSortStations(allStations, ["BP"], []);
     expect(result).toHaveLength(2);
-    expect(result.every((s: FuelPriceDetail) => s.fuelStation.brandId === "BP"))
-      .toBe(true);
+    expect(result.every((s: FuelPriceDetail) => s.fuelStation.brandId === "BP")).toBe(true);
   });
 
   it("filters by fuel type", () => {
@@ -64,7 +55,7 @@ describe("filterAndSortStations", () => {
     expect(result).toHaveLength(2);
     expect(
       result.every((s: FuelPriceDetail) =>
-        s.fuelPrices.some((p: FuelPrice) => p.fuelType === "U91")
+        s.fuelPrices.some((p: FuelPrice) => p.fuelType === "U91"),
       ),
     ).toBe(true);
   });

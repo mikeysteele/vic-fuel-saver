@@ -8,16 +8,14 @@ export interface FuelMapMarkerIconProps {
 export function FuelMapMarkerIcon(props: FuelMapMarkerIconProps) {
   const [showFallback, setShowFallback] = createSignal(!props.logoUrl);
 
-  const imgHtml = props.logoUrl
-    ? (
-      <img
-        src={props.logoUrl}
-        style={`display: ${showFallback() ? "none" : "flex"}`}
-        class="w-6 h-6 object-contain bg-slate-100 rounded-full shrink-0 shadow-sm border border-slate-300/50 p-[2px]"
-        onError={() => setShowFallback(true)}
-      />
-    )
-    : null;
+  const imgHtml = props.logoUrl ? (
+    <img
+      src={props.logoUrl}
+      style={`display: ${showFallback() ? "none" : "flex"}`}
+      class="w-6 h-6 object-contain bg-slate-100 rounded-full shrink-0 shadow-sm border border-slate-300/50 p-[2px]"
+      onError={() => setShowFallback(true)}
+    />
+  ) : null;
 
   const fallbackSvgHtml = (
     <div
@@ -48,9 +46,7 @@ export function FuelMapMarkerIcon(props: FuelMapMarkerIconProps) {
     <div class="animate-in fade-in duration-500 ease-out absolute left-0 top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-bold text-xs py-1.5 pl-1.5 pr-3.5 flex items-center gap-2.5 rounded-full shadow-[0_6px_20px_rgba(0,0,0,0.2)] dark:shadow-[0_6px_20px_rgba(0,0,0,0.6)] whitespace-nowrap transform -translate-x-1/2 -translate-y-1/2 hover:scale-110 hover:-translate-y-3/4 hover:shadow-[0_12px_30px_rgba(249,115,22,0.3)] transition-all hover:border-orange-500/50 z-10 cursor-pointer">
       {imgHtml}
       {fallbackSvgHtml}
-      <span class="tracking-wide drop-shadow-md leading-none mt-0.5">
-        {props.brand}
-      </span>
+      <span class="tracking-wide drop-shadow-md leading-none mt-0.5">{props.brand}</span>
     </div>
   );
 }

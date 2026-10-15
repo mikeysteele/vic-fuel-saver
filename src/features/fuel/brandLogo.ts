@@ -41,15 +41,12 @@ function isBrand(brandName: string): brandName is Brand {
   return brandName in BRAND_DOMAIN_MAP;
 }
 
-export function getBrandLogoUrl(
-  brandName: string,
-  sizeValue: number = 64,
-): string | undefined {
+export function getBrandLogoUrl(brandName: string, sizeValue: number = 64): string | undefined {
   if (!isBrand(brandName)) return undefined;
   const domain = BRAND_DOMAIN_MAP[brandName];
 
-  const token = (typeof import.meta !== "undefined" &&
-    import.meta.env?.VITE_LOGO_DEV_TOKEN) ||
+  const token =
+    (typeof import.meta !== "undefined" && import.meta.env?.VITE_LOGO_DEV_TOKEN) ||
     env.VITE_LOGO_DEV_TOKEN;
   return `https://img.logo.dev/${domain}?token=${token}&size=${sizeValue}`;
 }

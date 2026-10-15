@@ -15,12 +15,11 @@ export async function syncFuelPrices(d1Database: AnyD1Database) {
       return { success: true, inserted: 0 };
     }
 
-    console.log(
-      `Fetched ${data.fuelPriceDetails.length} stations. Upserting into D1...`,
-    );
+    console.log(`Fetched ${data.fuelPriceDetails.length} stations. Upserting into D1...`);
 
     // Fetch latest prices to skip unchanged data (Event-sourced storage)
-    const latestPricesRes = await d1Database.prepare(`
+    const latestPricesRes = await d1Database
+      .prepare(`
       SELECT station_id, fuel_type, price
       FROM prices
       WHERE (station_id, fuel_type, price_date) IN (
@@ -28,7 +27,8 @@ export async function syncFuelPrices(d1Database: AnyD1Database) {
         FROM prices
         GROUP BY station_id, fuel_type
       )
-    `).all();
+    `)
+      .all();
 
     const latestPriceMap = new Map<string, number>();
     for (const row of latestPricesRes.results || []) {
@@ -89,7 +89,8 @@ export async function syncFuelPrices(d1Database: AnyD1Database) {
 
     // Insert Stations
     const stationQueries = stationRows.map((row) =>
-      db.insert(stations)
+      db
+        .insert(stations)
         .values(row)
         .onConflictDoUpdate({
           target: stations.id,
@@ -103,39 +104,34 @@ export async function syncFuelPrices(d1Database: AnyD1Database) {
             lat: sql`excluded.lat`,
             lng: sql`excluded.lng`,
           },
-        })
+        }),
     );
 
     // Process station batches (D1 limit is typically 100 statements per batch)
     for (let i = 0; i < stationQueries.length; i += 100) {
       // Use cast since D1 batch parameter typing in this drizzle version requires it
-      await db.batch(
-        stationQueries.slice(i, i + 100) as unknown as Parameters<
-          typeof db.batch
-        >[0],
-      );
+      await db.batch(stationQueries.slice(i, i + 100) as unknown as Parameters<typeof db.batch>[0]);
     }
 
     // Upsert Prices — one row per station/fuel/day; update if same day already exists
     const priceQueries = priceRows.map((row) =>
-      db.insert(prices).values(row).onConflictDoUpdate({
-        target: [prices.stationId, prices.fuelType, prices.priceDate],
-        set: {
-          price: sql`excluded.price`,
-          isAvailable: sql`excluded.is_available`,
-          updatedAt: sql`excluded.updated_at`,
-          syncedAt: sql`excluded.synced_at`,
-        },
-      })
+      db
+        .insert(prices)
+        .values(row)
+        .onConflictDoUpdate({
+          target: [prices.stationId, prices.fuelType, prices.priceDate],
+          set: {
+            price: sql`excluded.price`,
+            isAvailable: sql`excluded.is_available`,
+            updatedAt: sql`excluded.updated_at`,
+            syncedAt: sql`excluded.synced_at`,
+          },
+        }),
     );
 
     // Process price batches
     for (let i = 0; i < priceQueries.length; i += 100) {
-      await db.batch(
-        priceQueries.slice(i, i + 100) as unknown as Parameters<
-          typeof db.batch
-        >[0],
-      );
+      await db.batch(priceQueries.slice(i, i + 100) as unknown as Parameters<typeof db.batch>[0]);
     }
 
     console.log(

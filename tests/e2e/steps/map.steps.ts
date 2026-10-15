@@ -27,10 +27,7 @@ When("I pan the map to a new location", async ({ page }) => {
   if (box) {
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
     await page.mouse.down();
-    await page.mouse.move(
-      box.x + box.width / 2 - 200,
-      box.y + box.height / 2 - 200,
-    );
+    await page.mouse.move(box.x + box.width / 2 - 200, box.y + box.height / 2 - 200);
     await page.mouse.up();
   }
 });

@@ -14,18 +14,22 @@ export function SVGLineChart(props: SVGLineChartProps) {
   let chart: LineChart | undefined;
 
   onMount(() => {
-    chart = new LineChart(chartRef, {
-      labels: props.labels || props.data.map(() => ""),
-      series: [props.data],
-    }, {
-      height: props.height ? `${props.height}px` : "100px",
-      showPoint: props.data.length < 50, // Hide points if too dense
-      showArea: false,
-      fullWidth: true,
-      chartPadding: { top: 10, right: 10, bottom: 20, left: 10 },
-      axisX: { showGrid: false, showLabel: true },
-      axisY: { showGrid: false, showLabel: false },
-    });
+    chart = new LineChart(
+      chartRef,
+      {
+        labels: props.labels || props.data.map(() => ""),
+        series: [props.data],
+      },
+      {
+        height: props.height ? `${props.height}px` : "100px",
+        showPoint: props.data.length < 50, // Hide points if too dense
+        showArea: false,
+        fullWidth: true,
+        chartPadding: { top: 10, right: 10, bottom: 20, left: 10 },
+        axisX: { showGrid: false, showLabel: true },
+        axisY: { showGrid: false, showLabel: false },
+      },
+    );
   });
 
   createEffect(() => {

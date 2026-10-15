@@ -34,10 +34,7 @@ describe("FilterBar", () => {
 
   it("renders a 'Clear' button when user location is set", () => {
     render(() => (
-      <FilterBar
-        {...defaultProps}
-        userLocation={{ latitude: -37.8, longitude: 144.9 }}
-      />
+      <FilterBar {...defaultProps} userLocation={{ latitude: -37.8, longitude: 144.9 }} />
     ));
     expect(screen.getByText("Clear")).toBeInTheDocument();
   });
@@ -51,11 +48,7 @@ describe("FilterBar", () => {
 
   it("shows active filter count badge when filters are active", () => {
     render(() => (
-      <FilterBar
-        {...defaultProps}
-        selectedFuelTypes={["U91"]}
-        selectedBrandIds={["BP001"]}
-      />
+      <FilterBar {...defaultProps} selectedFuelTypes={["U91"]} selectedBrandIds={["BP001"]} />
     ));
     // Active count = 1 fuel type + 1 brand = 2
     expect(screen.getByText("2")).toBeInTheDocument();
@@ -68,9 +61,7 @@ describe("FilterBar", () => {
 
   it("calls onToggleExpanded when the mobile filter header is clicked", () => {
     const onToggleExpanded = vi.fn();
-    render(() => (
-      <FilterBar {...defaultProps} onToggleExpanded={onToggleExpanded} />
-    ));
+    render(() => <FilterBar {...defaultProps} onToggleExpanded={onToggleExpanded} />);
     fireEvent.click(screen.getByText("Filters"));
     expect(onToggleExpanded).toHaveBeenCalledOnce();
   });

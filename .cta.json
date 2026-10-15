@@ -11,11 +11,5 @@
   "routerOnly": false,
   "version": 1,
   "framework": "solid",
-  "chosenAddOns": [
-    "biome",
-    "nitro",
-    "solid-ui",
-    "tanstack-query",
-    "t3env"
-  ]
+  "chosenAddOns": ["biome", "nitro", "solid-ui", "tanstack-query", "t3env"]
 }

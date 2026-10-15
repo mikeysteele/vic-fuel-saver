@@ -44,10 +44,7 @@ export function createFuelData() {
     const snapshotTs = date ? `${date}T13:59:59Z` : null;
     return {
       queryKey: fuelQueryKeys.prices(date),
-      queryFn: () =>
-        snapshotTs
-          ? getFuelPricesSnapshot({ data: snapshotTs })
-          : getFuelPrices(),
+      queryFn: () => (snapshotTs ? getFuelPricesSnapshot({ data: snapshotTs }) : getFuelPrices()),
       staleTime: date ? 24 * 60 * 60 * 1000 : 5 * 60 * 1000,
       placeholderData: (prev) => prev,
       enabled: typeof window !== "undefined",
@@ -106,7 +103,7 @@ export function createFuelData() {
   });
 
   const refetch = () => {
-    queryClient.invalidateQueries({
+    void queryClient.invalidateQueries({
       queryKey: fuelQueryKeys.prices(selectedDate()),
     });
   };

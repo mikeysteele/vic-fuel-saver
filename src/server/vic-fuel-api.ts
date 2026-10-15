@@ -2,17 +2,14 @@ import { env } from "../env.ts";
 
 import { env as cloudflareEnv } from "cloudflare:workers";
 
-const consumerId = cloudflareEnv.VIC_FUEL_CONSUMER_ID ??
+const consumerId =
+  cloudflareEnv.VIC_FUEL_CONSUMER_ID ??
   env.VIC_FUEL_CONSUMER_ID ??
   "dummy-consumer-id-for-development";
 
-import type {
-  FuelApiResponse,
-  FuelBrandsResponse,
-} from "../features/fuel/types.ts";
+import type { FuelApiResponse, FuelBrandsResponse } from "../features/fuel/types.ts";
 
-const PRICES_ENDPOINT =
-  "https://api.fuel.service.vic.gov.au/open-data/v1/fuel/prices";
+const PRICES_ENDPOINT = "https://api.fuel.service.vic.gov.au/open-data/v1/fuel/prices";
 const BRANDS_ENDPOINT =
   "https://api.fuel.service.vic.gov.au/open-data/v1/fuel/reference-data/brands";
 
@@ -35,9 +32,10 @@ export class VicFuelApiClient {
   }
 
   private makeHeaders(): RequestHeaders {
-    const transactionId = typeof crypto !== "undefined" && crypto.randomUUID
-      ? crypto.randomUUID()
-      : Math.random().toString(36).substring(2, 15);
+    const transactionId =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : Math.random().toString(36).substring(2, 15);
 
     return {
       "User-Agent": "FuelSaver/1.0",
@@ -58,14 +56,14 @@ export class VicFuelApiClient {
     });
 
     if (!response.ok) {
-      throw new Error(
-        `API returned ${response.status}: ${response.statusText}`,
-      );
+      throw new Error(`API returned ${response.status}: ${response.statusText}`);
     }
     try {
       return response.json() as Promise<T>;
-    } catch (e) {
-      throw new Error(`Failed to parse JSON response: ${e}`);
+    } catch (e: unknown) {
+      throw new Error(
+        `Failed to parse JSON response: ${e instanceof Error ? e.message : String(e)}`,
+      );
     }
   }
 

@@ -24,9 +24,11 @@ interface MapViewLayerProps {
 export function MapViewLayer(props: MapViewLayerProps) {
   return (
     <div
-      class={props.viewMode() === "list"
-        ? "hidden"
-        : "absolute inset-0 z-0 bg-slate-100 dark:bg-slate-900"}
+      class={
+        props.viewMode() === "list"
+          ? "hidden"
+          : "absolute inset-0 z-0 bg-slate-100 dark:bg-slate-900"
+      }
     >
       <FuelMap
         stations={props.stations}

@@ -16,7 +16,7 @@ class MemoryCache implements CacheStorage {
       this.cache.delete(key);
       return null;
     }
-    return await item.value as T;
+    return (await item.value) as T;
   }
 
   set<T>(key: string, value: T, ttlMs?: number): Promise<void> {
@@ -33,11 +33,7 @@ class MemoryCache implements CacheStorage {
 
 interface KVNamespace {
   get(key: string, type: "json"): Promise<unknown>;
-  put(
-    key: string,
-    value: string,
-    options?: Record<string, unknown>,
-  ): Promise<void>;
+  put(key: string, value: string, options?: Record<string, unknown>): Promise<void>;
   delete(key: string): Promise<void>;
 }
 
@@ -49,9 +45,7 @@ class CloudflareKVCache implements CacheStorage {
   async get<T>(key: string): Promise<T | null> {
     const kv = this.getKV();
     if (!kv) {
-      console.warn(
-        "CloudflareKVCache: KV namespace not found. Falling back to returning null.",
-      );
+      console.warn("CloudflareKVCache: KV namespace not found. Falling back to returning null.");
       return null;
     }
 

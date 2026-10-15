@@ -46,34 +46,24 @@
       "indexes": {
         "prices_station_id_idx": {
           "name": "prices_station_id_idx",
-          "columns": [
-            "station_id"
-          ],
+          "columns": ["station_id"],
           "isUnique": false
         },
         "prices_fuel_type_idx": {
           "name": "prices_fuel_type_idx",
-          "columns": [
-            "fuel_type"
-          ],
+          "columns": ["fuel_type"],
           "isUnique": false
         },
         "prices_updated_at_idx": {
           "name": "prices_updated_at_idx",
-          "columns": [
-            "updated_at"
-          ],
+          "columns": ["updated_at"],
           "isUnique": false
         }
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "prices_station_id_fuel_type_updated_at_pk": {
-          "columns": [
-            "station_id",
-            "fuel_type",
-            "updated_at"
-          ],
+          "columns": ["station_id", "fuel_type", "updated_at"],
           "name": "prices_station_id_fuel_type_updated_at_pk"
         }
       },

@@ -58,10 +58,7 @@ export function FuelMap(props: FuelMapProps) {
         setTimeout(() => {
           const marker = markers.get(focus.stationId);
           if (marker) {
-            currentClusterGroup.zoomToShowLayer(
-              marker,
-              () => marker.openPopup(),
-            );
+            currentClusterGroup.zoomToShowLayer(marker, () => marker.openPopup());
           }
         }, 100);
       });
@@ -98,17 +95,11 @@ export function FuelMap(props: FuelMapProps) {
       if (!markers.has(id)) {
         const { latitude, longitude } = stationDetail.fuelStation.location;
         const markerDiv = document.createElement("div");
-        render(
-          () => {
-            const brandName = () =>
-              props.brandMap[stationDetail.fuelStation.brandId] ?? "Fuel";
-            const logoUrl = () => getBrandLogoUrl(brandName(), 64);
-            return (
-              <FuelMapMarkerIcon brand={brandName()} logoUrl={logoUrl()} />
-            );
-          },
-          markerDiv,
-        );
+        render(() => {
+          const brandName = () => props.brandMap[stationDetail.fuelStation.brandId] ?? "Fuel";
+          const logoUrl = () => getBrandLogoUrl(brandName(), 64);
+          return <FuelMapMarkerIcon brand={brandName()} logoUrl={logoUrl()} />;
+        }, markerDiv);
 
         const marker = L.marker([Number(latitude), Number(longitude)], {
           title: stationDetail.fuelStation.name,
@@ -170,10 +161,7 @@ export function FuelMap(props: FuelMapProps) {
   });
 
   return (
-    <div
-      ref={mapContainer}
-      class="w-full h-full isolate relative z-0 bg-slate-900"
-    >
+    <div ref={mapContainer} class="w-full h-full isolate relative z-0 bg-slate-900">
       <style>
         {`
 		.custom-leaflet-popup .leaflet-popup-content-wrapper { background: transparent; padding: 0; box-shadow: none; }

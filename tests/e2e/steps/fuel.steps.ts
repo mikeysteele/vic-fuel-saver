@@ -10,8 +10,7 @@ When("I select the {string} fuel type", async ({ page }, fuelType: string) => {
   });
 
   // Opening the Fuel types MultiSelect explicitly by its container ID or robust label text
-  const multiSelect = page.locator("button", { hasText: "All Fuel Types" })
-    .first();
+  const multiSelect = page.locator("button", { hasText: "All Fuel Types" }).first();
   await multiSelect.click();
   const option = page.locator("label").filter({ hasText: fuelType });
   await option.click({ timeout: 60000 });

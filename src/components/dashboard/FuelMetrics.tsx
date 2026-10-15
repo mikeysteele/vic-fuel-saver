@@ -1,8 +1,5 @@
 import { For, Show } from "solid-js";
-import type {
-  FuelMetricsAggregate,
-  FuelMetricStat,
-} from "~/features/fuel/types.ts";
+import type { FuelMetricsAggregate, FuelMetricStat } from "~/features/fuel/types.ts";
 import { Badge } from "../ui/Badge.tsx";
 import { MetricCard } from "../ui/MetricCard.tsx";
 

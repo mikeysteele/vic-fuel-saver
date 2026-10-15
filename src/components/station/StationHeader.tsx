@@ -17,10 +17,7 @@ export function StationHeader(props: StationHeaderProps) {
         <Show
           when={logoUrl() && !imageError()}
           fallback={
-            <div
-              class={iconBoxVariants({ intent: "standard", size: "md" }) +
-                " rounded-full"}
-            >
+            <div class={iconBoxVariants({ intent: "standard", size: "md" }) + " rounded-full"}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"

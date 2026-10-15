@@ -43,22 +43,12 @@ describe("PriceItem", () => {
   });
 
   it("renders 'below State' badge when price is cheaper than state average", () => {
-    render(() => (
-      <PriceItem
-        priceEntry={availablePrice}
-        stateMetrics={stateMetricsBelowAvg}
-      />
-    ));
+    render(() => <PriceItem priceEntry={availablePrice} stateMetrics={stateMetricsBelowAvg} />);
     expect(screen.getByText(/below State/)).toBeInTheDocument();
   });
 
   it("renders 'above State' badge when price is more expensive than state average", () => {
-    render(() => (
-      <PriceItem
-        priceEntry={availablePrice}
-        stateMetrics={stateMetricsAboveAvg}
-      />
-    ));
+    render(() => <PriceItem priceEntry={availablePrice} stateMetrics={stateMetricsAboveAvg} />);
     expect(screen.getByText(/above State/)).toBeInTheDocument();
   });
 
@@ -66,19 +56,12 @@ describe("PriceItem", () => {
     const metricsNearAvg: Record<string, FuelMetricsAggregate> = {
       U91: { avg: 175.7, min: null, max: null }, // diff is -0.2, within threshold
     };
-    render(() => (
-      <PriceItem priceEntry={availablePrice} stateMetrics={metricsNearAvg} />
-    ));
+    render(() => <PriceItem priceEntry={availablePrice} stateMetrics={metricsNearAvg} />);
     expect(screen.getByText("State Average")).toBeInTheDocument();
   });
 
   it("does not render diff badges for unavailable price", () => {
-    render(() => (
-      <PriceItem
-        priceEntry={unavailablePrice}
-        stateMetrics={stateMetricsBelowAvg}
-      />
-    ));
+    render(() => <PriceItem priceEntry={unavailablePrice} stateMetrics={stateMetricsBelowAvg} />);
     expect(screen.queryByText(/below State/)).not.toBeInTheDocument();
     expect(screen.queryByText(/above State/)).not.toBeInTheDocument();
   });

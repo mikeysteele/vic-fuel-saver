@@ -12,12 +12,10 @@ const parseTheme = (theme?: string) => {
   return null;
 };
 
-export const getThemeFromCookie = createServerFn({ method: "GET" }).handler(
-  async () => {
-    const theme = getCookie("theme");
-    return await parseTheme(theme);
-  },
-);
+export const getThemeFromCookie = createServerFn({ method: "GET" }).handler(async () => {
+  const theme = getCookie("theme");
+  return parseTheme(theme);
+});
 
 export const setThemeCookie = createServerFn({ method: "POST" })
   .validator((data: "light" | "dark") => data)
@@ -27,5 +25,5 @@ export const setThemeCookie = createServerFn({ method: "POST" })
       maxAge: 31536000,
       sameSite: "lax",
     });
-    return await context.data;
+    return context.data;
   });

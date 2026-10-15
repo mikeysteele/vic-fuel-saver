@@ -1,0 +1,11 @@
+{
+  "ignorePatterns": [
+    "dist/**",
+    "worker-configuration.d.ts",
+    "src/routeTree.gen.ts",
+    "coverage/**",
+    "playwright-report/**",
+    ".features-gen/**",
+    "test-results/**"
+  ]
+}

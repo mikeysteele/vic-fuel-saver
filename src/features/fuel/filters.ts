@@ -14,24 +14,16 @@ export interface MapBounds {
   west: number;
 }
 
-export function createFuelFilters(
-  dataAccessor: () => FuelApiResponse | undefined,
-) {
+export function createFuelFilters(dataAccessor: () => FuelApiResponse | undefined) {
   const [selectedFuelTypes, setSelectedFuelTypes] = createSignal<string[]>([]);
   const [selectedBrandIds, setSelectedBrandIds] = createSignal<string[]>([]);
-  const [userLocation, setUserLocation] = createSignal<UserLocation | null>(
-    null,
-  );
+  const [userLocation, setUserLocation] = createSignal<UserLocation | null>(null);
   const [mapBounds, setMapBounds] = createSignal<MapBounds | null>(null);
 
   const filteredStations = createMemo(() => {
     const data = dataAccessor();
     if (!data) return [];
-    return filterAndSortStations(
-      data.fuelPriceDetails,
-      selectedBrandIds(),
-      selectedFuelTypes(),
-    );
+    return filterAndSortStations(data.fuelPriceDetails, selectedBrandIds(), selectedFuelTypes());
   });
 
   const stationsInView = createMemo(() => {
@@ -41,12 +33,7 @@ export function createFuelFilters(
 
     return stations.filter((s) => {
       const { latitude: lat, longitude: lng } = s.fuelStation.location;
-      return (
-        lat <= bounds.north &&
-        lat >= bounds.south &&
-        lng <= bounds.east &&
-        lng >= bounds.west
-      );
+      return lat <= bounds.north && lat >= bounds.south && lng <= bounds.east && lng >= bounds.west;
     });
   });
 

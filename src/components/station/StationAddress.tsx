@@ -33,15 +33,15 @@ export function StationAddress(props: StationAddressProps) {
       </div>
       <div class="flex flex-col">
         <span
-          class={labelVariants({ intent: "neutral", size: "sm" }) +
-            " !normal-case tracking-normal"}
+          class={labelVariants({ intent: "neutral", size: "sm" }) + " !normal-case tracking-normal"}
         >
           {props.address.addressLine1}
         </span>
         <Show when={props.address.addressLine2}>
           <span
-            class={labelVariants({ intent: "neutral", size: "sm" }) +
-              " !normal-case tracking-normal"}
+            class={
+              labelVariants({ intent: "neutral", size: "sm" }) + " !normal-case tracking-normal"
+            }
           >
             {props.address.addressLine2}
           </span>

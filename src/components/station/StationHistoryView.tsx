@@ -27,8 +27,7 @@ const formatDateTime = (isoString?: string | null) => {
 export function StationHistoryView(props: StationHistoryViewProps) {
   const [history] = createResource(
     () => props.stationId,
-    async (stationId) =>
-      await getStationPriceHistory({ data: { stationId, limit: 500 } }),
+    async (stationId) => await getStationPriceHistory({ data: { stationId, limit: 500 } }),
   );
 
   const groupedHistory = createMemo(() => {
@@ -37,38 +36,35 @@ export function StationHistoryView(props: StationHistoryViewProps) {
     if (!data) return {};
 
     // Group by fuelType
-    return data.reduce(
-      (acc: Record<string, typeof data>, item: NonNullable<typeof data>[0]) => {
-        if (!acc[item.fuelType]) {
-          acc[item.fuelType] = [];
-        }
-        const list = acc[item.fuelType];
+    return data.reduce((acc: Record<string, typeof data>, item: NonNullable<typeof data>[0]) => {
+      if (!acc[item.fuelType]) {
+        acc[item.fuelType] = [];
+      }
+      const list = acc[item.fuelType];
 
-        if (list.length > 0) {
-          const itemDate = new Date(item.updatedAt);
-          const lastItemDate = new Date(list[list.length - 1].updatedAt);
+      if (list.length > 0) {
+        const itemDate = new Date(item.updatedAt);
+        const lastItemDate = new Date(list[list.length - 1].updatedAt);
 
-          // Limit to 1 datapoint per day (keeping the newest price of that day)
-          if (itemDate.toDateString() === lastItemDate.toDateString()) {
-            // If the older intra-day price is the exact same, keep the older timestamp
-            if (list[list.length - 1].price === item.price) {
-              list[list.length - 1] = item;
-            }
-            return acc;
-          }
-
-          // Collapse consecutive identical prices across different days
+        // Limit to 1 datapoint per day (keeping the newest price of that day)
+        if (itemDate.toDateString() === lastItemDate.toDateString()) {
+          // If the older intra-day price is the exact same, keep the older timestamp
           if (list[list.length - 1].price === item.price) {
             list[list.length - 1] = item;
-            return acc;
           }
+          return acc;
         }
 
-        list.push(item);
-        return acc;
-      },
-      {},
-    );
+        // Collapse consecutive identical prices across different days
+        if (list[list.length - 1].price === item.price) {
+          list[list.length - 1] = item;
+          return acc;
+        }
+      }
+
+      list.push(item);
+      return acc;
+    }, {});
   });
 
   const stats = createMemo(() => {
@@ -107,10 +103,12 @@ export function StationHistoryView(props: StationHistoryViewProps) {
         min: min === Infinity ? 0 : min,
         max: max === -Infinity ? 0 : max,
         avg: sum / records.length,
-        weekdays: dayLabels.map((label, i) => ({
-          label,
-          value: dayCounts[i] ? daySums[i] / dayCounts[i] : 0,
-        })).filter((d) => d.value > 0), // only show days we have data for
+        weekdays: dayLabels
+          .map((label, i) => ({
+            label,
+            value: dayCounts[i] ? daySums[i] / dayCounts[i] : 0,
+          }))
+          .filter((d) => d.value > 0), // only show days we have data for
       };
     }
     return res;
@@ -119,18 +117,13 @@ export function StationHistoryView(props: StationHistoryViewProps) {
   return (
     <div class="flex flex-col h-full space-y-6">
       <div class="space-y-1">
-        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">
-          {props.stationName}
-        </h3>
-        <p class="text-sm text-slate-500 dark:text-slate-400">
-          Price History
-        </p>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{props.stationName}</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Price History</p>
       </div>
 
       <Show when={history.loading}>
         <div class="flex justify-center items-center py-12">
-          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500">
-          </div>
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
         </div>
       </Show>
 
@@ -140,9 +133,7 @@ export function StationHistoryView(props: StationHistoryViewProps) {
         </div>
       </Show>
 
-      <Show
-        when={!history.loading && !history.error && history()?.length === 0}
-      >
+      <Show when={!history.loading && !history.error && history()?.length === 0}>
         <div class="text-slate-500 dark:text-slate-400 py-8 text-center bg-slate-50 dark:bg-white/5 rounded-xl border border-dashed border-slate-200 dark:border-white/10">
           No history available for this station yet.
         </div>
@@ -208,10 +199,7 @@ export function StationHistoryView(props: StationHistoryViewProps) {
                     <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-4">
                       Average by Weekday
                     </div>
-                    <SVGBarChart
-                      data={stats()[fuelType].weekdays}
-                      height={100}
-                    />
+                    <SVGBarChart data={stats()[fuelType].weekdays} height={100} />
                   </div>
                 </Show>
 
@@ -223,8 +211,7 @@ export function StationHistoryView(props: StationHistoryViewProps) {
                     {(record) => (
                       <div class="flex items-center justify-between group py-1">
                         <div class="flex items-center space-x-4">
-                          <div class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600 group-hover:bg-orange-400 transition-colors">
-                          </div>
+                          <div class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600 group-hover:bg-orange-400 transition-colors"></div>
                           <span class="text-sm text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap">
                             {formatDateTime(record.updatedAt)}
                           </span>

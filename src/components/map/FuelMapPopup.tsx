@@ -1,10 +1,6 @@
 import { createSignal, onMount } from "solid-js";
 import { TrendingUp } from "lucide-solid";
-import type {
-  FuelMetricsAggregate,
-  FuelPrice,
-  FuelStation,
-} from "~/features/fuel/types.ts";
+import type { FuelMetricsAggregate, FuelPrice, FuelStation } from "~/features/fuel/types.ts";
 import { Modal } from "~/components/ui/Modal.tsx";
 import { StationHistoryView } from "~/components/station/StationHistoryView.tsx";
 import { FuelMapPopupHeader } from "./FuelMapPopupHeader.tsx";
@@ -26,9 +22,7 @@ export function FuelMapPopup(props: FuelMapPopupProps) {
 
   const displayedPrices = () => {
     if (props.selectedFuelTypes && props.selectedFuelTypes.length > 0) {
-      return props.prices.filter((p) =>
-        props.selectedFuelTypes!.includes(p.fuelType)
-      );
+      return props.prices.filter((p) => props.selectedFuelTypes!.includes(p.fuelType));
     }
     return props.prices; // Default to all if none selected
   };
@@ -67,10 +61,7 @@ export function FuelMapPopup(props: FuelMapPopupProps) {
       </div>
 
       <Modal isOpen={showHistory()} onClose={() => setShowHistory(false)}>
-        <StationHistoryView
-          stationId={props.station.id}
-          stationName={props.station.name}
-        />
+        <StationHistoryView stationId={props.station.id} stationName={props.station.name} />
       </Modal>
     </div>
   );

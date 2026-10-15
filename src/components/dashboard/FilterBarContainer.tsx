@@ -10,9 +10,7 @@ interface FilterBarContainerProps {
   userLocation: { latitude: number; longitude: number } | null;
   onFuelTypesChange: (types: string[]) => void;
   onBrandIdsChange: (brands: string[]) => void;
-  onUserLocationChange: (
-    loc: { latitude: number; longitude: number } | null,
-  ) => void;
+  onUserLocationChange: (loc: { latitude: number; longitude: number } | null) => void;
 }
 
 /**
@@ -39,9 +37,7 @@ export function FilterBarContainer(props: FilterBarContainerProps) {
         },
         (error) => {
           console.error("Error obtaining location", error);
-          alert(
-            "Failed to get your location. Please check browser permissions.",
-          );
+          alert("Failed to get your location. Please check browser permissions.");
         },
       );
     } else {

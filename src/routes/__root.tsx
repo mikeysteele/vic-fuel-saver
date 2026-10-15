@@ -1,9 +1,4 @@
-import {
-  createRootRouteWithContext,
-  HeadContent,
-  Outlet,
-  Scripts,
-} from "@tanstack/solid-router";
+import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/solid-router";
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools";
 import { type QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import { SolidQueryDevtools } from "@tanstack/solid-query-devtools";
@@ -28,9 +23,7 @@ export const Route = createRootRouteWithContext<{
   },
   head: () => ({
     links: [{ rel: "stylesheet", href: styleCss }],
-    meta: [
-      { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-    ],
+    meta: [{ name: "viewport", content: "width=device-width, initial-scale=1.0" }],
   }),
   shellComponent: RootComponent,
   errorComponent: ErrorComponent,
@@ -74,9 +67,7 @@ function RootHtml() {
       <head>
         <HydrationScript />
       </head>
-      <body
-        class={`min-h-screen text-slate-200 antialiased selection:bg-purple-500/30`}
-      >
+      <body class={`min-h-screen text-slate-200 antialiased selection:bg-purple-500/30`}>
         <HeadContent />
         <Outlet />
         <ClientOnly>

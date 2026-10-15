@@ -4,16 +4,13 @@ import { priceBadgeVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface PriceBadgeProps
-  extends
-    JSX.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof priceBadgeVariants> {}
+  extends JSX.HTMLAttributes<HTMLSpanElement>, VariantProps<typeof priceBadgeVariants> {}
 
 export function PriceBadge(props: PriceBadgeProps) {
   const [local, others] = splitProps(props, ["intent", "class", "children"]);
   return (
     <span
-      class={priceBadgeVariants({ intent: local.intent }) +
-        (local.class ? ` ${local.class}` : "")}
+      class={priceBadgeVariants({ intent: local.intent }) + (local.class ? ` ${local.class}` : "")}
       {...others}
     >
       {local.children}

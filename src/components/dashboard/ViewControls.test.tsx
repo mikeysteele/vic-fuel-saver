@@ -20,10 +20,8 @@ describe("ViewControls", () => {
 
   it("renders both view toggle buttons", () => {
     render(() => <ViewControls {...defaultProps} />);
-    expect(screen.getByRole("button", { name: /map view/i }))
-      .toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /list view/i }))
-      .toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /map view/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /list view/i })).toBeInTheDocument();
   });
 
   it("calls setViewMode when a toggle button is clicked", () => {

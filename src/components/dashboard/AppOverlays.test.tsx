@@ -25,13 +25,7 @@ describe("AppOverlays", () => {
   it("calls refetch when 'Try Again' is clicked", () => {
     const refetch = vi.fn();
     const error = new Error("Error");
-    render(() => (
-      <AppOverlays
-        {...defaultProps}
-        error={() => error}
-        refetch={refetch}
-      />
-    ));
+    render(() => <AppOverlays {...defaultProps} error={() => error} refetch={refetch} />);
 
     const button = screen.getByRole("button", { name: /try again/i });
     fireEvent.click(button);

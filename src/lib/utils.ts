@@ -13,7 +13,11 @@ export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
   if (typeof error === "string") return error;
   if (typeof error === "object" && error !== null && "message" in error) {
-    return String((error as { message?: unknown }).message || error);
+    const msg = (error as { message?: unknown }).message;
+    if (typeof msg === "string") return msg;
+    if (typeof msg === "number" || typeof msg === "boolean") return String(msg);
   }
-  return String(error);
+  return typeof error === "number" || typeof error === "boolean"
+    ? String(error)
+    : "An unknown error occurred";
 }

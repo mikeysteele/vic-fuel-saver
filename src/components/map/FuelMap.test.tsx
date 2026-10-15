@@ -115,14 +115,7 @@ describe("FuelMap", () => {
 
   it("switches tile layers for dark mode", async () => {
     const [isDark, setIsDark] = createSignal(false);
-    render(() => (
-      <FuelMap
-        stations={[]}
-        userLocation={null}
-        brandMap={{}}
-        isDark={isDark()}
-      />
-    ));
+    render(() => <FuelMap stations={[]} userLocation={null} brandMap={{}} isDark={isDark()} />);
 
     await waitFor(() => {
       expect(L.tileLayer).toHaveBeenCalledWith(
@@ -144,11 +137,7 @@ describe("FuelMap", () => {
   it("adds and updates markers when stations change", async () => {
     const [stations, setStations] = createSignal<FuelPriceDetail[]>([]);
     render(() => (
-      <FuelMap
-        stations={stations()}
-        userLocation={null}
-        brandMap={{ B1: "TestBrand" }}
-      />
+      <FuelMap stations={stations()} userLocation={null} brandMap={{ B1: "TestBrand" }} />
     ));
 
     await waitFor(() => {
@@ -159,8 +148,7 @@ describe("FuelMap", () => {
 
     await waitFor(() => {
       expect(mockClusterGroup.addLayers).toHaveBeenCalled();
-      const addedMarkerCount =
-        mockClusterGroup.addLayers.mock.calls[0][0].length;
+      const addedMarkerCount = mockClusterGroup.addLayers.mock.calls[0][0].length;
       expect(addedMarkerCount).toBe(1);
     });
 

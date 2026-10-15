@@ -16,7 +16,7 @@ export class FuelRepository {
   }
 
   async getRecentTrends() {
-    return await this.db.all(sql`
+    return (await this.db.all(sql`
       WITH RankedChanges AS (
         SELECT 
           station_id, 
@@ -29,7 +29,7 @@ export class FuelRepository {
         WHERE price_date >= date((SELECT MAX(price_date) FROM prices), '-14 days')
       )
       SELECT station_id, fuel_type, price, updated_at, prev_price FROM RankedChanges WHERE rn = 1
-    `) as {
+    `)) as {
       station_id: string;
       fuel_type: string;
       price: number;
@@ -40,18 +40,18 @@ export class FuelRepository {
 
   async getEarliestSyncDate(): Promise<{ date: string | null }> {
     try {
-      const result = await this.d1.prepare(
-        "SELECT MIN(price_date) as date FROM prices",
-      ).all();
+      const result = await this.d1.prepare("SELECT MIN(price_date) as date FROM prices").all();
       const firstRow = result.results[0] as { date?: string } | undefined;
       return { date: firstRow?.date || null };
     } catch (e: unknown) {
       try {
-        const tables = await this.d1.prepare(
-          "SELECT name FROM sqlite_master WHERE type='table'",
-        ).all();
-        const names = tables.results.map((r) => (r as { name?: string }).name)
-          .filter(Boolean).join(", ");
+        const tables = await this.d1
+          .prepare("SELECT name FROM sqlite_master WHERE type='table'")
+          .all();
+        const names = tables.results
+          .map((r) => (r as { name?: string }).name)
+          .filter(Boolean)
+          .join(", ");
         console.error(
           `D1 Early Date Query failed. Tables: [${names}]. Error: ${
             e instanceof Error ? e.message : String(e)

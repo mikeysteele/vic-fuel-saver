@@ -59,9 +59,7 @@ export function Modal(props: ModalProps) {
           >
             {props.title && (
               <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-white/10 shrink-0">
-                <h2 class="text-xl font-semibold text-slate-900 dark:text-white">
-                  {props.title}
-                </h2>
+                <h2 class="text-xl font-semibold text-slate-900 dark:text-white">{props.title}</h2>
                 <button
                   type="button"
                   onClick={props.onClose}
@@ -108,9 +106,7 @@ export function Modal(props: ModalProps) {
                 </svg>
               </button>
             )}
-            <div class="flex-1 overflow-y-auto p-6 relative">
-              {props.children}
-            </div>
+            <div class="flex-1 overflow-y-auto p-6 relative">{props.children}</div>
           </div>
         </div>
       </Portal>

@@ -2,11 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { FuelPriceDetail } from "./types.ts";
 import { computeAggregates } from "./aggregates.ts";
 
-const makeStation = (
-  id: string,
-  lat = -37.8,
-  lng = 144.9,
-): FuelPriceDetail["fuelStation"] => ({
+const makeStation = (id: string, lat = -37.8, lng = 144.9): FuelPriceDetail["fuelStation"] => ({
   id,
   brandId: "BP",
   name: `Station ${id}`,
@@ -26,9 +22,7 @@ describe("computeAggregates", () => {
     const stations: FuelPriceDetail[] = [
       {
         fuelStation: makeStation("1"),
-        fuelPrices: [
-          { fuelType: "U91", price: 180.0, isAvailable: true, updatedAt: "" },
-        ],
+        fuelPrices: [{ fuelType: "U91", price: 180.0, isAvailable: true, updatedAt: "" }],
         updatedAt: "",
       },
     ];
@@ -44,9 +38,7 @@ describe("computeAggregates", () => {
     const stations: FuelPriceDetail[] = [
       {
         fuelStation: makeStation("1"),
-        fuelPrices: [
-          { fuelType: "U91", price: 180.0, isAvailable: false, updatedAt: "" },
-        ],
+        fuelPrices: [{ fuelType: "U91", price: 180.0, isAvailable: false, updatedAt: "" }],
         updatedAt: "",
       },
     ];
@@ -57,9 +49,7 @@ describe("computeAggregates", () => {
     const stations: FuelPriceDetail[] = [
       {
         fuelStation: makeStation("1"),
-        fuelPrices: [
-          { fuelType: "U91", price: 0, isAvailable: true, updatedAt: "" },
-        ],
+        fuelPrices: [{ fuelType: "U91", price: 0, isAvailable: true, updatedAt: "" }],
         updatedAt: "",
       },
     ];
@@ -70,23 +60,17 @@ describe("computeAggregates", () => {
     const stations: FuelPriceDetail[] = [
       {
         fuelStation: makeStation("1"),
-        fuelPrices: [
-          { fuelType: "U91", price: 170.0, isAvailable: true, updatedAt: "" },
-        ],
+        fuelPrices: [{ fuelType: "U91", price: 170.0, isAvailable: true, updatedAt: "" }],
         updatedAt: "",
       },
       {
         fuelStation: makeStation("2"),
-        fuelPrices: [
-          { fuelType: "U91", price: 190.0, isAvailable: true, updatedAt: "" },
-        ],
+        fuelPrices: [{ fuelType: "U91", price: 190.0, isAvailable: true, updatedAt: "" }],
         updatedAt: "",
       },
       {
         fuelStation: makeStation("3"),
-        fuelPrices: [
-          { fuelType: "U91", price: 180.0, isAvailable: true, updatedAt: "" },
-        ],
+        fuelPrices: [{ fuelType: "U91", price: 180.0, isAvailable: true, updatedAt: "" }],
         updatedAt: "",
       },
     ];
@@ -118,9 +102,7 @@ describe("computeAggregates", () => {
     const stations: FuelPriceDetail[] = [
       {
         fuelStation: makeStation("1", -37.5, 144.5),
-        fuelPrices: [
-          { fuelType: "U91", price: 170.0, isAvailable: true, updatedAt: "" },
-        ],
+        fuelPrices: [{ fuelType: "U91", price: 170.0, isAvailable: true, updatedAt: "" }],
         updatedAt: "",
       },
     ];

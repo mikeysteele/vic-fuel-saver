@@ -13,12 +13,9 @@ export const priceBadgeVariants = cva(
   {
     variants: {
       intent: {
-        below:
-          "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-        above:
-          "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
-        neutral:
-          "bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20",
+        below: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+        above: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
+        neutral: "bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20",
       },
     },
     defaultVariants: {
@@ -55,26 +52,23 @@ export const panelVariants = cva("rounded-2xl transition-all duration-300", {
 /**
  * Common label patterns for the small uppercase headers.
  */
-export const labelVariants = cva(
-  "block font-semibold uppercase tracking-widest leading-tight",
-  {
-    variants: {
-      intent: {
-        dim: "text-slate-500 dark:text-slate-400",
-        primary: "text-orange-600 dark:text-orange-400",
-        neutral: "text-slate-700 dark:text-slate-300",
-      },
-      size: {
-        xs: "text-[10px] md:text-xs",
-        sm: "text-xs md:text-sm",
-      },
+export const labelVariants = cva("block font-semibold uppercase tracking-widest leading-tight", {
+  variants: {
+    intent: {
+      dim: "text-slate-500 dark:text-slate-400",
+      primary: "text-orange-600 dark:text-orange-400",
+      neutral: "text-slate-700 dark:text-slate-300",
     },
-    defaultVariants: {
-      intent: "dim",
-      size: "xs",
+    size: {
+      xs: "text-[10px] md:text-xs",
+      sm: "text-xs md:text-sm",
     },
   },
-);
+  defaultVariants: {
+    intent: "dim",
+    size: "xs",
+  },
+});
 
 /**
  * Component input / select base styles.
@@ -86,8 +80,7 @@ export const inputVariants = cva(
       intent: {
         standard:
           "bg-slate-50 dark:bg-slate-950/50 border-slate-300 dark:border-white/10 text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/80",
-        focused:
-          "bg-white dark:bg-slate-900 border-orange-500 text-slate-900 dark:text-white",
+        focused: "bg-white dark:bg-slate-900 border-orange-500 text-slate-900 dark:text-white",
       },
     },
     defaultVariants: {
@@ -104,8 +97,7 @@ export const iconBoxVariants = cva(
   {
     variants: {
       intent: {
-        standard:
-          "bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10",
+        standard: "bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10",
         primary: "bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.3)]",
         gradient:
           "bg-gradient-to-br from-orange-500 to-amber-600 shadow-[0_4px_12px_rgba(249,115,22,0.2)]",
@@ -163,8 +155,7 @@ export const badgeVariants = cva(
       intent: {
         dark: "bg-slate-800 text-white dark:bg-white dark:text-slate-900",
         primary: "bg-orange-500 text-white",
-        outline:
-          "border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400",
+        outline: "border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400",
       },
       size: {
         xs: "text-[10px] px-1.5 py-0.5",
@@ -200,21 +191,17 @@ export const stationCardVariants = cva(
 /**
  * Metric card section — cheapest / average / most-expensive panels.
  */
-export const metricCardVariants = cva(
-  "backdrop-blur-xl rounded-2xl p-4 flex-1 min-w-0",
-  {
-    variants: {
-      intent: {
-        cheap:
-          "bg-white/95 dark:bg-slate-950/80 border border-teal-200 dark:border-teal-500/30 shadow-[0_8px_30px_rgba(20,184,166,0.15)]",
-        avg:
-          "bg-white/95 dark:bg-slate-950/80 border border-orange-200 dark:border-orange-500/30 shadow-[0_8px_30px_rgba(249,115,22,0.15)]",
-        expensive:
-          "bg-white/95 dark:bg-slate-950/80 border border-rose-200 dark:border-rose-500/30 shadow-[0_8px_30px_rgba(244,63,94,0.15)]",
-      },
+export const metricCardVariants = cva("backdrop-blur-xl rounded-2xl p-4 flex-1 min-w-0", {
+  variants: {
+    intent: {
+      cheap:
+        "bg-white/95 dark:bg-slate-950/80 border border-teal-200 dark:border-teal-500/30 shadow-[0_8px_30px_rgba(20,184,166,0.15)]",
+      avg: "bg-white/95 dark:bg-slate-950/80 border border-orange-200 dark:border-orange-500/30 shadow-[0_8px_30px_rgba(249,115,22,0.15)]",
+      expensive:
+        "bg-white/95 dark:bg-slate-950/80 border border-rose-200 dark:border-rose-500/30 shadow-[0_8px_30px_rgba(244,63,94,0.15)]",
     },
   },
-);
+});
 
 export const metricCardLabelVariants = cva(
   "text-[10px] sm:text-xs font-semibold uppercase tracking-widest mb-3 text-center leading-tight truncate w-full border-b pb-2",

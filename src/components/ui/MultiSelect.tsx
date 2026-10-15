@@ -30,15 +30,11 @@ export function MultiSelect(props: MultiSelectProps) {
   };
   if (typeof document !== "undefined") {
     onMount(() => {
-      withDocument((document) =>
-        document.addEventListener("click", handleClickOutside)
-      );
+      withDocument((document) => document.addEventListener("click", handleClickOutside));
     });
 
     onCleanup(() => {
-      withDocument((document) =>
-        document.removeEventListener("click", handleClickOutside)
-      );
+      withDocument((document) => document.removeEventListener("click", handleClickOutside));
     });
   }
   const getLabel = (opt: string) => props.labelMap?.[opt] ?? opt;
@@ -79,9 +75,7 @@ export function MultiSelect(props: MultiSelectProps) {
             stroke-width="2.5"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class={`transition-transform duration-300 ${
-              isOpen() ? "rotate-180" : ""
-            }`}
+            class={`transition-transform duration-300 ${isOpen() ? "rotate-180" : ""}`}
           >
             <path d="m6 9 6 6 6-6" />
           </svg>

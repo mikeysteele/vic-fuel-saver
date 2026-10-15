@@ -48,9 +48,7 @@ describe("ListViewLayer", () => {
   });
 
   it("renders nothing when viewMode is 'map'", () => {
-    const { container } = render(() => (
-      <ListViewLayer {...defaultProps} viewMode="map" />
-    ));
+    const { container } = render(() => <ListViewLayer {...defaultProps} viewMode="map" />);
     expect(container.firstChild).toBeNull();
   });
 });

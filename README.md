@@ -27,12 +27,13 @@ comparative analytics.
 
 - **Framework**: [TanStack Start](https://tanstack.com/start) with
   [SolidJS](https://solidjs.com/)
-- **Runtime**: [Deno](https://deno.com/)
+- **Runtime**: [Node.js 26](https://nodejs.org/) with [pnpm](https://pnpm.io/)
+- **Bundler & Tooling**: [Vite 8](https://vitejs.dev/), [TypeScript 7](https://www.typescriptlang.org/), [Oxlint](https://oxc.rs/) & [Oxfmt](https://oxc.rs/) (with `tsgolint`)
 - **Map Library**: [Leaflet](https://leafletjs.com/) with Marker Clustering
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **API**: Service Victoria Fair Fuel Open Data API
 - **Testing**: [Vitest](https://vitest.dev/) with Solid Testing Library (100+
-  tests)
+  tests) and [Playwright](https://playwright.dev/) for E2E BDD
 
 ## 🚀 Getting Started
 
@@ -41,6 +42,7 @@ Open Data API Key** (`VIC_FUEL_CONSUMER_ID`).
 
 1. **Configure Environment Variables**: Create a `.env` file in the root of the
    project (you can use `.env.example` as a template):
+
    ```env
    VIC_FUEL_CONSUMER_ID=your_api_key_here
    ```
@@ -48,10 +50,10 @@ Open Data API Key** (`VIC_FUEL_CONSUMER_ID`).
 2. **Run the Application**:
    ```bash
    # Install dependencies
-   deno install
+   pnpm install
 
    # Run the development server
-   deno task dev
+   pnpm dev
    ```
 
 The app will be available at `http://localhost:3000`.
@@ -61,20 +63,29 @@ The app will be available at `http://localhost:3000`.
 To build the application for production deployment:
 
 ```bash
-deno task build
+pnpm build
 ```
 
-## 🧪 Testing
+## 🧪 Testing, Linting & Formatting
 
 We maintain a comprehensive test suite (100+ tests) covering UI components,
-business logic, and reactivity.
+business logic, and reactivity:
 
 ```bash
 # Run all tests
-deno task test
+pnpm test
 
 # Run tests with coverage
-deno task test --coverage
+pnpm test:coverage
+
+# Run type check
+pnpm typecheck
+
+# Run linter (type-aware via oxlint-tsgolint)
+pnpm lint
+
+# Format code
+pnpm format
 ```
 
 ## 📜 Documentation

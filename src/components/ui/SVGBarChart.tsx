@@ -13,15 +13,19 @@ export function SVGBarChart(props: SVGBarChartProps) {
   let chart: BarChart | undefined;
 
   onMount(() => {
-    chart = new BarChart(chartRef, {
-      labels: props.data.map((d) => d.label),
-      series: [props.data.map((d) => d.value)],
-    }, {
-      height: props.height ? `${props.height}px` : "120px",
-      chartPadding: { top: 10, right: 10, bottom: 20, left: 10 },
-      axisX: { showGrid: false },
-      axisY: { showGrid: false, showLabel: false },
-    });
+    chart = new BarChart(
+      chartRef,
+      {
+        labels: props.data.map((d) => d.label),
+        series: [props.data.map((d) => d.value)],
+      },
+      {
+        height: props.height ? `${props.height}px` : "120px",
+        chartPadding: { top: 10, right: 10, bottom: 20, left: 10 },
+        axisX: { showGrid: false },
+        axisY: { showGrid: false, showLabel: false },
+      },
+    );
   });
 
   createEffect(() => {

@@ -44,21 +44,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
-      - name: Setup Node.js
+      - name: Setup Node.js 26
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 26
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Install Dependencies
-        run: deno install --frozen
+        run: pnpm install --frozen-lockfile
 
       - name: Build Source
-        run: deno task build
+        run: pnpm run build
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
@@ -76,24 +74,22 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
-      - name: Setup Node.js
+      - name: Setup Node.js 26
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 26
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Install Dependencies
-        run: deno install --frozen
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
 
       - name: Run E2E Tests (Production Environment)
-        run: npx playwright test
+        run: pnpm run test:e2e
         env:
           # Expect PLAYWRIGHT_TEST_BASE_URL to define the deployed worker, like https://vic-fuel-saver.account.workers.dev
           PLAYWRIGHT_TEST_BASE_URL: ${{ secrets.PLAYWRIGHT_TEST_BASE_URL }}

@@ -1,10 +1,8 @@
-// deno-lint-ignore-file no-process-global
 import { createFileRoute } from "@tanstack/solid-router";
 import { syncFuelPrices } from "../../server/cron.ts";
 import { getErrorMessage } from "../../lib/utils.ts";
 import { env } from "cloudflare:workers";
 
-// @ts-ignore: Deno TS check doesn't have the updated routeTree
 export const Route = createFileRoute("/api/sync-prices")({
   server: {
     handlers: {
@@ -29,10 +27,7 @@ export const Route = createFileRoute("/api/sync-prices")({
         const expectedSecret = (env.CRON_SECRET || "dev-secret") as string;
         const expectedHeader = `Basic ${btoa(`admin:${expectedSecret}`)}`;
 
-        if (
-          // @ts-ignore: process might not be defined in Deno
-          process.env?.NODE_ENV !== "development" || env.CRON_SECRET
-        ) {
+        if (process.env?.NODE_ENV !== "development" || env.CRON_SECRET) {
           if (authHeader !== expectedHeader) {
             return new Response("Unauthorized", {
               status: 401,

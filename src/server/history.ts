@@ -5,9 +5,7 @@ import { and, desc, eq } from "drizzle-orm";
 import { env } from "cloudflare:workers";
 
 export const getStationPriceHistory = createServerFn({ method: "GET" })
-  .validator((
-    d: { stationId: string; fuelType?: string; limit?: number },
-  ) => d)
+  .validator((d: { stationId: string; fuelType?: string; limit?: number }) => d)
   .handler(async (ctx) => {
     // Cloudflare D1 environment bindings
     const cloudflareEnv = env;
@@ -24,7 +22,8 @@ export const getStationPriceHistory = createServerFn({ method: "GET" })
       conditions.push(eq(prices.fuelType, fuelType));
     }
 
-    const history = await db.select()
+    const history = await db
+      .select()
       .from(prices)
       .where(and(...conditions))
       .orderBy(desc(prices.updatedAt))

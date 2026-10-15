@@ -18,9 +18,7 @@ export function createLeafletMap(options: {
 }) {
   const [map, setMap] = createSignal<LType.Map | null>(null);
   const [leafletRef, setLeafletRef] = createSignal<typeof LType | null>(null);
-  const [clusterGroup, setClusterGroup] = createSignal<
-    LType.MarkerClusterGroup | null
-  >(null);
+  const [clusterGroup, setClusterGroup] = createSignal<LType.MarkerClusterGroup | null>(null);
 
   let tileLayer: LType.TileLayer | null = null;
 
@@ -32,7 +30,7 @@ export function createLeafletMap(options: {
     await import("leaflet/dist/leaflet.css");
     await import("leaflet.markercluster");
 
-    // deno-lint-ignore no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     delete (L.Icon.Default.prototype as any)._getIconUrl;
     L.Icon.Default.mergeOptions({
       iconRetinaUrl: ICON_RETINA_URL,
@@ -97,22 +95,16 @@ export function createLeafletMap(options: {
     const currentMap = map();
     const loc = options.userLocation?.();
     if (currentMap && loc && L) {
-      currentMap.setView(
-        [loc.latitude, loc.longitude],
-        13,
-      );
+      currentMap.setView([loc.latitude, loc.longitude], 13);
 
-      L.circleMarker(
-        [loc.latitude, loc.longitude],
-        {
-          radius: 8,
-          fillColor: "#a855f7",
-          color: "#fff",
-          weight: 2,
-          opacity: 1,
-          fillOpacity: 0.8,
-        },
-      ).addTo(currentMap);
+      L.circleMarker([loc.latitude, loc.longitude], {
+        radius: 8,
+        fillColor: "#a855f7",
+        color: "#fff",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.8,
+      }).addTo(currentMap);
     }
   });
 

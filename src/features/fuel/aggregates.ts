@@ -1,8 +1,4 @@
-import type {
-  FuelMetricsAggregate,
-  FuelMetricStat,
-  FuelPriceDetail,
-} from "./types.ts";
+import type { FuelMetricsAggregate, FuelMetricStat, FuelPriceDetail } from "./types.ts";
 
 /**
  * Computes min/max/avg price aggregates per fuel type across the given stations.

@@ -37,8 +37,7 @@ interface FilterBarProps {
  * All user interactions are delegated to parent callbacks.
  */
 export function FilterBar(props: FilterBarProps) {
-  const activeCount = () =>
-    props.selectedFuelTypes.length + props.selectedBrandIds.length;
+  const activeCount = () => props.selectedFuelTypes.length + props.selectedBrandIds.length;
 
   return (
     <Panel intent="glass" padding="md" class="relative group">

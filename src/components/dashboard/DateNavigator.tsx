@@ -125,12 +125,14 @@ export function DateNavigator(props: DateNavigatorProps) {
 
   const displayDate = () => {
     const d = props.selectedDate || new Date();
-    return d.toLocaleDateString("en-AU", {
-      timeZone: "Australia/Melbourne",
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }).replace(/\//g, ".");
+    return d
+      .toLocaleDateString("en-AU", {
+        timeZone: "Australia/Melbourne",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+      .replace(/\//g, ".");
   };
 
   const inputDateValue = () => {

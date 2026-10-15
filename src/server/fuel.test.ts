@@ -1,8 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type {
-  FuelApiResponse,
-  FuelBrandsResponse,
-} from "../features/fuel/types.ts";
+import type { FuelApiResponse, FuelBrandsResponse } from "../features/fuel/types.ts";
 
 // We test the core fetch-and-cache pattern by extracting it as a standalone helper.
 // The createServerFn wrapper is TanStack-specific and not unit-testable in isolation.
@@ -25,9 +22,7 @@ describe("Fuel server: fetch + cache integration", () => {
 
   it("fetches from API when cache is empty", async () => {
     const fakeData: FuelApiResponse = { fuelPriceDetails: [] };
-    const fetchSpy = vi
-      .spyOn(globalThis, "fetch")
-      .mockResolvedValue(makeMockResponse(fakeData));
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(makeMockResponse(fakeData));
 
     // Import fresh module to get a clean cache singleton
     const { getCache } = await import("./cache.ts");
@@ -131,9 +126,7 @@ describe("Fuel server: HTTP error handling", () => {
     await expect(async () => {
       const response = await fetch("https://api.example.com/prices");
       if (!response.ok) {
-        throw new Error(
-          `API returned ${response.status}: ${response.statusText}`,
-        );
+        throw new Error(`API returned ${response.status}: ${response.statusText}`);
       }
     }).rejects.toThrow("API returned 403: Forbidden");
   });

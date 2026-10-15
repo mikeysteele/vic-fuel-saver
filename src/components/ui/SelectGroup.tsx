@@ -28,11 +28,7 @@ export function SelectGroup(props: SelectGroupProps) {
         >
           <option value="">{props.placeholder}</option>
           <For each={props.options}>
-            {(option) => (
-              <option value={option}>
-                {props.optionLabels?.[option] || option}
-              </option>
-            )}
+            {(option) => <option value={option}>{props.optionLabels?.[option] || option}</option>}
           </For>
         </select>
         {/* Custom Arrow */}

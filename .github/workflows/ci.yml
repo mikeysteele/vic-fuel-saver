@@ -19,27 +19,25 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
-      - name: Setup Node (for ESLint/Playwright deps)
+      - name: Setup Node.js 26
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 26
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Install Dependencies
-        run: deno install --frozen
+        run: pnpm install --frozen-lockfile
 
       - name: Type Check
-        run: deno check src/ && deno check tests/
+        run: pnpm typecheck
 
       - name: Code Formatting Check
-        run: deno fmt --check
+        run: pnpm run format:check
 
       - name: Linter Check
-        run: deno task lint
+        run: pnpm run lint
 
       - name: Unit Tests
-        run: deno task test
+        run: pnpm test

@@ -4,9 +4,7 @@ const VIC_TIMEZONE = "Australia/Melbourne";
  * Returns the YYYY-MM-DD date part of a timestamp in Victorian Time.
  * Essential for comparing date picker values to sync dates correctly.
  */
-export function getVictorianISODate(
-  date: Date | string | null,
-): string | undefined {
+export function getVictorianISODate(date: Date | string | null): string | undefined {
   if (!date) return undefined;
   const d = typeof date === "string" ? new Date(date) : date;
 

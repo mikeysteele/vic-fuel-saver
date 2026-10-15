@@ -1,11 +1,5 @@
 import { For, Show } from "solid-js";
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  Minus,
-  TrendingDown,
-  TrendingUp,
-} from "lucide-solid";
+import { ArrowDownRight, ArrowUpRight, Minus, TrendingDown, TrendingUp } from "lucide-solid";
 import type { FuelMetricsAggregate, FuelPrice } from "~/features/fuel/types.ts";
 
 interface BadgeProps {
@@ -22,11 +16,7 @@ const Badge = (props: BadgeProps) => (
     }`}
   >
     {Math.abs(props.diff!).toFixed(1)}¢{" "}
-    <span>
-      {props.diff! < 0
-        ? <ArrowDownRight size={10} />
-        : <ArrowUpRight size={10} />}
-    </span>{" "}
+    <span>{props.diff! < 0 ? <ArrowDownRight size={10} /> : <ArrowUpRight size={10} />}</span>{" "}
     {props.label}
   </div>
 );
@@ -64,21 +54,16 @@ export function FuelMapPopupPriceList(props: FuelMapPopupPriceListProps) {
         <For each={props.prices}>
           {(priceEntry) => {
             const isAvailable = priceEntry.isAvailable;
-            const stateAvg = () =>
-              props.stateMetrics?.[priceEntry.fuelType]?.avg;
+            const stateAvg = () => props.stateMetrics?.[priceEntry.fuelType]?.avg;
             const stateDiff = () => {
               const avg = stateAvg();
-              return avg && isAvailable && priceEntry.price > 0
-                ? priceEntry.price - avg
-                : null;
+              return avg && isAvailable && priceEntry.price > 0 ? priceEntry.price - avg : null;
             };
 
             const areaAvg = () => props.areaMetrics?.[priceEntry.fuelType]?.avg;
             const areaDiff = () => {
               const avg = areaAvg();
-              return avg && isAvailable && priceEntry.price > 0
-                ? priceEntry.price - avg
-                : null;
+              return avg && isAvailable && priceEntry.price > 0 ? priceEntry.price - avg : null;
             };
 
             return (
@@ -91,25 +76,18 @@ export function FuelMapPopupPriceList(props: FuelMapPopupPriceListProps) {
                     class={`h-1.5 w-1.5 rounded-full ${
                       isAvailable ? "bg-emerald-400" : "bg-slate-600"
                     }`}
-                  >
-                  </div>
+                  ></div>
                 </div>
 
                 <div class="flex items-center gap-2">
                   <Show
                     when={isAvailable && priceEntry.price > 0}
-                    fallback={
-                      <span class="text-xs font-semibold text-slate-400">
-                        N/A
-                      </span>
-                    }
+                    fallback={<span class="text-xs font-semibold text-slate-400">N/A</span>}
                   >
                     <div class="flex flex-col items-end mr-1">
                       <span class="text-base font-black tracking-tight text-slate-900 dark:text-white leading-none flex items-center">
                         {priceEntry.price.toFixed(1)}{" "}
-                        <span class="text-[10px] text-slate-500 font-bold ml-px">
-                          ¢
-                        </span>
+                        <span class="text-[10px] text-slate-500 font-bold ml-px">¢</span>
                         <Show when={priceEntry.trend === "up"}>
                           <TrendingUp class="w-3.5 h-3.5 text-rose-500 ml-1.5 drop-shadow-sm" />
                         </Show>
@@ -126,8 +104,7 @@ export function FuelMapPopupPriceList(props: FuelMapPopupPriceListProps) {
                   {/* Comparative Margin Badges Stack */}
                   <div class="flex flex-col items-end gap-[2px]">
                     <Show
-                      when={stateDiff() !== null &&
-                        Math.abs(stateDiff()!) > 0.5}
+                      when={stateDiff() !== null && Math.abs(stateDiff()!) > 0.5}
                       fallback={
                         <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-1 py-[1.5px] rounded w-[60px] text-center shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]">
                           State Avg
@@ -153,9 +130,7 @@ export function FuelMapPopupPriceList(props: FuelMapPopupPriceListProps) {
           }}
         </For>
         <Show when={props.prices.length === 0}>
-          <div class="text-[10px] text-center text-slate-500 py-1">
-            No prices found.
-          </div>
+          <div class="text-[10px] text-center text-slate-500 py-1">No prices found.</div>
         </Show>
       </Show>
     </div>

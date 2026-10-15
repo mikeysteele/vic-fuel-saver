@@ -5,11 +5,7 @@ import { FuelMapPopup } from "./FuelMapPopup.tsx";
 vi.mock("~/components/station/StationHistoryView.tsx", () => ({
   StationHistoryView: () => <div data-testid="mock-history-view" />,
 }));
-import type {
-  FuelMetricsAggregate,
-  FuelPrice,
-  FuelStation,
-} from "~/features/fuel/types.ts";
+import type { FuelMetricsAggregate, FuelPrice, FuelStation } from "~/features/fuel/types.ts";
 
 const station: FuelStation = {
   id: "1",
@@ -41,25 +37,13 @@ const areaMetrics: Record<string, FuelMetricsAggregate> = {
 
 describe("FuelMapPopup", () => {
   it("renders station name and address", () => {
-    render(() => (
-      <FuelMapPopup
-        station={station}
-        prices={prices}
-        brandMap={brandMap}
-      />
-    ));
+    render(() => <FuelMapPopup station={station} prices={prices} brandMap={brandMap} />);
     expect(screen.getByText("BP Southbank")).toBeInTheDocument();
     expect(screen.getByText(/123 Southbank Blvd/)).toBeInTheDocument();
   });
 
   it("renders prices for fuel types", () => {
-    render(() => (
-      <FuelMapPopup
-        station={station}
-        prices={prices}
-        brandMap={brandMap}
-      />
-    ));
+    render(() => <FuelMapPopup station={station} prices={prices} brandMap={brandMap} />);
     expect(screen.getByText("U91")).toBeInTheDocument();
     expect(screen.getByText("175.9")).toBeInTheDocument();
     expect(screen.getByText("P98")).toBeInTheDocument();
@@ -97,13 +81,7 @@ describe("FuelMapPopup", () => {
   });
 
   it("renders correctly without metrics", () => {
-    render(() => (
-      <FuelMapPopup
-        station={station}
-        prices={prices}
-        brandMap={brandMap}
-      />
-    ));
+    render(() => <FuelMapPopup station={station} prices={prices} brandMap={brandMap} />);
     expect(screen.getAllByText("State Avg").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Area Avg").length).toBeGreaterThan(0);
   });

@@ -23,9 +23,7 @@ describe("MapViewLayer", () => {
   };
 
   it("renders map container when viewMode is 'map'", () => {
-    const { getByTestId, container } = render(() => (
-      <MapViewLayer {...defaultProps} />
-    ));
+    const { getByTestId, container } = render(() => <MapViewLayer {...defaultProps} />);
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper).not.toHaveClass("hidden");
     expect(getByTestId("mock-fuel-map")).toBeInTheDocument();
@@ -33,10 +31,7 @@ describe("MapViewLayer", () => {
 
   it("adds 'hidden' class when viewMode is 'list'", () => {
     const { container } = render(() => (
-      <MapViewLayer
-        {...defaultProps}
-        viewMode={() => "list" as const}
-      />
+      <MapViewLayer {...defaultProps} viewMode={() => "list" as const} />
     ));
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper).toHaveClass("hidden");

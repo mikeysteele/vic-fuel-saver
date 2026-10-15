@@ -3,10 +3,7 @@ import solidPlugin from "vite-plugin-solid";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [
-    solidPlugin(),
-    tsconfigPaths(),
-  ],
+  plugins: [solidPlugin(), tsconfigPaths()],
   test: {
     environment: "jsdom",
     globals: true,
@@ -14,17 +11,11 @@ export default defineConfig({
     include: ["src/**/*.test.{ts,tsx}"],
     coverage: {
       provider: "v8",
-      include: [
-        "src/lib/**",
-        "src/server/**",
-        "src/components/**",
-        "src/features/**",
-      ],
+      include: ["src/lib/**", "src/server/**", "src/components/**", "src/features/**"],
       reporter: ["text", "html"],
     },
     alias: {
-      "cloudflare:workers":
-        new URL("./src/test/mocks/cloudflare.ts", import.meta.url).pathname,
+      "cloudflare:workers": new URL("./src/test/mocks/cloudflare.ts", import.meta.url).pathname,
     },
     server: {
       deps: {

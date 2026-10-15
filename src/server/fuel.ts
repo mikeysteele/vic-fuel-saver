@@ -10,10 +10,7 @@ import type {
 import { getCache } from "./cache.ts";
 import { vicFuelApiClient } from "./vic-fuel-api.ts";
 import { FuelRepository } from "./db/fuel_repository.ts";
-import {
-  attachTrendsToApiResponse,
-  mapSnapshotRowsToApiResponse,
-} from "./fuel_mappers.ts";
+import { attachTrendsToApiResponse, mapSnapshotRowsToApiResponse } from "./fuel_mappers.ts";
 import type { SnapshotRow, TrendRow } from "./fuel_mappers.ts";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -43,9 +40,7 @@ async function withStaleFallback<T>(
   } catch (error) {
     console.error(`Failed to fetch ${description}:`, error);
     if (staleStore.current) {
-      console.log(
-        `Returning stale cached data for ${description} due to fetch error.`,
-      );
+      console.log(`Returning stale cached data for ${description} due to fetch error.`);
       return staleStore.current;
     }
     throw error;
@@ -54,28 +49,26 @@ async function withStaleFallback<T>(
 
 // ─── Stations ────────────────────────────────────────────────────────────────
 
-export const getFuelStations = createServerFn({ method: "GET" }).handler(
-  async () => {
-    const d1 = env?.DB || globalThis.DB;
-    if (!d1) {
-      throw new Error("D1 database binding 'DB' not found");
-    }
-    const repo = new FuelRepository(d1);
-    const rows = await repo.getStations();
+export const getFuelStations = createServerFn({ method: "GET" }).handler(async () => {
+  const d1 = env?.DB || globalThis.DB;
+  if (!d1) {
+    throw new Error("D1 database binding 'DB' not found");
+  }
+  const repo = new FuelRepository(d1);
+  const rows = await repo.getStations();
 
-    const stations = rows.map<FuelStation>((s) => ({
-      id: s.id,
-      brandId: s.brandId,
-      name: s.name,
-      address: s.address,
-      suburb: s.suburb,
-      state: s.state,
-      postcode: s.postcode,
-      location: { latitude: s.lat, longitude: s.lng },
-    }));
-    return { stations };
-  },
-);
+  const stations = rows.map<FuelStation>((s) => ({
+    id: s.id,
+    brandId: s.brandId,
+    name: s.name,
+    address: s.address,
+    suburb: s.suburb,
+    state: s.state,
+    postcode: s.postcode,
+    location: { latitude: s.lat, longitude: s.lng },
+  }));
+  return { stations };
+});
 
 // ─── Prices ──────────────────────────────────────────────────────────────────
 
@@ -117,7 +110,7 @@ export const getFuelPrices = createServerFn({ method: "GET" }).handler(
         if (d1) {
           try {
             const repo = new FuelRepository(d1);
-            const snapshot = await repo.getRecentTrends() as TrendRow[];
+            const snapshot = (await repo.getRecentTrends()) as TrendRow[];
             attachTrendsToApiResponse(data, snapshot);
           } catch (e) {
             console.error("Failed to attach live trends from D1:", e);
@@ -159,9 +152,7 @@ export const getFuelPricesSnapshot = createServerFn({ method: "GET" })
     }
 
     const repo = new FuelRepository(d1);
-    const rows = await repo.getPricesSnapshot(
-      targetDate,
-    ) as unknown as SnapshotRow[];
+    const rows = (await repo.getPricesSnapshot(targetDate)) as unknown as SnapshotRow[];
     const apiResponse = mapSnapshotRowsToApiResponse(rows);
     return stripStationMetadata(apiResponse);
   });

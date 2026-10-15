@@ -5,10 +5,7 @@ import { computeAggregates } from "~/features/fuel/aggregates.ts";
 import { createFuelData } from "~/features/fuel/data.ts";
 import { createFuelFilters } from "~/features/fuel/filters.ts";
 import { useTheme } from "~/lib/theme.tsx";
-import type {
-  FuelMetricStat,
-  FuelPriceDetail as _FuelPriceDetail,
-} from "~/features/fuel/types.ts";
+import type { FuelMetricStat } from "~/features/fuel/types.ts";
 
 import { FilterBarContainer } from "~/components/dashboard/FilterBarContainer.tsx";
 import { Header } from "~/components/layout/Header.tsx";
@@ -61,19 +58,11 @@ export function Home() {
       <Title>FuelSaver - Find the Cheapest Fuel</Title>
       <main class="h-screen font-sans antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 selection:bg-orange-500/30 overflow-hidden flex flex-col relative w-full">
         {/* ── Header ─────────────────────────────────────────────── */}
-        <Header
-          theme={theme}
-          toggleTheme={toggleTheme}
-          latestUpdatedAt={latestUpdatedAt}
-        />
+        <Header theme={theme} toggleTheme={toggleTheme} latestUpdatedAt={latestUpdatedAt} />
 
         {/* ── Body ───────────────────────────────────────────────── */}
         <div class="flex-1 relative w-full h-full">
-          <AppOverlays
-            loading={loading}
-            error={error}
-            refetch={refetch}
-          />
+          <AppOverlays loading={loading} error={error} refetch={refetch} />
 
           <Show when={data()}>
             {/* Map layer */}

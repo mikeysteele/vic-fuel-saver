@@ -1,8 +1,4 @@
-import type {
-  FuelApiResponse,
-  FuelPriceDetail,
-  FuelType,
-} from "../features/fuel/types.ts";
+import type { FuelApiResponse, FuelPriceDetail, FuelType } from "../features/fuel/types.ts";
 
 export interface SnapshotRow {
   station_id: string;
@@ -29,9 +25,7 @@ export interface TrendRow {
   prev_price: number | null;
 }
 
-export function mapSnapshotRowsToApiResponse(
-  rows: SnapshotRow[],
-): FuelApiResponse {
+export function mapSnapshotRowsToApiResponse(rows: SnapshotRow[]): FuelApiResponse {
   const detailMap = new Map<string, FuelPriceDetail>();
 
   for (const row of rows) {
@@ -77,10 +71,7 @@ export function mapSnapshotRowsToApiResponse(
   return { fuelPriceDetails: Array.from(detailMap.values()) };
 }
 
-export function attachTrendsToApiResponse(
-  data: FuelApiResponse,
-  snapshot: TrendRow[],
-) {
+export function attachTrendsToApiResponse(data: FuelApiResponse, snapshot: TrendRow[]) {
   const prevMap = new Map<string, TrendRow>();
   for (const row of snapshot) {
     prevMap.set(`${row.station_id}_${row.fuel_type}`, row);
@@ -91,10 +82,7 @@ export function attachTrendsToApiResponse(
       const key = `${detail.fuelStation.id}_${price.fuelType}`;
       const hist = prevMap.get(key);
       if (hist) {
-        if (
-          new Date(price.updatedAt).getTime() >
-            new Date(hist.updated_at).getTime()
-        ) {
+        if (new Date(price.updatedAt).getTime() > new Date(hist.updated_at).getTime()) {
           if (price.price > hist.price) price.trend = "up";
           else if (price.price < hist.price) price.trend = "down";
           else price.trend = "flat";

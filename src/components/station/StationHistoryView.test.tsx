@@ -10,28 +10,21 @@ vi.mock("~/server/history.ts", () => ({
 
 describe("StationHistoryView", () => {
   it("renders loading state", () => {
-    vi.mocked(getStationPriceHistory).mockImplementation(() =>
-      new Promise(() => {})
-    );
+    vi.mocked(getStationPriceHistory).mockImplementation(() => new Promise(() => {}));
 
-    render(() => (
-      <StationHistoryView stationId="123" stationName="Test Station" />
-    ));
+    render(() => <StationHistoryView stationId="123" stationName="Test Station" />);
     expect(document.querySelector(".animate-spin")).toBeInTheDocument();
   });
 
   it("renders error state", async () => {
-    vi.mocked(getStationPriceHistory).mockImplementation(() =>
-      Promise.reject(new Error("Failed"))
-    );
+    vi.mocked(getStationPriceHistory).mockImplementation(() => Promise.reject(new Error("Failed")));
 
     render(() => (
       <ErrorBoundary fallback={() => <div>Failed to load history.</div>}>
         <StationHistoryView stationId="123" stationName="Test Station" />
       </ErrorBoundary>
     ));
-    expect(await screen.findByText("Failed to load history."))
-      .toBeInTheDocument();
+    expect(await screen.findByText("Failed to load history.")).toBeInTheDocument();
   });
 
   it("renders empty state", async () => {
@@ -40,8 +33,7 @@ describe("StationHistoryView", () => {
     const { findByText } = render(() => (
       <StationHistoryView stationId="123" stationName="Test Station" />
     ));
-    expect(await findByText("No history available for this station yet."))
-      .toBeInTheDocument();
+    expect(await findByText("No history available for this station yet.")).toBeInTheDocument();
   });
 
   it("renders history", async () => {

@@ -4,21 +4,16 @@ import { badgeVariants } from "./variants.ts";
 import { splitProps } from "solid-js";
 
 export interface BadgeProps
-  extends
-    JSX.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {}
+  extends JSX.HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {}
 
 export function Badge(props: BadgeProps) {
-  const [local, others] = splitProps(props, [
-    "intent",
-    "size",
-    "class",
-    "children",
-  ]);
+  const [local, others] = splitProps(props, ["intent", "size", "class", "children"]);
   return (
     <span
-      class={badgeVariants({ intent: local.intent, size: local.size }) +
-        (local.class ? ` ${local.class}` : "")}
+      class={
+        badgeVariants({ intent: local.intent, size: local.size }) +
+        (local.class ? ` ${local.class}` : "")
+      }
       {...others}
     >
       {local.children}
